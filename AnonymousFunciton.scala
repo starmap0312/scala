@@ -11,9 +11,6 @@
 //   var userDir = () => { System.getProperty("user.dir") }
 //   println(userDir)
 //
-// Closure: function whose return value depends on the value of variables declared outside the function
-//   var factor = 3
-//   val multiplier = (i:Int) => i * factor
 
 object AnonymousFunciton {
     def oncePerSecond(callback: () => Unit) {
