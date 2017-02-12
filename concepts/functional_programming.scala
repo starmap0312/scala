@@ -1,14 +1,34 @@
 // functional programming:
-// 1) pure function:
-//    a function should always return the same value when called with same parameters
-// 2) no side effect
-//    ex. no disk I/O or changes to external variables/resources
+// (constraints)
+// 1) only immutable state:
+//    no assignment statement: variables once given a value never changes
+//    referentially transparent: one can freely replace a variable with its value and vice versa
+// 2) no side effect:
+//    a function have no effect other than computing the result
+//    ex. no changes to passed-in variables or external dependent resources (ex. disk I/O)
+// 3) only pure function:
+//    a function always returns the same value when called with same parameters
+//    since no side-effect can change the value of an expression, the order of execution is irrelevant
+//    the expressions can be evaluated at any time (no flow of control is needed)
+// (better modularity)
+// functional programming provides better ways of modularization
+//   decompose problems (map) and combine solutions (reduce)
+//   smaller modules can be re-used more widely, easing programming effort (simplicity)
+// two new kinds of glue:
+//   smaller, simpler, and more general modules are flued together with the following two tools
+// 1) higher-order functions
+// 2) lazy evaluations 
+//    ex. streams (lazy lists)
+//
 // imperative programming: 
-// 1) NOT pure function:
+// 1) complicated scope rules
+// 2) provision for separate compilation
+//    ex. instiantiation of objects
+// 3) HAVE side effects
+//    ex. modify passed-in variables, write to external dependent resources (ex. a file or database)
+// 4) NOT pure function:
 //    a function may return different values when called with same parameters
 //    ex. a function that returns the current temperature, it reads a temperature sensor (a external mutable resource) 
-// 2) many side effects
-//    ex. output to a file, modify external variables or resources, etc.
 //
 // (example: javascript, imperative programming)
 function guess(x) {
@@ -77,11 +97,11 @@ var add2 = add(2)
 add2(3)                  // this returns 5 
 
 // 5) immutable state
-//    you can't change any state at all
+//    you can't change any state at all (there should be no assignment statement)
 //
 // (example: OCaml)
 let x = 5;;              // x will be forever 5 (you can use x and 5 interchangeably)
-x = 6;;
+x = 6;;                  // there should be no assignment statement
 print_int x;;            // this prints 5
 
 // advantages of functional programming
