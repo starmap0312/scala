@@ -33,7 +33,7 @@ plus1 (x:xs)  = x + 1 : plus1 xs              // if it matches a non-empty List,
 def plus1(x):
     if x == []:
         return []
-    return [x[0] + 1] + plus1(x[1:])
+    return [x[0] + 1] + plus1(x[1:])          // the result of the function is returned immediated
 
 // why is it good?
 //   it becomes powerful when implementing more complex data structure
