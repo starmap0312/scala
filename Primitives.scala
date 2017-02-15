@@ -11,18 +11,5 @@ object Primitives {
         println(palindrome.length())
         println(palindrome.concat(" appended"))
         println(palindrome + " appended")
-        // 3) Array
-        var arr1:Array[String] = new Array[String](3)
-        var arr2 = new Array[String](3)
-        var arr3 = Array("zero", "one", "two")
-        arr1(0) = "zero"
-        println(arr1(0))
-        // 3.1) iterate an Array using for-loop
-        for (x <- arr3) {
-            println(x)
-        }
-        for (i <- 0 to (arr3.length - 1)) {
-            println(arr3(i))
-        }
     }
 }
