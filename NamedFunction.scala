@@ -1,21 +1,32 @@
 // Scala supports first-class functions
 //   functions can be expressed in function literal syntax
 //   functions can be represented by objects (called function values)
-// 1) def [function]: it evaluates when called (this creates new function every time called)
+// conventional use
+// 0) normal function definition
 //    syntax:
 //    def functionName([list of parameters]): [return type] = {
+//            return [expr] 
+//        }
+// 1) shorthand to nullary or unary function definition
+//    syntax:
+//    def/val/lazy val functionName: [function type] = [expr]
+//    use with {} to define functions:
+//      {} indicates a block of code composed of multiple statements and its value is that of the last statement
+// 1.1) def [function]: it evaluates when called (this creates new function every time called)
+//    syntax:
+//    def functionName: [function type] = { 
 //        function body
 //        [expr]
 //    }
-// 2) val [function]: it evaluates when defined
+// 1.2) val [function]: it evaluates when defined
 //    syntax:
-//    val functionName([list of parameters]): [return type] = {
+//    val functionName: [function type] = { 
 //        function body
 //        [expr]
 //    }
-// 3) lazy val [function]: it evaluates when called the first time 
+// 1.3) lazy val [function]: it evaluates when called the first time 
 //    syntax:
-//    lazy val functionName([list of parameters]): [return type] = {
+//    lazy val functionName: [function type] = { 
 //        function body
 //        [expr]
 //    }
@@ -29,15 +40,15 @@ object NamedFunciton {
         println("addInt(1, 2) = " + addInt(1, 2))
 
         // example 1:
-        def even1     : (Int => Boolean) = _ % 2 == 0
-        val even2     : (Int => Boolean) = _ % 2 == 0
-        lazy val even3: (Int => Boolean) = _ % 2 == 0
+        def even1     : (Int => Boolean) = (_ % 2 == 0)
+        val even2     : (Int => Boolean) = (_ % 2 == 0)
+        lazy val even3: (Int => Boolean) = (_ % 2 == 0)
         println("even1(1) returns " + even1(1))
         println("even2(1) returns " + even2(1))
         println("even3(1) returns " + even3(1))
 
         // example 2:
-        // 1) def function: get new result every time called
+        // 1.1) def function: get new result every time called
         def rand1: (() => Int) = {
             val result = util.Random.nextInt
             () => result
@@ -45,7 +56,7 @@ object NamedFunciton {
         println("rand1() 1st call: " + rand1())
         println("rand1() 2nd call: " + rand1())
 
-        // 2) val function: get same result every time called
+        // 1.2) val function: get same result every time called
         val rand2: (() => Int) = {
             val result = util.Random.nextInt
             () => result
@@ -55,7 +66,7 @@ object NamedFunciton {
         // note: the above definition is different from the following
         // val rand2: (() => Int) = (() => util.Random.nextInt)
 
-        // 3) lazy val function: get same result every time called
+        // 1.3) lazy val function: get same result every time called
         lazy val rand3: (() => Int) = {
             val result = util.Random.nextInt
             () => result
