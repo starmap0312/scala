@@ -1,6 +1,9 @@
 // Pattern Matching
 // Syntax
-//   case [pattern] => [expression]
+//   [variable] match {
+//       case [pattern] => [expression]
+//       case [pattern] => [expression]
+//   }
 
 object PatternMatching {
     def matchFunc(x: Int): String = x match {

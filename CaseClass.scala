@@ -9,9 +9,10 @@
 //    so, we no longer need our own toString() methods
 
 object CaseClass {
+
     case class Person(name: String, age: Int)
     // the body of Person class is empty because there are no methods that we want to define
-    // we already have immutable fields (constructor arguments) and equals(), hashCode(), and toString() methods defined automatically
+    // note: immutable fields (constructor arguments) and equals(), hashCode(), and toString() methods are defined automatically
 
     def main(args: Array[String]) {
         val alice = new Person("Alice", 25)

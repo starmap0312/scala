@@ -7,14 +7,15 @@
 //      var inc = (x:Int) => x+1
 // 2) pattern matching
 //    syntax:
-//      case [pattern] => [expression]
+//      [variable] match {
+//          case [pattern] => [expression]
+//          case [pattern] => [expression]
+//      }
 //    ex.
 //      x match {
 //          case 1 => "one"
 //          case 2 => "two"
 //      }
-//    
-//   
 
 object CaseClass2 {
     abstract class Tree
