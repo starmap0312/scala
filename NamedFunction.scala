@@ -33,13 +33,14 @@
 
 object NamedFunciton {
     def main(args: Array[String]) {
+        // example 0:
         // 0) normal function defintion 
         def addInt(a:Int, b:Int): Int = {
             return a + b
         }
         println("addInt(1, 2) = " + addInt(1, 2))
 
-        // example 1:
+        // example 1: shorthand to unary function definition
         def even1     : (Int => Boolean) = (_ % 2 == 0)
         val even2     : (Int => Boolean) = (_ % 2 == 0)
         lazy val even3: (Int => Boolean) = (_ % 2 == 0)
@@ -47,7 +48,7 @@ object NamedFunciton {
         println("even2(1) returns " + even2(1))
         println("even3(1) returns " + even3(1))
 
-        // example 2:
+        // example 1: shorthand to nullary function definition
         // 1.1) def function: get new result every time called
         def rand1: (() => Int) = {
             val result = util.Random.nextInt
@@ -73,6 +74,16 @@ object NamedFunciton {
         }
         println("rand3() 1st call: " + rand3())
         println("rand3() 2nd call: " + rand3())
+
+        // example 3: unary function definition with pattern matching
+        def printType: ((Any) => Unit) = {
+            case x: Int    => println("Int")
+            case y: String => println("String")
+            case _         => println("Other")
+        }
+        printType(1)
+        printType("two")
+        printType(3.0)
     }
 }
 

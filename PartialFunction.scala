@@ -2,7 +2,7 @@
 // PartialFunction is only defined for certain value of a given type
 // 1) it is a unary function
 // 2) its domain does not necessarily include all values of type A
-// 3) the isDefinedAt() function is automaticall available to test if a value is in the domain
+// 3) the isDefinedAt() function is automatically available to test if a value is in the domain
 // syntax:
 //   val functionName: PartialFunction[parameter type, return type] = {
 //       case x if ([condition]) => [expr]
