@@ -1,3 +1,8 @@
+// use of {}:
+// 1) {} indicates a block of code, which is composed of multiple statements and declarations
+//    its value is that of the last statement
+// 2) however, there are some exceptions to the above definition
+//
 object Primitives {
 
     def toInt(str: String): Option[Int] = {
@@ -9,6 +14,12 @@ object Primitives {
     }
 
     def main(args: Array[String]) {
+        // 0) type: a shorthand or alias of [some type]
+        //    syntax:  type [alias] = [some type]
+        type MyIntFunc = (Int => Int)
+        val increment: MyIntFunc = ((x) => x + 1)
+        println(increment(9))
+     
         // 1) var vs. val
         var myVar: String = "myVar"
         val myVal: String = "myVal"

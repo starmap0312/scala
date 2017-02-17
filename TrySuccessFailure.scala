@@ -16,11 +16,11 @@ object TrySuccessFailure {
         // Try[T]/Success[T] extends Try[T]/Failure[T] extends Try[T]
         bad(3) match {
             case Success(num) => println(s"Success: $num")
-            case Failure(ex)   => println(s"Failure: ${ex.getClass}")
+            case Failure(ex)  => println(s"Failure: ${ex.getClass}")
         }
         bad(4) match {
             case Success(num) => println(s"Success: $num")
-            case Failure(ex)   => println(s"Failure: ${ex.getClass}")
+            case Failure(ex)  => println(s"Failure: ${ex.getClass}")
         }
     }
 }
