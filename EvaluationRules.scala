@@ -13,58 +13,29 @@ object EvaluationRules {
         println(example2)
         println(example3)
 
-        // 2) function definition
-        // 2.1) def [function]: evaluated when called (lazy evaluation, this creates new function every time called)
-        //    syntax:
-        //    def functionName: [function type] = { 
-        //        function body
-        //        [expr]
-        //    }
-        // 2.2) val [function]: evaluated when defined (evaluated immediately)
-        //    syntax:
-        //    val functionName: [function type] = { 
-        //        function body
-        //        [expr]
-        //    }
-        // 2.3) lazy val [function]: evaluated when called the first time (lazy evaluation and evaluated only once) 
-        //    syntax:
-        //    lazy val functionName: [function type] = { 
-        //        function body
-        //        [expr]
-        //    }
-        // example 1
-        def even1     : (Int => Boolean) = (_ % 2 == 0)
-        val even2     : (Int => Boolean) = (_ % 2 == 0)
-        lazy val even3: (Int => Boolean) = (_ % 2 == 0)
-        println("even1(1) returns " + even1(1))
-        println("even2(1) returns " + even2(1))
-        println("even3(1) returns " + even3(1))
-        // example 2
+        // example: get a random number
         // get new result every time called (as this is lazy evaluation)
-        def rand1: (() => Int) = {
-            val result = util.Random.nextInt
-            () => result
+        def rand1: Int = {
+            util.Random.nextInt
         }
-        println("rand1() 1st call: " + rand1())
-        println("rand1() 2nd call: " + rand1())
+        println("rand1 1st call: " + rand1)
+        println("rand1 2nd call: " + rand1)
 
         // get same result every time called (as the value is already evaluated when defined)
-        val rand2: (() => Int) = {
-            val result = util.Random.nextInt
-            () => result
+        val rand2: Int = {
+            util.Random.nextInt
         }
-        println("rand2() 1st call: " + rand2())
-        println("rand2() 2nd call: " + rand2())
+        println("rand2 1st call: " + rand2)
+        println("rand2 2nd call: " + rand2)
         // note: the above definition is different from the following
         // val rand2: (() => Int) = (() => util.Random.nextInt)
 
         // get same result every time called (but this is also lazy evaluation when first time called)
-        lazy val rand3: (() => Int) = {
-            val result = util.Random.nextInt
-            () => result
+        lazy val rand3: Int = {
+            util.Random.nextInt
         }
-        println("rand3() 1st call: " + rand3())
-        println("rand3() 2nd call: " + rand3()) 
+        println("rand3 1st call: " + rand3)
+        println("rand3 2nd call: " + rand3) 
         
 
         // 3) function arguments evaluation: call by value vs. call by name
