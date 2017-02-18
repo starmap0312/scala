@@ -16,12 +16,8 @@ object PatternMatching {
     }
 
     // match list
-    def matchFunc2(x: Any): Any = x match {
-        case 1         => "value pattern matched: " + 1
-        case "two"     => "value pattern matched: " + "two"
-        case x: Int    => "typed pattern matched: " + "x: Int"
-        case x: Double => "typed pattern matched: " + "x: Double"
-        case _         => "nothing matched      : " + "_"
+    def matchFunc2(x: List[Int]) = x match {
+        case Nil => println("Nil")
     }
 
     def main(args: Array[String]) {

@@ -46,13 +46,15 @@ object NamedFunciton {
         def toInt1(x: String): Int = x match {
             case "1" => 1
             case "2" => 2
+            case _   => 100
         }
-        val toInt2: (String => Int) = {
+        val toInt2: (String => Int) = { // a shorthand to define a match function of type (String => Int)
             case "1" => 1
             case "2" => 2
+            case _   => 100
         }
-        println(toInt1("1") + toInt1("2"))
-        println(toInt2("1") + toInt2("2"))
+        println(toInt1("1") + toInt1("2") + toInt1("3"))
+        println(toInt2("1") + toInt2("2") + toInt2("3"))
     }
 }
 
