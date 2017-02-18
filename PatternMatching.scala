@@ -13,6 +13,7 @@ object PatternMatching {
         case _ => "other"
     }
 
+    // value pattern
     def matchFunc2(x: Any): Any = x match {
         case 1      => "one"
         case "two"  => 2
@@ -20,6 +21,7 @@ object PatternMatching {
         case _      => "other"
     }
 
+    // type pattern
     def matchFunc3(x: Any): String = x match {
         case num: Int    => "integer"
         case str: String => "string"

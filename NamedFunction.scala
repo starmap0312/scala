@@ -12,19 +12,19 @@
 //    def/val/lazy val functionName: [function type] = [expr]
 //    use with {} to define functions:
 //      {} indicates a block of code composed of multiple statements and its value is that of the last statement
-// 1.1) def [function]: it evaluates when called (this creates new function every time called)
+// 1.1) def [function]: it evaluates only when called (lazy evaluation, this creates new function every time called)
 //    syntax:
 //    def functionName: [function type] = { 
 //        function body
 //        [expr]
 //    }
-// 1.2) val [function]: it evaluates when defined
+// 1.2) val [function]: it evaluates when defined (evaluated immediately)
 //    syntax:
 //    val functionName: [function type] = { 
 //        function body
 //        [expr]
 //    }
-// 1.3) lazy val [function]: it evaluates when called the first time 
+// 1.3) lazy val [function]: it evaluates when called the first time (lazy evaluation and evaluated only once) 
 //    syntax:
 //    lazy val functionName: [function type] = { 
 //        function body
