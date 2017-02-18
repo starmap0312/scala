@@ -6,14 +6,14 @@
 //   }
 
 object PatternMatching {
-    // value pattern
+    // match value pattern
     def matchFunc(x: Int): String = x match {
         case 1 => "one"
         case 2 => "two"
         case _ => "other"
     }
 
-    // value pattern
+    // match value & typed pattern
     def matchFunc2(x: Any): Any = x match {
         case 1      => "one"
         case "two"  => 2
@@ -21,7 +21,7 @@ object PatternMatching {
         case _      => "other"
     }
 
-    // type pattern
+    // match typed pattern
     def matchFunc3(x: Any): String = x match {
         case num: Int    => "integer"
         case str: String => "string"
@@ -29,18 +29,16 @@ object PatternMatching {
     }
 
     def main(args: Array[String]) {
-        // 1) value pattern
-        // example: matchFunc
+        // example 1: match value pattern
         println(matchFunc(1))
         println(matchFunc(2))
         println(matchFunc(3))
-        // example: matchFunc2
+        // example 2: match value & typed pattern
         println(matchFunc2(1))
         println(matchFunc2("two"))
         println(matchFunc2(3))
         println(matchFunc2("four"))
-        // 2) typed pattern
-        // example: matchFunc3
+        // example 3: match typed pattern
         println(matchFunc3(1))
         println(matchFunc3("two"))
         println(matchFunc3(3.0))
