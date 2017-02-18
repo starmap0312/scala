@@ -1,5 +1,5 @@
 // trait in Scala
-//   very similar to Java abstract class
+//   similar to Java interfaces except they can have non-abstract members
 // When to Use Traits?
 //   If the behavior might be reused in multiple, unrelated classes, make it a trait
 //   If the behavior will not be reused, then make it a concrete class

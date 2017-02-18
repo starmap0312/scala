@@ -1,28 +1,31 @@
-// variable that is assigned _:
-//   ex. var variable: T = _
-//   this initializes the variable to a default value
-//   i.e.
+// variable that is assigned with value _ has the default value of its type:
+//   syntax: var variable: T = _
+//   ex.
 //     0     for T is Int
 //     0L    for T is Long
 //     false for T is Boolean
 
 object GenericType {
-    class Generic[T] {
+    class Generic[T](arg: T) {
         private var data: T = _
-        def set(value: T): Unit = { data = value }
-        def get(): T = { return data }
+        private var value: T = arg
+        def setData(x: T): Unit = { data = x }
+        def getData(): T = { return data }
+        def getValue(): T = { return value }
     }
 
     def main(args: Array[String]) {
         // example
-        val num = new Generic[Int]
-        println("default: " + num.get())
-        num.set(123)
-        println("after set: " + num.get())
+        val num = new Generic[Int](10)
+        println("default: data = " + num.getData())
+        println("default: value = " + num.getValue())
+        num.setData(123)
+        println("after setData: data = " + num.getData())
         // example
-        val str = new Generic[String]
-        println("default: " + str.get())
-        str.set("abc")
-        println("after set: " + str.get())
+        val str = new Generic[String]("ten")
+        println("default: data = " + str.getData())
+        println("value = " + str.getValue())
+        str.setData("abc")
+        println("after setData: data = " + str.getData())
     }
 }

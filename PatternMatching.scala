@@ -6,41 +6,30 @@
 //   }
 
 object PatternMatching {
-    // match value pattern
-    def matchFunc(x: Int): String = x match {
-        case 1 => "one"
-        case 2 => "two"
-        case _ => "other"
-    }
-
     // match value & typed pattern
-    def matchFunc2(x: Any): Any = x match {
-        case 1      => "one"
-        case "two"  => 2
-        case y: Int => "scala.Int"
-        case _      => "other"
+    def matchFunc1(x: Any): Any = x match {
+        case 1         => "value pattern matched: " + 1 
+        case "two"     => "value pattern matched: " + "two"
+        case x: Int    => "typed pattern matched: " + "x: Int" 
+        case x: Double => "typed pattern matched: " + "x: Double"
+        case _         => "nothing matched      : " + "_"
     }
 
-    // match typed pattern
-    def matchFunc3(x: Any): String = x match {
-        case num: Int    => "integer"
-        case str: String => "string"
-        case dbl: Double => "double"
+    // match list
+    def matchFunc2(x: Any): Any = x match {
+        case 1         => "value pattern matched: " + 1
+        case "two"     => "value pattern matched: " + "two"
+        case x: Int    => "typed pattern matched: " + "x: Int"
+        case x: Double => "typed pattern matched: " + "x: Double"
+        case _         => "nothing matched      : " + "_"
     }
 
     def main(args: Array[String]) {
-        // example 1: match value pattern
-        println(matchFunc(1))
-        println(matchFunc(2))
-        println(matchFunc(3))
         // example 2: match value & typed pattern
-        println(matchFunc2(1))
-        println(matchFunc2("two"))
-        println(matchFunc2(3))
-        println(matchFunc2("four"))
-        // example 3: match typed pattern
-        println(matchFunc3(1))
-        println(matchFunc3("two"))
-        println(matchFunc3(3.0))
+        println(matchFunc1(1))
+        println(matchFunc1("two"))
+        println(matchFunc1(3))
+        println(matchFunc1(4.0))
+        println(matchFunc1("N/A"))
     }
 }

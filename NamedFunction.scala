@@ -41,6 +41,18 @@ object NamedFunciton {
         def g_of_f2(x: String) = g(f(x))
         println(g_of_f1("x"))
         println(g_of_f2("x"))
+
+        // ex3
+        def toInt1(x: String): Int = x match {
+            case "1" => 1
+            case "2" => 2
+        }
+        val toInt2: (String => Int) = {
+            case "1" => 1
+            case "2" => 2
+        }
+        println(toInt1("1") + toInt1("2"))
+        println(toInt2("1") + toInt2("2"))
     }
 }
 

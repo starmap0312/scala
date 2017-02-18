@@ -19,22 +19,28 @@
 
 object CaseClass2 {
     abstract class Tree
-    case class Sum(left: Tree, right: Tree) extends Tree
-    case class Var(variable: String) extends Tree
-    case class Const(num: Int) extends Tree
+    case class Sum(x: Tree, y: Tree) extends Tree
+    case class Var(x: String)        extends Tree
+    case class Const(x: Int)         extends Tree
 
-    type Environment = String => Int
+    type Environment = (String => Int)
 
     def eval(tree: Tree, env: Environment): Int = tree match {
-        case Sum(left, right) => eval(left, env) + eval(right, env)
-        case Var(variable)    => env(variable)
-        case Const(num)       => num
+        case Sum(x, y) => eval(x, env) + eval(y, env)          // typed pattern
+        case Var(x)    => env(x)                               // typed pattern
+        case Const(x)  => x                                    // typed pattern
     }
 
     def main(args: Array[String]) {
-        val exp: Tree = Sum(Sum(Var("x"),Var("x")),Sum(Const(7),Var("y")))
-        val env: Environment = { case "x" => 5 case "y" => 7 }
-        println("Expression: " + exp)
-        println("Evaluation with x=5, y=7: " + eval(exp, env))
+        val tree: Tree = Sum(
+            Sum(Var("x"),Var("x")),
+            Sum(Const(7),Var("y"))
+        )
+        val env: Environment = {
+            case "x" => 5
+            case "y" => 7
+        }
+        println("Expression: " + tree)
+        println("Evaluation with x = 5, y = 7: " + eval(tree, env))
     }
 }
