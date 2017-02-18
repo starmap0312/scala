@@ -29,10 +29,29 @@ object Primitives {
 
         // 2) Option[T]/None[T] extends Option[T]/Some[T] extends Option[T]:
         //    used to avoid problems you encounter when dealing with null values returned from functions
+        // ex1.
         toInt("123") match {
             case Some(x) => println(x)
             case None    => println("None object")
         }
+        // ex2. Map.get() returns Option[T] which is either Some[T] or None
+        val myMap = Map(1 -> "one", 2 -> "two")
+        def getMapValue(x: Int): String = myMap.get(x) match {
+            case Some(key) => "Found in myMap: " + key
+            case None      => "Not found in myMap"
+        }
+        println(getMapValue(1))
+        println(getMapValue(2))
+        println(getMapValue(3))
+        // syntax suger for pattern matching an Option value
+        def getMapValue2(x: Int): String = myMap.get(x).map(
+            "Found in myMap: " + _
+        ).getOrElse(
+            "Not found in myMap"
+        )
+        println(getMapValue2(1))
+        println(getMapValue2(2))
+        println(getMapValue2(3))
 
         // 3) String: length() and concat()
         var palindrome = "Dot saw I was Tod"
