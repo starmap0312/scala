@@ -21,7 +21,7 @@ object CaseClass {
 
     case object DoWork                        // the constuctor accepts no argument
     case object NoWork                        // the constuctor accepts no argument
-    // case object: singleton object with synthetic suger similar to case class
+    // case object: singleton object with syntactic suger similar to case class
 
     def main(args: Array[String]) {
         // example 1: pattern matching objects of case class
