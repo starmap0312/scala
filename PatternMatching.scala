@@ -39,5 +39,33 @@ object PatternMatching {
         println(matchList(List(1, 2)))
         println(matchList(List(3, 4)))
         println(matchList(List(5, 6, 7, 8, 9)))
+
+        // example 3: pattern matching case object (singleton)
+        trait Work
+        case object DoWork extends Work                   // the constuctor accepts no argument
+        case object NoWork extends Work                   // the constuctor accepts no argument
+        // syntax suger for defining a matching function 
+        val matchWork: (Work => Unit) = {
+            case DoWork => println("value pattern matched: DoWork")
+            case NoWork => println("value pattern matched: NoWork")
+        }
+        for (work <- List(DoWork, NoWork)) {
+            matchWork(work)
+        }
+        // the above is a short hand of defining by creating an anonymous function
+        val matchWork2: (Work => Unit) = (x => x match { 
+            case DoWork => println("value pattern matched: DoWork")
+            case NoWork => println("value pattern matched: NoWork")
+        })
+        for (work <- List(DoWork, NoWork)) {
+            matchWork2(work)
+        }
+        // no function defined, simply using pattern matching expression
+        for (work <- List(DoWork, NoWork)) {
+            work match {
+                case DoWork => println("value pattern matched: DoWork")
+                case NoWork => println("value pattern matched: NoWork")
+            }
+        }
     }
 }

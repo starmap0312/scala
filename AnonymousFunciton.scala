@@ -1,22 +1,28 @@
 // Anonymous funciton
 // Syntax
 //   ([list of parameters]) => { function body }
-// ex.
-//   var inc = (x:Int) => x+1   // declare a anonymous function
-//   var x = inc(7) - 1         // call a anonoymous function
-// ex.
-//   var mul = (x: Int, y: Int) => x * y
-//   println(mul(3, 4))
-// ex.
-//   var userDir = () => { System.getProperty("user.dir") }
-//   println(userDir)
-//
 
 object AnonymousFunciton {
-    def oncePerSecond(callback: () => Unit) {
-        while (true) { callback(); Thread sleep 1000 }
-    }
     def main(args: Array[String]) {
-        oncePerSecond(() => println("time flies like an arrow..."))
+        // ex1.
+        val inc = (x: Int) => x + 1   // declare a anonymous function
+        println(inc(7))               // call a anonoymous function
+        // ex2.
+        def mul = (x: Int, y: Int) => x * y
+        println(mul(3, 4))
+        // ex3. Pattern Matching in Anonymous Functions
+        def toString = (x: Int) => x match {
+            case 1 => "one"
+            case 2 => "two"
+        }
+        println(toString(1))
+        println(toString(2))
+        // syntax suger: p => p match { case ... } can be replaced by { case ... }
+        def toString2: (Int => String) = {
+            case 1 => "one"
+            case 2 => "two"
+        }
+        println(toString2(1))
+        println(toString2(2))
     }
 }

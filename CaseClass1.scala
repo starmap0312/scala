@@ -19,10 +19,9 @@ object CaseClass {
     // 1) immutable fields (constructor arguments)
     // 2) equals(), hashCode(), and toString() methods are automatically defined
 
-    trait Work
-    case object DoWork extends Work                   // the constuctor accepts no argument
-    case object NoWork extends Work                   // the constuctor accepts no argument
-    // case object implies: singleton object with synthetic suger similar to case class
+    case object DoWork                        // the constuctor accepts no argument
+    case object NoWork                        // the constuctor accepts no argument
+    // case object: singleton object with synthetic suger similar to case class
 
     def main(args: Array[String]) {
         // example 1: pattern matching objects of case class
@@ -39,12 +38,12 @@ object CaseClass {
         }
 
         // example 2: pattern matching case object (singleton)
-        val matchWork: (Work => Unit) = {
-            case DoWork => println("value pattern matched: DoWork")
-            case NoWork => println("value pattern matched: NoWork")
-        }
+        // no function defined, simply using pattern matching expression
         for (work <- List(DoWork, NoWork)) {
-            matchWork(work)
+            work match {
+                case DoWork => println("value pattern matched: DoWork")
+                case NoWork => println("value pattern matched: NoWork")
+            }
         }
     }
 }
