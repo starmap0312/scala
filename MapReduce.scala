@@ -37,6 +37,21 @@ object MapReduce {
         }
         reduce(fandcons(f), Nil)
     }
+    // def cons[T](x: T, xs: List[T]): List[T] = x::xs
+    // def cons[T](x: T, xs: Stream[T]): Stream[T] = x#::xs
+
+    // replace List[T] with Stream[T]
+    def map2[T](f: (T => T)): (Stream[T] => Stream[T]) = {
+        def cons(x: T, xs: Stream[T]): Stream[T] = x#::xs
+        def fandcons(f: (T => T)): ((T, Stream[T]) => Stream[T]) = {
+            (x: T, xs: Stream[T]) => cons(f(x), xs)
+        }
+        def reduce(f: ((T, Stream[T]) => Stream[T]), a: Stream[T]): (Stream[T] => Stream[T]) = {
+            case x#::xs       => f(x, reduce(f, a)(xs))
+            case _            => a
+        }
+        reduce(fandcons(f), Stream.empty)
+    }
 
     def main(args: Array[String]) {
         // 1) add all the numbers of a list
@@ -108,5 +123,11 @@ object MapReduce {
         // define the function using the more general map function
         def doubleall3 = map(double)
         println(doubleall3(List(1, 2, 3)))
+
+        // use the Stream version (Lazy List) 
+        def doubleall4 = map2(double)
+        for (x <- doubleall4(1#::2#::3#::Stream.empty)) {
+            println(x)
+        }
     }
 }
