@@ -1,8 +1,7 @@
 object NewtonRaphson {
-    def next(n: Double, x:Double): Double = (x + n / x) / 2.0
-
     // an iterative approach based on while-loop
     def sqrt1(n: Double, epsilon: Double): Double = {
+        require(n >= 0.0)
         def next(x:Double): Double = (x + n / x) / 2.0
         var x = n
         var nextX = next(x)
@@ -15,6 +14,7 @@ object NewtonRaphson {
 
     // a recursive approach
     def sqrt2(n: Double, epsilon: Double): Double = {
+        require(n >= 0.0)
         def next(x:Double): Double = (x + n / x) / 2.0
         def recursive(x: Double): Double = {
             val nextX = next(x)
@@ -27,14 +27,15 @@ object NewtonRaphson {
         return recursive(n)
     }
 
-    // a tail recursion approach using infinite Streams
+    // functional programming
     def sqrt3(n: Double, epsilon: Double): Double = {
-        require(n >= 0)
+        require(n >= 0.0)
         def next(x: Double): Double = (x + n / x) / 2.0
-        def within(epsilon: Double, s: Stream[Double]): Double = s match {
-            case x0 #:: x1 #:: xs => if (math.abs(x0 - x1) < epsilon) x1 else within(epsilon, x1 #:: xs)
+        def repeat[T](f: (T => T), a: T): Stream[T] = a#::repeat(f, f(a))
+        def within(epsilon: Double, stream: Stream[Double]): Double = stream match {
+            case a#::b#::rest => if (math.abs(a - b) < epsilon) b else within(epsilon, b#::rest)
         }
-        within(epsilon, Stream.iterate(n)(next))
+        within(epsilon, repeat(next, n))
     }
 
     def main(args: Array[String]) {
