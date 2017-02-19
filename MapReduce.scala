@@ -84,11 +84,21 @@ object MapReduce {
         println(copylist(List(1, 2, 3)))
 
         // 6) double all elements of a list
-        def doubleandcons(x: Int, xs: List[Int]): List[Int] = cons(2 * x, xs)
+        def double(x: Int): Int = 2 * x
+        def doubleandcons(x: Int, xs: List[Int]): List[Int] = cons(double(x), xs)
         def doubleall = reduce(doubleandcons, Nil)
         println(doubleall(List(1, 2, 3)))
         // further modualize doubleandcons()
-        def fandcons[T](f: (T => T), x: T, xs: List[T]): List[T] = cons(f(x), xs)
-        //def fandcons2[T]: ((T => T), T, List[T]) => List[T]: 
+        def fandcons[T](f: (T => T)): ((T, List[T]) => List[T]) = {
+            (x: T, xs: List[T]) => cons(f(x), xs)
+        } 
+        def doubleall2 = reduce(fandcons(double), Nil)
+        println(doubleall2(List(1, 2, 3)))
+        // try to use syntax suger: compose or andThen
+
+        // define a map function
+        def map[T](f: (T => T)) = reduce(fandcons(f), Nil)
+        def doubleall3 = map(double)
+        println(doubleall3(List(1, 2, 3)))
     }
 }
