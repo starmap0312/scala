@@ -27,7 +27,7 @@ object NewtonRaphson {
         return recursive(n)
     }
 
-    // functional programming
+    // a functional solution
     def sqrt3(n: Double, epsilon: Double): Double = {
         require(n >= 0.0)
         def next(x: Double): Double = (x + n / x) / 2.0
