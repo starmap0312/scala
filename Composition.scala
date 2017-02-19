@@ -11,8 +11,10 @@ object Composition {
         def g(x: String): String = "g(" + x + ")"
         def g_of_f1: (String => String) = g _ compose f _
         def g_of_f2(x: String): String = g(f(x))
+        def g_of_f3: (String => String) = (g _).compose(f)
         println(g_of_f1("x"))
         println(g_of_f2("x"))
+        println(g_of_f3("x"))
         // 2) andThen: it works like compose but in the reverse order
         //    i.e. g(x) andThen f(x) = f(g(x))
         //    def andThen[C](func: (B) => C): PartialFunction[A, C]
