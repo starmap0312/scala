@@ -23,7 +23,7 @@ object MapReduce {
         case x::xs => f(x, reduce3(f, a)(xs))
     }
 
-    // define a general reduce function for map: (List[T] => List[T])
+    // define a general reduce function based on recursion 
     def reduce[T](f: ((T, List[T]) => List[T]), a: List[T]): (List[T] => List[T]) = {
         case Nil   => a
         case x::xs => f(x, reduce(f, a)(xs))
