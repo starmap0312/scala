@@ -1,6 +1,6 @@
 
 object MapReduce {
-    // define a reduce function that returns another function which is a recursive matching function
+    // define a general reduce function that returns another function which is a recursive matching function
     def reduce1[T](f: ((T, T) => T), a: T): (List[T] => T) = {
         def func(list: List[T]) = list match {
             case Nil   => a
@@ -23,10 +23,19 @@ object MapReduce {
         case x::xs => f(x, reduce3(f, a)(xs))
     }
 
-    // define a reduce function for map: (List[T] => List[T])
+    // define a general reduce function for map: (List[T] => List[T])
     def reduce[T](f: ((T, List[T]) => List[T]), a: List[T]): (List[T] => List[T]) = {
         case Nil   => a
         case x::xs => f(x, reduce(f, a)(xs))
+    }
+
+    // define a general map function based on reduce function and function composition
+    def map[T](f: (T => T)): (List[T] => List[T]) = { 
+        def cons(x: T, xs: List[T]): List[T] = x::xs
+        def fandcons(f: (T => T)): ((T, List[T]) => List[T]) = {
+            (x: T, xs: List[T]) => cons(f(x), xs)
+        }
+        reduce(fandcons(f), Nil)
     }
 
     def main(args: Array[String]) {
@@ -41,7 +50,7 @@ object MapReduce {
         println(sum(List(1)))
         println(sum(List(1, 2)))
         println(sum(List(1, 2, 3)))
-        // 1.2) define a more general function: reduce(f, a)
+        // 1.2) further generalize by defining a reduce(f, a) function
         def sum1 = reduce1(add, 0)
         println(sum1(Nil))
         println(sum1(List(1)))
@@ -88,7 +97,7 @@ object MapReduce {
         def doubleandcons(x: Int, xs: List[Int]): List[Int] = cons(double(x), xs)
         def doubleall = reduce(doubleandcons, Nil)
         println(doubleall(List(1, 2, 3)))
-        // further modualize doubleandcons()
+        // further generalize/modualize doubleandcons()
         def fandcons[T](f: (T => T)): ((T, List[T]) => List[T]) = {
             (x: T, xs: List[T]) => cons(f(x), xs)
         } 
@@ -96,8 +105,7 @@ object MapReduce {
         println(doubleall2(List(1, 2, 3)))
         // try to use syntax suger: compose or andThen
 
-        // define a map function
-        def map[T](f: (T => T)) = reduce(fandcons(f), Nil)
+        // define the function using the more general map function
         def doubleall3 = map(double)
         println(doubleall3(List(1, 2, 3)))
     }
