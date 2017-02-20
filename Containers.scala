@@ -31,5 +31,19 @@ object Containers {
         // 2.2) flatMap([func]): map a collection to another based on passed-in function then flatten the result
         println(numbers.map((x: Int) => List(x, x * 2)))
         println(numbers.flatMap((x: Int) => List(x, x * 2)))
+
+        // 3) Stream[T]: Stream is a List whose tail is a lazy val
+        //    a collection that works like List but invokes its transformer methods
+        //      ex. map, filter, etc. lazily
+        //    its elements are computed lazily
+        //      in a manner similar to how a view creates a lazy version of a collection
+        //      i.e. it is like a view, only the elements that are accessed are computed
+        // initialize a stream
+        val stream1 = 1#::2#::3#::Stream.empty
+        val stream2 = (1 to 100000000).toStream
+        println(stream1)
+        println(stream2)      // Stream(1, ?): the end of the stream hasn’t been evaluated yet
+        println(stream1.head) // 1           : head is returned immediately 
+        println(stream1.tail) // Stream(2, ?): tail is not evaluated yet
     }
 }
