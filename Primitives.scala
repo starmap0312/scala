@@ -58,5 +58,16 @@ object Primitives {
         println(palindrome.length())
         println(palindrome.concat(" appended"))
         println(palindrome + " appended")
+
+        // 4) Stream: lazy list
+        val stream1 = 1#::2#::3#::Stream.empty
+        val stream2 = (1 to 3).toStream         // use Stream to avoid java.lang.OutOfMemory error when creating huge lists
+        stream1.foreach(println)
+        stream2.foreach(println)
+        val list = 1::2::3::Nil
+        list.foreach(println)
+        // 4.1) Stream.cons([element], [stream]) returns a stream
+        val stream3 = Stream.cons(0, Stream.cons(1, Stream.empty))   // cons returns the rest of the stream NOT another new stream
+        stream3.foreach(println)
     }
 }
