@@ -24,9 +24,9 @@ object MapReduce {
     }
 
     // define a general reduce function based on recursion 
-    def reduce[T](f: ((T, List[T]) => List[T]), a: List[T]): (List[T] => List[T]) = {
+    def reduce4[T](f: ((T, List[T]) => List[T]), a: List[T]): (List[T] => List[T]) = {
         case Nil   => a
-        case x::xs => f(x, reduce(f, a)(xs))
+        case x::xs => f(x, reduce4(f, a)(xs))
     }
 
     // define a general map function based on reduce function and function composition
@@ -34,6 +34,10 @@ object MapReduce {
         def cons(x: T, xs: List[T]): List[T] = x::xs
         def fandcons(f: (T => T)): ((T, List[T]) => List[T]) = {
             (x: T, xs: List[T]) => cons(f(x), xs)
+        }
+        def reduce(f: ((T, List[T]) => List[T]), a: List[T]): (List[T] => List[T]) = {
+            case Nil   => a
+            case x::xs => f(x, reduce4(f, a)(xs))
         }
         reduce(fandcons(f), Nil)
     }
@@ -104,19 +108,19 @@ object MapReduce {
 
         // 5) copy a list
         def cons[T](x: T, xs: List[T]): List[T] = x::xs
-        def copylist[T] = reduce(cons[T], Nil)
+        def copylist[T] = reduce4(cons[T], Nil)
         println(copylist(List(1, 2, 3)))
 
         // 6) double all elements of a list
         def double(x: Int): Int = 2 * x
         def doubleandcons(x: Int, xs: List[Int]): List[Int] = cons(double(x), xs)
-        def doubleall = reduce(doubleandcons, Nil)
+        def doubleall = reduce4(doubleandcons, Nil)
         println(doubleall(List(1, 2, 3)))
         // further generalize/modualize doubleandcons()
         def fandcons[T](f: (T => T)): ((T, List[T]) => List[T]) = {
             (x: T, xs: List[T]) => cons(f(x), xs)
         } 
-        def doubleall2 = reduce(fandcons(double), Nil)
+        def doubleall2 = reduce4(fandcons(double), Nil)
         println(doubleall2(List(1, 2, 3)))
         // try to use syntax suger: compose or andThen
 
