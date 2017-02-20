@@ -133,5 +133,8 @@ object MapReduce {
         for (x <- doubleall4(1#::2#::3#::Stream.empty)) {
             println(x)
         }
+        for (x <- doubleall4((1 to 3).toStream)) {
+            println(x)
+        }
     }
 }
