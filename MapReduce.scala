@@ -57,6 +57,18 @@ object MapReduce {
         reduce(fandcons(f), Stream.empty)
     }
 
+    // use Stream.cons
+    def map3[T](f: (T => T)): (Stream[T] => Stream[T]) = {
+        def fandcons(f: (T => T)): ((T, Stream[T]) => Stream[T]) = {
+            (x: T, xs: Stream[T]) => Stream.cons(f(x), xs)
+        }
+        def reduce(f: ((T, Stream[T]) => Stream[T]), a: Stream[T]): (Stream[T] => Stream[T]) = {
+            case x#::xs       => f(x, reduce(f, a)(xs))
+            case _            => a
+        }
+        reduce(fandcons(f), Stream.empty)
+    }
+
     def main(args: Array[String]) {
         // 1) add all the numbers of a list
         def add(x: Int, y: Int) = x + y
@@ -134,6 +146,10 @@ object MapReduce {
             println(x)
         }
         for (x <- doubleall4((1 to 3).toStream)) {
+            println(x)
+        }
+        def doubleall5 = map3(double)
+        for (x <- doubleall5((1 to 3).toStream)) {
             println(x)
         }
     }
