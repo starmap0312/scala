@@ -23,36 +23,37 @@
 //       ex. matrix transposing: arr[i][j] = arr[j][i]
 //           transformation g: g((i, j)) = (j, i)
 //           arr.transform(g)((i, j)) = arr(g((i, j))) = (arr . g)((i, j)) = arr((j, i))
-//
+// Stream: lazy list
+//   in Scala, a Stream is a List whose tail is a lazy val
+//   once computed, a value stays computed and is reused (i.e. Stream memoises, the values are stored/cached)
+//   advantage:
+//     when writing infinite sequences, ex. sequences recursively defined
+//     one can avoid keeping all of the Stream in memory, if you don’t keep a reference to its head
+//     ex. by using def instead of val to define the Stream
+// Views: much like a database view
+//   it is a series of transformation one applies to a collection to produce a virtual collection
+//   all transformations are re-applied each time you need to fetch elements from it
+//   advantage:
+//     memory efficiency
+// Stream vs. Views
+//   Stream: elements are retained as they are evaluated (and drop if not needed anymore)
+//     a stream is like a definition of how to compute subsequent elements of the collection
+//     if you ask for the next element and it evaluates the element and remember it in a storage
+//     if you hold on all the elements, you might eventually run out of memory
+//     before it evaluates the next element, it releases the storage and ties it to the new element 
+//   View  : elements are recomputed each time they are accessed (like a generator?)
+//     a view is like a procedure to create a collection
+//     when you ask for elements of a view it carries out the procedure each time
 object ViewStream {
     def main(args: Array[String]) {
-        // 1) Stream: lazy list
-        //   in Scala, a Stream is a List whose tail is a lazy val
-        //   once computed, a value stays computed and is reused (i.e. Stream memoises, the values are stored/cached)
-        //   advantage:
-        //     when writing infinite sequences, ex. sequences recursively defined
-        //     one can avoid keeping all of the Stream in memory, if you don’t keep a reference to its head
-        //     ex. by using def instead of val to define the Stream
-        // 2) Views: much like a database view
-        //   it is a series of transformation one applies to a collection to produce a virtual collection
-        //   all transformations are re-applied each time you need to fetch elements from it
-        //   advantage:
-        //     memory efficiency
-
-        // Stream vs. Views
-        //   Stream: elements are retained as they are evaluated (and drop if not needed anymore)
-        //     a stream is like a definition of how to compute subsequent elements of the collection
-        //     if you ask for the next element and it evaluates the element and remember it in a storage
-        //     if you hold on all the elements, you might eventually run out of memory
-        //     but if you don't, before it evaluates the next element, it releases the storage and ties it to the new element 
-        //   View  : elements are recomputed each time they are accessed (like a generator?)
-        //     a view is like a procedure to create a collection
-        //     when you ask for elements of a view it carries out the procedure each time
         val doubled1 = List(1, 2, 3, 4, 5).view.map(_ * 2)
         println(doubled1.mkString(" ")) // re-evaluate the map for each element once
         println(doubled1.mkString(" ")) // re-evaluate the map for each element twice
         val doubled2 = List(1, 2, 3, 4, 5).toStream.map(_ * 2)
         println(doubled2.mkString(" "))
         println(doubled2.mkString(" ")) // only double the elements once (values are stored/cached) 
+        // create a Stream using Stream.cons
+        val stream:Stream[Int] = Stream.cons(1, Stream.cons(2, Stream.cons(3, Stream.empty)))
+        println(stream)
     }
 }

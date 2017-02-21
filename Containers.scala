@@ -1,7 +1,7 @@
 
 object Containers {
     def main(args: Array[String]) {
-        // 0) Tuple: a fixed number of immutable items
+        // 0) Tuple3: a fixed number of immutable items
         val tuple1 = (1, "two", 3.0)
         // which is syntactic sugar of
         val tuple2 = new Tuple3(1, "two", 3.0) 
