@@ -40,19 +40,19 @@ object ViewStream {
         //     memory efficiency
 
         // Stream vs. Views
-        //   View  : elements are recomputed each time they are accessed
-        //   Stream: elements are retained as they are evaluated
+        //   Stream: elements are retained as they are evaluated (and drop if not needed anymore)
+        //     a stream is like a definition of how to compute subsequent elements of the collection
+        //     if you ask for the next element and it evaluates the element and remember it in a storage
+        //     if you hold on all the elements, you might eventually run out of memory
+        //     but if you don't, before it evaluates the next element, it releases the storage and ties it to the new element 
+        //   View  : elements are recomputed each time they are accessed (like a generator?)
+        //     a view is like a procedure to create a collection
+        //     when you ask for elements of a view it carries out the procedure each time
         val doubled1 = List(1, 2, 3, 4, 5).view.map(_ * 2)
         println(doubled1.mkString(" ")) // re-evaluate the map for each element once
         println(doubled1.mkString(" ")) // re-evaluate the map for each element twice
         val doubled2 = List(1, 2, 3, 4, 5).toStream.map(_ * 2)
         println(doubled2.mkString(" "))
         println(doubled2.mkString(" ")) // only double the elements once (values are stored/cached) 
-        // a view is like a procedure to create a collection
-        //   when you ask for elements of a view it carries out the recipe each time
-        // a stream is like a definition of how to compute subsequent elements of the collection
-        //   you ask for the next element of the collection and it gives you the element and a string to help it remember
-        //   before it gives you the next element, it unties the first string and ties it to the new element 
-        //   but if you hold on the first element, you might eventually run out of memory
     }
 }
