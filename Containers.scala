@@ -1,6 +1,13 @@
 
 object Containers {
     def main(args: Array[String]) {
+        // 0) Tuple: a fixed number of immutable items
+        val tuple1 = (1, "two", 3.0)
+        // which is syntactic sugar of
+        val tuple2 = new Tuple3(1, "two", 3.0) 
+        println(tuple1)
+        println(tuple2._1, tuple2._2, tuple2._3)
+
         // 1) Array[T]
         val arr1:Array[String] = new Array[String](3) // var arr1 = new Array[String](3)
         val arr2 = Array("zero", "one", "two")
