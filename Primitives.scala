@@ -27,7 +27,7 @@ object Primitives {
         println(myVar)
         println(myVal)
 
-        // 2) Option[T]/None[T] extends Option[T]/Some[T] extends Option[T]:
+        // 2) Option[T]/None[T]/Some[T]: the latter two extend Option[T]:
         //    used to avoid problems you encounter when dealing with null values returned from functions
         // ex1.
         toInt("123") match {
