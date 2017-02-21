@@ -1,36 +1,38 @@
 
 object Containers {
     def main(args: Array[String]) {
-        // 0) Array[T]
+        // 1) Array[T]
         val arr1:Array[String] = new Array[String](3) // var arr1 = new Array[String](3)
         val arr2 = Array("zero", "one", "two")
         arr1(0) = "zero"
         println(arr1(0))
-        // 0.1) iterate an Array using for loop
+        // 1.1) iterate an Array using for loop
         for (i <- 0 to (arr2.length - 1)) {
             println(arr2(i))
         }
-        // 0.2) iterate an Array using for-in loop
+        // 1.2) iterate an Array using for-in loop
         for (x <- arr2) {
             println(x)
         }
 
-        // 1) List[T]
+        // 2) List[T]
         val fruits: List[String] = List("apple", "orange", "pear")
-        // 1.1) iterate List via for-in loop
+        // 2.1) iterate List via for-in loop
         for (fruit <- fruits) {
             println(fruit)
         }
-        // 1.2) foreach([func]): iterate List via Collections's foreach([func]) method
+        // 2.2) foreach([func]): iterate List via Collections's foreach([func]) method
         fruits.foreach(println) 
         fruits.foreach((x: String) => {println("Fruit: " + x)})
-        // 2.1) map([func]): map a collection to another based on passed-in function
-        val numbers = List(1, 2, 3)
+        // 2.3) map([func]): map a collection to another based on passed-in function
+        val numbers = List(1, 2, 3, 4, 5)
         val doubles = numbers.map((x: Int) => (x * 2))
         doubles.foreach(println)
-        // 2.2) flatMap([func]): map a collection to another based on passed-in function then flatten the result
+        // 2.4) flatMap([func]): map a collection to another based on passed-in function then flatten the result
         println(numbers.map((x: Int) => List(x, x * 2)))
         println(numbers.flatMap((x: Int) => List(x, x * 2)))
+        // 2.5) filter([func]): return another collection based on the evaluation result of the passed-in boolean function
+        println(numbers.filter((x: Int) => (x % 2 == 0)))
 
         // 3) Stream[T]: Stream is a List whose tail is a lazy val
         //    a collection that works like List but invokes its transformer methods
