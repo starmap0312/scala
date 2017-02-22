@@ -42,7 +42,7 @@ object MapReduce {
         reduce(fandcons(f), Nil)
     }
     // def cons[T](x: T, xs: List[T]): List[T] = x::xs
-    // def cons[T](x: T, xs: Stream[T]): Stream[T] = x#::xs
+    // def cons[T](x: T, xs: Stream[T]): Stream[T] = x#::xs (default: Stream.cons())
 
     // replace List[T] with Stream[T]
     def map2[T](f: (T => T)): (Stream[T] => Stream[T]) = {
@@ -57,7 +57,7 @@ object MapReduce {
         reduce(fandcons(f), Stream.empty)
     }
 
-    // use Stream.cons
+    // use default: Stream.cons()
     def map3[T](f: (T => T)): (Stream[T] => Stream[T]) = {
         def fandcons(f: (T => T)): ((T, Stream[T]) => Stream[T]) = {
             (x: T, xs: Stream[T]) => Stream.cons(f(x), xs)

@@ -52,8 +52,13 @@ object ViewStream {
         val doubled2 = List(1, 2, 3, 4, 5).toStream.map(_ * 2)
         println(doubled2.mkString(" "))
         println(doubled2.mkString(" ")) // only double the elements once (values are stored/cached) 
-        // create a Stream using Stream.cons
+        // define a Stream using Stream.cons
         val stream:Stream[Int] = Stream.cons(1, Stream.cons(2, Stream.cons(3, Stream.empty)))
         println(stream)
+        // define a Stream using a recursive function
+        def repeat[T](a: T): Stream[T] = Stream.cons(a, repeat(a))
+        // take(n: Int): Stream[T]
+        //   return the n first elements of the Stream as another Stream
+        repeat(0).take(3).foreach(println)
     }
 }
