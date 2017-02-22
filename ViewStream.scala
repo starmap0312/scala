@@ -46,19 +46,22 @@
 //     when you ask for elements of a view it carries out the procedure each time
 object ViewStream {
     def main(args: Array[String]) {
+        // example: View
         val doubled1 = List(1, 2, 3, 4, 5).view.map(_ * 2)
+        // example: Stream
+        val doubled2 = List(1, 2, 3, 4, 5).toStream.map(_ * 2)
+        // 1) mkString(sep: String): display all elements of this stream in a string
         println(doubled1.mkString(" ")) // re-evaluate the map for each element once
         println(doubled1.mkString(" ")) // re-evaluate the map for each element twice
-        val doubled2 = List(1, 2, 3, 4, 5).toStream.map(_ * 2)
-        println(doubled2.mkString(" "))
+        println(doubled2.mkString(" ")) // only double the elements once (values are stored/cached)
         println(doubled2.mkString(" ")) // only double the elements once (values are stored/cached) 
-        // define a Stream using Stream.cons
+        // 2) Stream.cons(): define a Stream using Stream.cons
         val stream:Stream[Int] = Stream.cons(1, Stream.cons(2, Stream.cons(3, Stream.empty)))
         println(stream)
-        // define a Stream using a recursive function
+        // 2.1) define a Stream using a recursive function
         def repeat[T](a: T): Stream[T] = Stream.cons(a, repeat(a))
-        // take(n: Int): Stream[T]
-        //   return the n first elements of the Stream as another Stream
+        // 3) take(n: Int): Stream[T]
+        //    return the n first elements of the Stream as another Stream
         repeat(0).take(3).foreach(println)
     }
 }
