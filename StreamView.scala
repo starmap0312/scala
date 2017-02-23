@@ -46,7 +46,35 @@
 //     when you ask for elements of a view it carries out the procedure each time
 object StreamView {
     def main(args: Array[String]) {
-        // 1) View vs. Stream
+        // 1) Stream[T]: Stream is a List whose tail is a lazy val
+        //    a collection that works like List but invokes its transformer methods (ex. map, filter, etc. lazily)
+        //      in a manner similar to how a view creates a lazy version of a collection
+        //      it is like a view, only the elements that are accessed are computed
+        // 1.1) explicitly define a stream
+        val stream1 = 1#::2#::3#::Stream.empty
+        val stream2:Stream[Int] = Stream.cons(1, Stream.cons(2, Stream.cons(3, Stream.empty)))
+        println(stream1)
+        println(stream2)      // Stream(1, ?): the end of the stream hasn’t been evaluated yet
+        val stream3 = (1 to 100000000).toStream
+        println(stream3.head) // 1: head is returned immediately 
+        println(stream3.tail) // Stream(2, ?): tail is not evaluated yet
+
+        // 2) define a Stream using recursive functions (maybe infinite)
+        // ex1.
+        def repeat[T](a: T): Stream[T] = Stream.cons(a, repeat(a))
+        // take(n: Int): Stream[T]
+        //   return the n first elements of the Stream as another Stream
+        println("ex1.")
+        repeat(10).take(3).foreach(println)
+        // ex2.
+        def double(x: Int, y: Int): Stream[Int] = (x + y)#::double(x * 2, y * 2)
+        println("ex2.")
+        double(1, 1).take(3).foreach(println)
+        // ex3. converting an iterator to a stream
+        println("ex3.")
+        (1 until 3).iterator.toStream.foreach(println)
+
+        // 3) View vs. Stream
         val doubled1 = List(1, 2, 3, 4, 5).view.map(_ * 2)
         val doubled2 = List(1, 2, 3, 4, 5).toStream.map(_ * 2)
         // mkString(sep: String): display all elements of this stream in a string
@@ -54,27 +82,5 @@ object StreamView {
         println(doubled1.mkString(" ")) // re-evaluate the map for each element twice
         println(doubled2.mkString(" ")) // only double the elements once (values are stored/cached)
         println(doubled2.mkString(" ")) // only double the elements once (values are stored/cached) 
-        // 2) Stream[T]: Stream is a List whose tail is a lazy val
-        //    a collection that works like List but invokes its transformer methods
-        //      ex. map, filter, etc. lazily
-        //    its elements are computed lazily
-        //      in a manner similar to how a view creates a lazy version of a collection
-        //      i.e. it is like a view, only the elements that are accessed are computed
-        // initialize a stream
-        val stream1 = 1#::2#::3#::Stream.empty
-        val stream2 = (1 to 100000000).toStream
-        println(stream1)
-        println(stream2)      // Stream(1, ?): the end of the stream hasn’t been evaluated yet
-        println(stream1.head) // 1           : head is returned immediately 
-        println(stream1.tail) // Stream(2, ?): tail is not evaluated yet
-
-        // 3) Stream.cons(): define a Stream using Stream.cons
-        val stream:Stream[Int] = Stream.cons(1, Stream.cons(2, Stream.cons(3, Stream.empty)))
-        println(stream)
-        // 2.1) define a Stream using a recursive function
-        def repeat[T](a: T): Stream[T] = Stream.cons(a, repeat(a))
-        // 3) take(n: Int): Stream[T]
-        //    return the n first elements of the Stream as another Stream
-        repeat(0).take(3).foreach(println)
     }
 }

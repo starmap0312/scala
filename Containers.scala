@@ -49,5 +49,13 @@ object Containers {
         println(numbers.flatMap((x: Int) => List(x, x * 2)))
         // 2.5) filter([func]): return another collection based on the evaluation result of the passed-in boolean function
         println(numbers.filter((x: Int) => (x % 2 == 0)))
+
+        // 3) Map[T1, T2]: a hash table from key of type T1 to value of type T2
+        val integers = Map("one" -> 1, "two" -> 2)
+        println(integers.keys)   // Set(one, two) 
+        println(integers.values) // MapLike(1, 2)
+        integers.keys.foreach(
+            k => println(k, integers(k))
+        )
     }
 }
