@@ -5,7 +5,7 @@
 //    i.e. referentially transparent: one can freely replace a variable with its value and vice versa
 // 2) only pure function: no side effect
 //    a function always returns the same value when called with same parameters
-//    a function have no effect other than computing the result (ex. file I/O)
+//    a function have no effect other than computing the result (ex. assignments, file I/O, exceptions, etc.)
 //    since no side-effect can change the value of an expression, the order of execution is irrelevant
 //    the expressions can be evaluated at any time (no flow of control is needed)
 // 3) no complicated scope rules and provision of objects
