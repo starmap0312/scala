@@ -44,18 +44,31 @@
 //   View  : elements are recomputed each time they are accessed (like a generator?)
 //     a view is like a procedure to create a collection
 //     when you ask for elements of a view it carries out the procedure each time
-object ViewStream {
+object StreamView {
     def main(args: Array[String]) {
-        // example: View
+        // 1) View vs. Stream
         val doubled1 = List(1, 2, 3, 4, 5).view.map(_ * 2)
-        // example: Stream
         val doubled2 = List(1, 2, 3, 4, 5).toStream.map(_ * 2)
-        // 1) mkString(sep: String): display all elements of this stream in a string
+        // mkString(sep: String): display all elements of this stream in a string
         println(doubled1.mkString(" ")) // re-evaluate the map for each element once
         println(doubled1.mkString(" ")) // re-evaluate the map for each element twice
         println(doubled2.mkString(" ")) // only double the elements once (values are stored/cached)
         println(doubled2.mkString(" ")) // only double the elements once (values are stored/cached) 
-        // 2) Stream.cons(): define a Stream using Stream.cons
+        // 2) Stream[T]: Stream is a List whose tail is a lazy val
+        //    a collection that works like List but invokes its transformer methods
+        //      ex. map, filter, etc. lazily
+        //    its elements are computed lazily
+        //      in a manner similar to how a view creates a lazy version of a collection
+        //      i.e. it is like a view, only the elements that are accessed are computed
+        // initialize a stream
+        val stream1 = 1#::2#::3#::Stream.empty
+        val stream2 = (1 to 100000000).toStream
+        println(stream1)
+        println(stream2)      // Stream(1, ?): the end of the stream hasn’t been evaluated yet
+        println(stream1.head) // 1           : head is returned immediately 
+        println(stream1.tail) // Stream(2, ?): tail is not evaluated yet
+
+        // 3) Stream.cons(): define a Stream using Stream.cons
         val stream:Stream[Int] = Stream.cons(1, Stream.cons(2, Stream.cons(3, Stream.empty)))
         println(stream)
         // 2.1) define a Stream using a recursive function

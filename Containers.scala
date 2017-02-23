@@ -1,7 +1,16 @@
 
 object Containers {
     def main(args: Array[String]) {
-        // 0) Tuple3: a fixed number of immutable items
+        // 0) Tuples: a sequence of immutable items
+        // 0.1) Tuple2: a pair of immutable items
+        val pair1 = (1, "two")
+        // which is syntactic sugar of
+        val pair2 = new Tuple2(1, "two") 
+        val pair3 = (1 -> "two") 
+        println(pair1)
+        println(pair2)
+        println(pair3)
+        // 0.2) Tuple3: a triple of immutable items
         val tuple1 = (1, "two", 3.0)
         // which is syntactic sugar of
         val tuple2 = new Tuple3(1, "two", 3.0) 
@@ -40,19 +49,5 @@ object Containers {
         println(numbers.flatMap((x: Int) => List(x, x * 2)))
         // 2.5) filter([func]): return another collection based on the evaluation result of the passed-in boolean function
         println(numbers.filter((x: Int) => (x % 2 == 0)))
-
-        // 3) Stream[T]: Stream is a List whose tail is a lazy val
-        //    a collection that works like List but invokes its transformer methods
-        //      ex. map, filter, etc. lazily
-        //    its elements are computed lazily
-        //      in a manner similar to how a view creates a lazy version of a collection
-        //      i.e. it is like a view, only the elements that are accessed are computed
-        // initialize a stream
-        val stream1 = 1#::2#::3#::Stream.empty
-        val stream2 = (1 to 100000000).toStream
-        println(stream1)
-        println(stream2)      // Stream(1, ?): the end of the stream hasn’t been evaluated yet
-        println(stream1.head) // 1           : head is returned immediately 
-        println(stream1.tail) // Stream(2, ?): tail is not evaluated yet
     }
 }
