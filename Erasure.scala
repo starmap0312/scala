@@ -15,7 +15,7 @@
 // 1) ClassTag: provides runtime information about the value
 //              compiler provides us with an implicit instance of a needed ClassTag (it depends on scala-reflect)
 // 2) TypeTag : provides runtime information about the type
-//              does not depend on scala-reflect
+//              TypeTag knows about higher type and has a much richer type information
 import scala.reflect.ClassTag
 import scala.reflect.runtime.universe.TypeTag
 
