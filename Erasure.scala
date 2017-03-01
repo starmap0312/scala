@@ -20,24 +20,24 @@ import scala.reflect.ClassTag
 import scala.reflect.runtime.universe.TypeTag
 
 object Erasure {
-    def filter1[T](list: List[Any]) = list.flatMap {
+    def filter1[T](list: List[Any]) = list.flatMap({
         case element: T => Some(element) // warning: abstract type pattern T is unchecked since it is eliminated by erasure
         // don’t expect compiler to know what T is when we get to pattern matching (since it will be erased by the JVM at runtime)
         case _          => None
-    }
+    })
 
     // the above is interpreted as (type parameter T is eliminated by erasure):
-    def filter2(list: List[Any]) = list.flatMap {
+    def filter2(list: List[Any]) = list.flatMap({
         case element: Object => Some(element) // warning: abstract type pattern T is unchecked since it is eliminated by erasure
         // don’t expect compiler to know what T is when we get to pattern matching (since it will be erased by the JVM at runtime)
         case _               => None
-    }
+    })
 
     // to differentiate a List[String] from a List[Integer], we can use ClassTag as below
-    def filter3[T](list: List[Any])(implicit tag: ClassTag[T]) = list.flatMap {
+    def filter3[T](list: List[Any])(implicit tag: ClassTag[T]) = list.flatMap({
         case element: T => Some(element)
         case _          => None
-    }
+    })
     // compiler automatically provides us with the value for our implicit parameter tag
     // but we never needed to use the parameter tag
     // it allows our pattern matching to successfully match the String elements in list
@@ -51,10 +51,10 @@ object Erasure {
     //            case f @ Foo(p, q) => // we can reference the whole object via f
 
     // or alternatively, we can write ClassTag as context bound syntax
-    def filter4[T: ClassTag](list: List[Any]) = list.flatMap {
+    def filter4[T: ClassTag](list: List[Any]) = list.flatMap({
         case element: T => Some(element)
         case _          => None
-    }
+    })
 
     def main(args: Array[String]) {
         val list = List(1, "string1", List(), "string2")

@@ -17,7 +17,7 @@ object ApplyUnapply {
         //   any sub-values that can be used for further matching
         //     in this case, the sub-value is (x / 2)
         //   return Boolean: if it's just a test
-        //     ex. case even()
+        //     ex. case test():
         //   return Option[T]: if it returns a single sub-value of type T 
         def unapply(x: Int): Option[Int] = {
             if (x % 2 == 0) {

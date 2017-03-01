@@ -3,6 +3,10 @@
 //    its value is that of the last statement
 // 2) however, there are some exceptions to the above definition
 //
+// object vs. class
+// 1) object: a single instance of a class (singleton)
+// 2) methods are static, ex. A.f()
+// 3) special methods can be defined for objects: i.e. apply(), unapply()
 object Primitives {
 
     def toInt(str: String): Option[Int] = {
@@ -93,5 +97,14 @@ object Primitives {
         // 7.3) asInstanceOf[T]: cast an instance to type T
         println(1.asInstanceOf[Double])
         println(List(1, 2, 3).asInstanceOf[List[String]]) // this is not working as parameterized type [String] will be eliminated by erasure
+
+        // 8) objects
+        trait B
+        trait C
+        object A extends B with C { // this creates a single instance (singleton) of an anonymous class (inaccessible) that extends B and C
+            def f(x: Any): Any = "f's return value"
+        }
+        println(A.f())
+        // one can define apply() and unapply() for pattern matching
     }
 }
