@@ -10,19 +10,25 @@ object AnonymousFunciton {
         // ex2.
         def mul = (x: Int, y: Int) => x * y
         println(mul(3, 4))
-        // ex3. Pattern Matching in Anonymous Functions
-        def toString = (x: Int) => x match {
+
+        // ex3.
+        // 1) normal function definition
+        def toString1(x: Int): String = x match {
             case 1 => "one"
             case 2 => "two"
         }
-        println(toString(1))
-        println(toString(2))
-        // syntax suger: p => p match { case ... } can be replaced by { case ... }
-        def toString2: (Int => String) = {
+        // 2) anonymous function definition
+        def toString2 = (x: Int) => x match {
             case 1 => "one"
             case 2 => "two"
         }
-        println(toString2(1))
+        // 3) syntax suger: p => p match { case ... } can be replaced by { case ... }
+        def toString3: (Int => String) = {
+            case 1 => "one"
+            case 2 => "two"
+        }
+        println(toString1(2))
         println(toString2(2))
+        println(toString3(2))
     }
 }

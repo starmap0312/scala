@@ -80,6 +80,5 @@ object Erasure {
         val list2: List[List[Any]] = List(List(1, 2), List("a", "b"))
         val result5 = filter4[List[Int]](list2)
         println(result5)                    // List(List(1, 2), List(a, b)), i.e. both are printed out, no type check
-
     }
 }
