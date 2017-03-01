@@ -48,7 +48,7 @@ object ApplyUnapply {
         // in other words, Twice.unapply(Twice.apply(21)) returns Some(21)
 
         // unapply() is used in pattern matching
-        42 match {                               // i.e. from val Twice(x) = 42, we derive that x = 21
+        42 match {                               // from val Twice(x) = 42, we can derive that x = 21 (because Twice.unapply(42) returns Some(21))
             case Twice(x) => Console.println(x)  // prints 21
         }
         println(Twice.unapply(42))               // prints Some(21) 
