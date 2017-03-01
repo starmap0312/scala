@@ -63,23 +63,23 @@ object Erasure {
         val result1 = filter1[String](list)
         val result2 = filter2(list)
         // T will be intepreted as its upperbound, i.e. Object, so filter() will not filter out String type as expected 
-        println(result1)                    // List(1, string1, List(), string2)
-        println(result2)                    // List(1, string1, List(), string2)
+        println(result1)                    // List(1, string1, List(), string2), i.e. no type check
+        println(result2)                    // List(1, string1, List(), string2), i.e. no type check
         // solution: when we require an implicit value that is of type ClassTag, compiler will create this value for us
         //           i.e. we need to ask compiler to provide us with an implicit instance of a needed ClassTag
         //                although we never needed to use the parameter itself
         val result3 = filter3[String](list)
-        println(result3)                    // List(1, string1, List(), string2)
+        println(result3)                    // List(string1, string2), i.e. there is type check
 
         val result4 = filter4[String](list)
-        println(result4)                    // List(1, string1, List(), string2)
+        println(result4)                    // List(string1, string2), i.e. there is type check
 
         // problem: Class tags cannot differentiate on a higher level
         //          i.e. it can differentiate between sets and lists
         //               but it cannot tell one list from another (ex. List[Int] vs List[String])
-        //val list2: List[List[Any]] = List(List(1, 2), List("a", "b"))
-        //val result4 = filter3[List[Int]](list2)
-        //println(result4)                    // List(List(1, 2), List(a, b))
+        val list2: List[List[Any]] = List(List(1, 2), List("a", "b"))
+        val result5 = filter4[List[Int]](list2)
+        println(result5)                    // List(List(1, 2), List(a, b)), i.e. both are printed out, no type check
 
     }
 }
