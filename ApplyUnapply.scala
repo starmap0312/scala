@@ -7,7 +7,8 @@
 object ApplyUnapply {
     object Twice {
         // apply() method is not necessary for pattern matching
-        //   it is only used to mimick constructor: i.e. val x = Twice(21) == val x = Twice.apply(21)
+        //   it is only used to mimick constructor
+        //   ex. val x = Twice(21) is syntactic sugar for val x = Twice.apply(21)
         def apply(x: Int): Int = x * 2
 
         // case Twice(x): in pattern matching this will invoke Twice.unapply() method
@@ -29,17 +30,13 @@ object ApplyUnapply {
 
     def main(args: Array[String]) {
         // 1) apply():
-        val twice = Twice(21)                   // invokes Twice.apply(21) 
-        println(Twice(21))                      // prints 42 
-        println(Twice.apply(21))                // prints 42 
+        val twice1 = Twice(21)                   // invokes Twice.apply(21) 
+        // is syntactic sugar for
+        val twice2 = Twice.apply(21)
+        println(twice1)                          // prints 42 
+        println(twice2)                          // prints 42 
 
         // 2) unapply():
-        twice match {                           // invokes Twice.unapply(Twice(21)) == Twice.unapply(42) returns Some(21), i.e. x = 21 
-            case Twice(x) => Console.println(x) // prints 21
-        }
-        println(Twice.unapply(Twice.apply(21))) // prints Some(21)
-        println(Twice.unapply(42))              // prints Some(21) 
-        
         val Twice(x1) = 42
         // is syntactic sugar for
         val x2: Int = Twice.unapply(42) match {
@@ -48,5 +45,12 @@ object ApplyUnapply {
         }
         println(x1)                             // prints 21
         println(x2)                             // prints 21
+        // in other words, Twice.unapply(Twice.apply(21)) returns Some(21)
+
+        // unapply() is used in pattern matching
+        42 match {                               // i.e. from val Twice(x) = 42, we derive that x = 21
+            case Twice(x) => Console.println(x)  // prints 21
+        }
+        println(Twice.unapply(42))               // prints Some(21) 
     }
 }
