@@ -2,11 +2,11 @@
 //    compute the passed-in expression's value before calling function
 //    so the same computed value is accessed every time inside the function, and the side effect happens only once
 // 2) call-by-name:
-//    recompute the passed-in expression's value every time it is accessed
+//    recompute the passed-in expression's value every time it is accessed (lazy evaluation?)
 object CallByName {
     def getX() = {
         println("side effect of calling getX()")
-        1                                             // return value
+        1                                             // return value 1
     }
 
     def callByValue(x: Int) = {
