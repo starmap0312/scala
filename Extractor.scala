@@ -1,10 +1,14 @@
+// Extractor objects
 // 1) apply():
 //    when you treat your object like a function, apply is the method that is called
 //    i.e. Scala turns obj(a, b, c) into obj.apply(a, b, c)
 // 2) unapply():
 //    used in Scala's pattern matching 
+// extractor usual use case:
+//    apply/map    : X -> Y
+//    unapply/unmap: Y -> X (Some(X) / None)
 
-object ApplyUnapply {
+object Extractor {
     object Twice {
         // apply() method is not necessary for pattern matching
         //   it is only used to mimick constructor
@@ -32,12 +36,12 @@ object ApplyUnapply {
         // 1) apply():
         val twice1 = Twice(21)                   // invokes Twice.apply(21) 
         // is syntactic sugar for
-        val twice2 = Twice.apply(21)
+        val twice2 = Twice.apply(21)             // apply/map parameter value: 21
         println(twice1)                          // prints 42 
         println(twice2)                          // prints 42 
 
         // 2) unapply():
-        val Twice(x1) = 42
+        val Twice(x1) = 42                       // unapply/unmap 42 to its parameter value
         // is syntactic sugar for
         val x2: Int = Twice.unapply(42) match {
             case Some(x) => x
@@ -47,7 +51,7 @@ object ApplyUnapply {
         println(x2)                             // prints 21
         // in other words, Twice.unapply(Twice.apply(21)) returns Some(21)
 
-        // unapply() is used in pattern matching
+        // unapply() used in pattern matching
         42 match {                               // from val Twice(x) = 42, we can derive that x = 21 (because Twice.unapply(42) returns Some(21))
             case Twice(x) => Console.println(x)  // prints 21
         }

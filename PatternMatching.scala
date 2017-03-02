@@ -17,11 +17,11 @@ object PatternMatching {
 
     // match list
     def matchList[T](list: List[T]) = list match {
-        case Nil        => ("value pattern matched: Nil")        // the empty list object
-        case x::Nil     => ("typed pattern matched: x::Nil")     // a single-element list 
-        case List(x)    => ("typed pattern matched: List(x)")    // a single-element list (same as above)
-        case 1::2::cs   => ("typed pattern matched: 1::2::cs")   // a list object starting with 1 then 2 
-        case x::xs      => ("typed pattern matched: x::xs")      // at-least-one-element list
+        case Nil        => ("value pattern matched: Nil")           // the empty list object
+        case x::Nil     => ("typed pattern matched: x::Nil")        // a single-element list 
+        case List(x)    => ("Constructor pattern matched: List(x)") // a single-element list (same as above)
+        case 1::2::cs   => ("typed pattern matched: 1::2::cs")      // a list object starting with 1 then 2 
+        case x::xs      => ("typed pattern matched: x::xs")         // at-least-one-element list
         case _          => ("nothing matched")
     }
 
