@@ -85,20 +85,7 @@ object Primitives {
 
         // 6) upper, lower and view bounds: i.e. <: >: <%
 
-        // 7) classOf/isInstanceOf/asInstanceOf:
-        // 7.2) isInstanceOf[T]: check if there is a corresponding entry in the inheritance chain
-        println("string".isInstanceOf[String])
-        class Foo
-        class Bar extends Foo
-        val foo = new Foo   
-        val bar = new Bar 
-        println(foo.isInstanceOf[Foo])
-        println(bar.isInstanceOf[Foo])
-        // 7.3) asInstanceOf[T]: cast an instance to type T
-        println(1.asInstanceOf[Double])
-        println(List(1, 2, 3).asInstanceOf[List[String]]) // this is not working as parameterized type [String] will be eliminated by erasure
-
-        // 8) objects
+        // 7) objects
         trait B
         trait C
         object A extends B with C { // this creates a single instance (singleton) of an anonymous class (inaccessible) that extends B and C
