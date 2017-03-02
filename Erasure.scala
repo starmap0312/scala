@@ -33,23 +33,23 @@ object Erasure {
     })
 
     // Solution 1) use ClassTag to differentiate a List[String] from a List[Integer]
-    def filter3[T](list: List[Any])(implicit tag: ClassTag[T]) = list.flatMap({ // implicit parameters: automatically passed values
+    def filter3[T](list: List[Any])(implicit tag: ClassTag[T]) = list.flatMap({ // implicit parameters: compiler automatically finds and passes the value
         case element: T => Some(element)
         case _          => None
     })
-    // compiler automatically provides us with the value for our implicit parameter tag
-    // but we never needed to use the parameter tag
+    // we never needed to use the parameter tag
     // it allows our pattern matching to successfully match the String elements in list
-    // i.e. compiler turns unchecked type tests in pattern matches into checked ones by wrapping a (_: T) type pattern as tag(_: T),
+    // i.e. this turns unchecked type tests into checked ones by wrapping a (_: T) type pattern as tag(_: T),
     //      where tag is the ClassTag[T] instance
-    //      case element: T            => Some(element)
-    //        (the above is written by compiler as)
-    //      case (element @ tag(_: T)) => Some(element)
-    //        (note: @ is a way of giving a name to the class you’re matching)
-    //        ex. case Foo(p, q)     => // we can only reference parameters via p and q
-    //            case f @ Foo(p, q) => // we can reference the whole object via f
+    //   case element: T            => Some(element)
+    //   (the above is interpreted by compiler as)
+    //   case (element @ tag(_: T)) => Some(element)
+    // note: @ is a way of giving a name to the class you’re matching
+    // ex.
+    //   case Foo(p, q)             => // we can only reference parameters via p and q
+    //   case f @ Foo(p, q)         => // we can reference the whole object via f
 
-    // Solution 2) write ClassTag as context bound syntax
+    // Solution 2) use ClassTag and write as context bound syntax
     def filter4[T: ClassTag](list: List[Any]) = list.flatMap({
         case element: T => Some(element)
         case _          => None
