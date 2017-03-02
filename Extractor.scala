@@ -4,9 +4,9 @@
 //    i.e. Scala turns obj(a, b, c) into obj.apply(a, b, c)
 // 2) unapply():
 //    used in Scala's pattern matching 
-// extractor usual use case:
+// common use case:
 //    apply/map    : X -> Y
-//    unapply/unmap: Y -> X (Some(X) / None)
+//    unapply/unmap: Y -> X (i.e. Some(X) / None)
 
 object Extractor {
     object Twice {
