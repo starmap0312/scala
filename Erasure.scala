@@ -121,14 +121,18 @@ object Erasure {
         val list4 = List[Int](1, 2, 3)
         def printList1(x: Any): Unit = x match {
             case x: List[Int]  => x.foreach(println)        // warning: type parameter Int is eliminated by erasure
+            //case x: List[_]  => x.foreach(println)        //          i.e. it is interpreted by compiler as this
             case _             => println("No match")
         }
         printList1(list3)                                   // the list will be printed out, which is not what we expect
+        // false solution: use an instance of ClassTag does not work
+        val IntList1 = classTag[List[Int]]
         def printList2(x: Any): Unit = x match {
-            case x: List[_]    => x.asInstanceOf[List[Int]].foreach(println) // no warning but casting does not work for two-layer types 
+            case IntList1(x)   => x.foreach(println)        // no warning as no type parameter is erased now 
             case _             => println("No match")
         }
         printList2(list3)                                   // the list will be printed out, which is not what we expect
+        // true solution: define a new case class for pattern matching
         case class IntList(list: List[Int])
         def printList3(x: Any): Unit = x match {
             case IntList(x) => x.foreach(println) 

@@ -1,4 +1,4 @@
-// classOf/isInstanceOf/asInstanceOf
+// isInstanceOf/asInstanceOf/classOf
 object Casting {
 
     def main(args: Array[String]) {
