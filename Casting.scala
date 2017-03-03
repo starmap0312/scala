@@ -11,6 +11,9 @@ object Casting {
         println(bar.isInstanceOf[Foo])                    // true
         println("string".isInstanceOf[String])            // true
         println(1.isInstanceOf[Double])                   // false 
+        // erasure problem: as type argument is erased as part of compilation
+        //                  it is not possible to check whether the list are of requested type
+        println(List(1, 2).isInstanceOf[List[String]])    // true (receive warning: fruitless type test)
 
         // 2) asInstanceOf[T]: cast an instance to type T (a runtime operation)
         //                     compiler believes that the type can be casted (it throws ClassCastException at runtime if casting fails) 
