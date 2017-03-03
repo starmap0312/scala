@@ -32,6 +32,7 @@ import scala.reflect.runtime.universe.TypeTag
 import scala.reflect.runtime.universe.typeTag
 import scala.reflect.runtime.universe.TypeRef
 import scala.reflect.runtime.universe.typeOf
+import shapeless._
 
 object Erasure {
     def filter1[T](list: List[Any]) = list.flatMap({
@@ -132,7 +133,8 @@ object Erasure {
             case _             => println("No match")
         }
         printList2(list3)                                   // the list will be printed out, which is not what we expect
-        // true solution: define a new case class for pattern matching
+        // solution1: define a new case class for pattern matching
+        //            this requires that you have control of the type of values passed into the function
         case class IntList(list: List[Int])
         def printList3(x: Any): Unit = x match {
             case IntList(x) => x.foreach(println) 
@@ -140,5 +142,6 @@ object Erasure {
         }
         //printList3(IntList(list3))                        // this does not compile as IntList accepts only List[Int] 
         printList3(IntList(list4))                          // the list will be printed out, which is what we expect
+        // solution2: use a TypeTag instance to recover the type information of generic type
     }
 }
