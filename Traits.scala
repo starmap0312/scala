@@ -13,6 +13,7 @@
 //     used to define object types by specifying signature of its methods
 //     it cannot be instantiated
 //     it make multiple inheritances possible: i.e. class can extend multiple traits
+//       ex. class D extends class A with trait B with trait C
 //   like in Java 8, Scala allows traits to be partially implemented
 // class vs. abstract class vs. trait
 // 1) class         : it can only extend one superclass
