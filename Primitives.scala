@@ -37,6 +37,12 @@ object Primitives {
         println(palindrome.concat(" appended"))
         println(palindrome + " appended")
 
+        // 2.1) Symbol: very similar to a String except that they are cached
+        //              to compare String instances, you may need to check character-by-character whether they are the same
+        //              to compare Symbol instances, it is only a constant time to look-up
+        val symbols = Symbol("Symbol string")
+        println(symbols)
+
         // 3) Option[T]/None[T]/Some[T]: the latter two extend Option[T]:
         //    used to avoid problems you encounter when dealing with null values returned from functions
         // ex1.
