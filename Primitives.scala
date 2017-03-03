@@ -2,11 +2,6 @@
 // 1) {} indicates a block of code, which is composed of multiple statements and declarations
 //    its value is that of the last statement
 // 2) however, there are some exceptions to the above definition
-//
-// object vs. class
-// 1) object: a single instance of a class (singleton)
-// 2) methods are static, ex. A.f()
-// 3) special methods can be defined for objects: i.e. apply(), unapply()
 object Primitives {
 
     def toInt(str: String): Option[Int] = {
@@ -90,14 +85,5 @@ object Primitives {
         stream3.foreach(println)
 
         // 6) upper, lower and view bounds: i.e. <: >: <%
-
-        // 7) objects
-        trait B
-        trait C
-        object A extends B with C { // this creates a single instance (singleton) of an anonymous class (inaccessible) that extends B and C
-            def f(x: Any): Any = "f's return value"
-        }
-        println(A.f())
-        // one can define apply() and unapply() for pattern matching
     }
 }
