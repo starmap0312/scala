@@ -12,8 +12,12 @@ object Casting {
         println("string".isInstanceOf[String])            // true
         println(1.isInstanceOf[Double])                   // false 
 
-        // 2) asInstanceOf[T]: cast an instance to type T
-        println(1.asInstanceOf[Double])                   // 1.0: cast Int to Double
+        // 2) asInstanceOf[T]: cast an instance to type T (a runtime operation)
+        //                     compiler believes that the type can be casted (it throws ClassCastException at runtime if casting fails) 
+        println(1.asInstanceOf[Double])                   // 1.0: cast Int to Double at runtime
+        //println(1.asInstanceOf[String])                   // ClassCastException at runtime
+        // erasure problem: as type argument is erased as part of compilation
+        //                  it is not possible to check whether the list are of requested type
         println(List(1, 2, 3).asInstanceOf[List[String]]) // not working as parameterized type [String] will be eliminated by erasure
         println(List(1, 2, 3).asInstanceOf[List[_]])      // the above is interpreted by compiler as 
 
