@@ -1,11 +1,13 @@
 // val/lazy val/def [variable_name] = [expression]
-//   expression is just like a function of no parameter
-//   it can be evaluated/called when accessed/defined
-//   there are different levels of evaluation polocies
-//   ex. def expr(): Int = { 3 + 2 }
-//       val myVar1 = expr()           // evaluated when defined
-//       def myVar2 = expr             // no evaluation when defined
-//       println(myVar2)               // evaluated when accessed/called: println(expr())
+// 1) assign the value of an expression to a variable is just like assign a function without parameter
+//    ex. myVar = expr
+//        println(myVar) == println(expr())
+// 2) when the variable is needed, we can evaluate the expression (i.e. call the function) or do that when defined
+//    there can be different timings when the evaluation is executed (and value cached/stored) 
+//    ex. def expr(): Int = { 3 + 2 }   // some expression is like a function without parameter
+//        val myVar1 = expr()           // evaluated when defined
+//        def myVar2 = expr             // no evaluation when defined
+//        println(myVar2)               // evaluated when accessed (i.e. call expr())
 object LazyEvaluation {
     def main(args: Array[String]) {
         // 1) variable definition
