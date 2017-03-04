@@ -1,9 +1,9 @@
-// Lazy List
-// 1) strict arrays:
+// Uses of Arrays/Lists 
+// 1) strict arrays   : simple lookup usage
 //    arrays with allocated storage supporting quick lookup of elements (may be multiple times)
 //    use strict arrays if you need to refer to most of their elements multiple times 
 //    ex. arrays used in dynamic programming
-// 2) nonstrict arrays:
+// 2) nonstrict arrays: composable mapping and transformation
 //    array in essense is just like a function of finite domain (indices)
 //    i.e. a function that maps indexes to values (or objects) 
 //    ex. arr: [0, 10] -> R 
@@ -30,7 +30,7 @@
 //           arr.transform(f): X -> Z
 //           i.e. arr(f((i, j))) = (arr o f)((i, j)) = arr.transform(f)((i, j))
 //                arr.transform(f)((i, j)) = arr((j, i)) for (i, j) in X
-// Stream vs. View in Scala
+// Laziness of Arrays/Lists: Stream vs. View in Scala
 // 1) Stream: values are stored/cached if still needed
 //    a List whose tail is a lazy val: it's value will be evaluated until first-time used
 //    a stream is like a function of how to compute subsequent elements of the collection (just like a generator)
