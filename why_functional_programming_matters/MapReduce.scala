@@ -33,9 +33,10 @@ object MapReduce {
     // 1) List Version
     def map[T](f: (T => T)): (List[T] => List[T]) = { 
         def cons(x: T, xs: List[T]): List[T] = x::xs
-        def fandcons(f: (T => T)): ((T, List[T]) => List[T]) = {
-            (x: T, xs: List[T]) => cons(f(x), xs)
-        }
+        //def fandcons(f: (T => T)): ((T, List[T]) => List[T]) = {
+        //    (x: T, xs: List[T]) => cons(f(x), xs)
+        //}
+        def fandcons(f: (T => T))(x: T, xs: List[T]) = cons(f(x), xs)
         def reduce(f: ((T, List[T]) => List[T]), a: List[T]): (List[T] => List[T]) = {
             case Nil   => a
             case x::xs => f(x, reduce4(f, a)(xs))
@@ -45,9 +46,7 @@ object MapReduce {
 
     // 2) Stream Version 
     def map2[T](f: (T => T)): (Stream[T] => Stream[T]) = {
-        def fandcons(f: (T => T)): ((T, Stream[T]) => Stream[T]) = {
-            (x: T, xs: Stream[T]) => Stream.cons(f(x), xs)
-        }
+        def fandcons(f: (T => T))(x: T, xs: Stream[T]) = Stream.cons(f(x), xs)
         def reduce(f: ((T, Stream[T]) => Stream[T]), a: Stream[T]): (Stream[T] => Stream[T]) = {
             case x#::xs       => f(x, reduce(f, a)(xs))
             case _            => a
@@ -113,6 +112,7 @@ object MapReduce {
         println(doubleall1(List(1, 2, 3)))
         println(doubleall2(List(1, 2, 3)))
         println(doubleall3(List(1, 2, 3)))
-        println(doubleall4((1 to 3).toStream))
+        doubleall4((1 to 3).toStream).foreach(print)
+        println()
     }
 }
