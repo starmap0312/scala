@@ -85,5 +85,11 @@ object Primitives {
         stream3.foreach(println)
 
         // 6) upper, lower and view bounds: i.e. <: >: <%
+
+        // 7) define function of varying number of arguments
+        def printSeq(arg: Int*): Unit = {
+            println(arg)
+        }
+        printSeq(7, 8, 9)                        // WrappedArray(7, 8, 9)
     }
 }
