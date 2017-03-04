@@ -1,4 +1,4 @@
-object EvaluationRules {
+object LazyEvaluation {
     def main(args: Array[String]) {
         // 1) variable definition
         val var1 = 2      // evaluated when defined    (immediately,     once)
@@ -36,19 +36,19 @@ object EvaluationRules {
 
         // 2) call-by-value vs. call-by-name: evaluation of function arguments
         // a) call-by-value: func([variable_name]: [type])
-        //      arguments are evaluated once, immediately when function is needed/called
+        //      arguments are evaluated once, immediately when function is called
         //      evaluated before the function is used (i.e. before calling the function)
-        def printRand1(x: Int) = {
-            println("1st print x = " + x)       // -1170373068 (same result)
-            println("2st print x = " + x)       // -1170373068 (same result)
+        def printRand1(x: Int) = {              // i.e. val x: Int = randf() once function is called
+            println("1st print x = " + x)       // -1170373068 (same result every-time used)
+            println("2st print x = " + x)       // -1170373068 (same result every-time used)
         }
         printRand1(randf())                     // value of x is determined when this line is invoked
         // b) call-by-name : func([variable_name]: => [type])
         //      arguments are NOT evaluated when function is called (lazy evaluation)
         //      arguments are evaluated everytime they are needed inside the function
-        def printRand2(x: => Int) = {
-            println("1st print x = " + x)       // -958425394  (different result)
-            println("2st print x = " + x)       // -1197101621 (different result)
+        def printRand2(x: => Int) = {           // i.e. def x: Int = randf() once function is called
+            println("1st print x = " + x)       // -958425394  (different result every-time used)
+            println("2st print x = " + x)       // -1197101621 (different result every-time used)
         }
         printRand2(randf())
     }
