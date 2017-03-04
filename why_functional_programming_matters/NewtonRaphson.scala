@@ -1,5 +1,6 @@
+// example: sqaure root computation using the Newton-Raphson method
 object NewtonRaphson {
-    // an iterative approach based on while-loop
+    // an iterative approach
     def sqrt1(n: Double, epsilon: Double): Double = {
         require(n >= 0.0)
         def next(x:Double): Double = (x + n / x) / 2.0
@@ -27,7 +28,7 @@ object NewtonRaphson {
         return recursive(n)
     }
 
-    // a functional solution
+    // a functional approach 
     def sqrt3(n: Double, epsilon: Double): Double = {
         require(n >= 0.0)
         def next(x: Double): Double = (x + n / x) / 2.0
