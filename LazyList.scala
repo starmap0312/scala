@@ -1,86 +1,89 @@
+// Lazy List
 // 1) strict arrays:
 //    arrays with allocated storage supporting quick lookup of elements (may be multiple times)
-//    make arrays strict when you must refer to most of their elements more than once or twice
-//      ex. arrays used in dynamic programming
+//    use strict arrays if you need to refer to most of their elements multiple times 
+//    ex. arrays used in dynamic programming
 // 2) nonstrict arrays:
-//    think of every array as if it is a function (of finite domain, ex. [0, 100]) 
-//      i.e. a function that maps indexes to elements
-//      ex. arr(i): [0, 100] -> arr[i]
-//    in functional code that operates on arrays, the intermediate arrays are referred to exactly once
-//      so allocating storage for them is unnecessary
-//      nonstrict arrays are suitable for many other tasks than just look up elements
-//    a) mapping over to another array
-//       mapping f over array arr is just composing f with arr’s lookup procedure
-//         arr       : X -> Y
-//         f         : Y -> Z
-//         arr.map(f): X -> Z (i.e. arr.map(f)(x) = f(arr(x)) = (f o arr)(x))
-//       ex.
-//         let arr2 = arr.map(f)
-//         arr2(i) = f(arr(i)) = (f o arr)(i)
-//    b) transforming array's indices
-//       a transformation is a function g that maps a set X to itself, g: X -> X (from old indices to new indices)
-//       transforming arr using g is nothing more than composing arr’s procedure with g
+//    array in essense is just like a function of finite domain (indices)
+//    i.e. a function that maps indexes to values (or objects) 
+//    ex. arr: [0, 10] -> R 
+//        arr[i] == arr(i)
+//    use nonstrict arrays if the intermediate arrays are referred to exactly once
+//      allocating storage for them is unnecessary in many functional programming cases
+//      they are suitable for tasks that are not just look up elements
+//    a) mapping over to obtain another (mapped) array
+//       ex. mapping f over array arr
+//           it is like composing f with arr’s lookup procedure
+//           arr       : X -> Y (i.e. mapping indices to array values)
+//           f         : Y -> Z (i.e. mapping array values using function f)
+//           ------------------
+//           arr.map(f): X -> Z
+//           i.e. f(arr(i)) = (f o arr)(i) = arr.map(f)(i)
+//                arr.map(f)(i) = f(arr(i)) for i in X
+//    b) transforming array's indices to obtain another (transformed) array
 //       ex. matrix transposing: arr[i][j] = arr[j][i]
-//           transformation g: g((i, j)) = (j, i)
-//           arr.transform(g)((i, j)) = arr(g((i, j))) = (arr . g)((i, j)) = arr((j, i))
-// Stream: lazy list
-//   in Scala, a Stream is a List whose tail is a lazy val
-//   once computed, a value stays computed and is reused (i.e. Stream memoises, the values are stored/cached)
-//   advantage:
-//     when writing infinite sequences, ex. sequences recursively defined
-//     one can avoid keeping all of the Stream in memory, if you don’t keep a reference to its head
-//     ex. by using def instead of val to define the Stream
-// Views: much like a database view
-//   it is a series of transformation one applies to a collection to produce a virtual collection
-//   all transformations are re-applied each time you need to fetch elements from it
-//   advantage:
-//     memory efficiency
-// Stream vs. Views
-//   Stream: elements are retained as they are evaluated (and drop if not needed anymore)
-//     a stream is like a definition of how to compute subsequent elements of the collection
-//     if you ask for the next element and it evaluates the element and remember it in a storage
-//     if you hold on all the elements, you might eventually run out of memory
-//     before it evaluates the next element, it releases the storage and ties it to the new element 
-//   View  : elements are recomputed each time they are accessed (like a generator?)
-//     a view is like a procedure to create a collection
-//     when you ask for elements of a view it carries out the procedure each time
-object StreamView {
+//           transforming array arr's indices using function f(i, j) = (j, i)
+//           it is like composing arr’s lookup procedure with f
+//           arr       : X -> Y (i.e. mapping indices to array values)
+//           f         : X -> X (i.e. function that maps a set X to itself) 
+//           ------------------
+//           arr.transform(f): X -> Z
+//           i.e. arr(f((i, j))) = (arr o f)((i, j)) = arr.transform(f)((i, j))
+//                arr.transform(f)((i, j)) = arr((j, i)) for (i, j) in X
+// Stream vs. View in Scala
+// 1) Stream: values are stored/cached if still needed
+//    a List whose tail is a lazy val: it's value will be evaluated until first-time used
+//    a stream is like a function of how to compute subsequent elements of the collection (just like a generator)
+//      ex. defining an infinite sequence by a generator function
+//    storage efficiency:
+//      if you ask for the next element and it is evaluated and cached in memory 
+//      before it evaluates the next element, it releases the storage and ties it to the new element 
+//      we don't need to keep all of the Stream in memory, unless we keep a reference to its head
+// 2) View: no value cached/stored, re-evaluated/re-computed each time accessed
+//    it is like a procedure to create a (virtual) collection (just like a database view)
+//      ex. a series of transformation applied to a collection to create a virtual collection
+//    when you ask for elements of a view it carries out the procedure each time
+//    all transformations will be re-applied each time you fetch elements from it
+// 3) difference
+//    Stream: elements are evaluated and cached when accessed
+//            just like: lazy val [variable_name]
+//    View  : elements are compuated online 
+//            just like: def [variable_name] 
+object LazyList {
     def main(args: Array[String]) {
-        // 1) Stream[T]: Stream is a List whose tail is a lazy val
-        //    a collection that works like List but invokes its transformer methods (ex. map, filter, etc. lazily)
-        //      in a manner similar to how a view creates a lazy version of a collection
-        //      it is like a view, only the elements that are accessed are computed
+        // 1) Stream[T]:
         // 1.1) explicitly define a stream
         val stream1 = 1#::2#::3#::Stream.empty
         val stream2:Stream[Int] = Stream.cons(1, Stream.cons(2, Stream.cons(3, Stream.empty)))
-        println(stream1)
-        println(stream2)      // Stream(1, ?): the end of the stream hasn’t been evaluated yet
-        val stream3 = (1 to 100000000).toStream
-        println(stream3.head) // 1: head is returned immediately 
+        val stream3 = (1 to 3).toStream
+        val stream4 = (1 until 3).iterator.toStream // convert an iterator to a Stream
+        println(stream1)      // Stream(1, ?): tail of the stream is not evaluated yet
+        println(stream2)      // Stream(1, ?): tail of the stream is not evaluated yet
+        println(stream3.head) // 1           : head is returned immediately 
         println(stream3.tail) // Stream(2, ?): tail is not evaluated yet
+        println(stream4)      // Stream(1, ?): tail of the stream is not evaluated yet
 
-        // 2) define a Stream using recursive functions (maybe infinite)
+        // 2) define a Stream by a recursive function (maybe infinite)
         // ex1.
         def repeat[T](a: T): Stream[T] = Stream.cons(a, repeat(a))
         // take(n: Int): Stream[T]
         //   return the n first elements of the Stream as another Stream
         println("ex1.")
-        repeat(10).take(3).foreach(println)
+        println(repeat(1))                       // Stream(1, ?)
+        repeat(1).take(3).foreach(println)       // 1 1 1
         // ex2.
-        def double(x: Int, y: Int): Stream[Int] = (x + y)#::double(x * 2, y * 2)
+        def repeatSum(x: Int, y: Int): Stream[Int] = (x + y)#::repeatSum(x, y)
         println("ex2.")
-        double(1, 1).take(3).foreach(println)
-        // ex3. converting an iterator to a stream
-        println("ex3.")
-        (1 until 3).iterator.toStream.foreach(println)
+        println(repeatSum(1, 2))                 // Stream(3, ?)
+        repeatSum(1, 2).take(3).foreach(println) // 3 3 3 
 
-        // 3) View vs. Stream
-        val doubled1 = List(1, 2, 3, 4, 5).view.map(_ * 2)
-        val doubled2 = List(1, 2, 3, 4, 5).toStream.map(_ * 2)
+        // 3) Stream vs. View in Scala
+        val stream = List(1, 2, 3).toStream.map(_ * 2)
+        val view   = List(1, 2, 3).view.map(_ * 2)
         // mkString(sep: String): display all elements of this stream in a string
-        println(doubled1.mkString(" ")) // re-evaluate the map for each element once
-        println(doubled1.mkString(" ")) // re-evaluate the map for each element twice
-        println(doubled2.mkString(" ")) // only double the elements once (values are stored/cached)
-        println(doubled2.mkString(" ")) // only double the elements once (values are stored/cached) 
+        println(stream.mkString(" ")) // values are evaluated once and stored/cached
+        println(stream.mkString(" ")) // no evaluation, already evaluated
+        println(view.mkString(" "))   // re-evaluated each time accessed (computed online, no extra storage) 
+        println(view.mkString(" "))   // re-evaluated each time accessed (computed online, no extra storage)
     }
 }

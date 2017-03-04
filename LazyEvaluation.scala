@@ -1,9 +1,9 @@
 object LazyEvaluation {
     def main(args: Array[String]) {
         // 1) variable definition
-        val var1 = 2      // evaluated when defined    (immediate evaluation, evaluated once, need extra storage for the value)
-        lazy val var2 = 2 // evaluated first-time used (lazy evaluation,      evaluated once)
-        def var3 = 2      // evaluated every-time used (lazy evaluation,      evaluated every time)
+        val var1 = 2      // evaluated when defined    (immediate evaluation, evaluated once, storage allocated for the value)
+        lazy val var2 = 2 // evaluated first-time used (lazy evaluation,      evaluated once, value stored/cached)
+        def var3 = 2      // evaluated every-time used (lazy evaluation,      evaluated every time, no value stored/cached)
         println(var1)     // already evaluated
         println(var2)     // evaluated now
         println(var3)     // evaluated now
@@ -22,7 +22,7 @@ object LazyEvaluation {
             util.Random.nextInt
         }
         // get the same result every-time used
-        println("rand2 1st call: " + rand2)     // 1836646499 (evaluated now)
+        println("rand2 1st call: " + rand2)     // 1836646499 (evaluated now, and value stored/cached)
         println("rand2 2nd call: " + rand2)     // 1836646499 (already evaluated)
 
         // c) def [variable_name]: evaluated every-time used
@@ -30,8 +30,8 @@ object LazyEvaluation {
             util.Random.nextInt
         }
         // get different results every-time used
-        println("rand3 1st call: " + rand3)     // -2029134267 (evaluated now)
-        println("rand3 2nd call: " + rand3)     // 14851415250 (evaluated again)
+        println("rand3 1st call: " + rand3)     // -2029134267 (evaluated now, computed online, no value cached)
+        println("rand3 2nd call: " + rand3)     // 14851415250 (evaluated again, computed online, no value cached)
 
         // d) val [function_name] = [lambda expression]: evaluated every-time called
         val randf: (() => Int) = (() => util.Random.nextInt)
