@@ -1,7 +1,7 @@
 // example: sqaure root computation using the Newton-Raphson method
 //          n, next(n), next(next(n)), ... continue until there are two consecusive values within the given epsilon value
 object NewtonRaphson {
-    // an iterative approach
+    // an iterative approach: only O(1) extra space is used
     def sqrt1(n: Double, epsilon: Double): Double = {
         require(n >= 0.0)
         def next(x:Double): Double = (x + n / x) / 2.0
@@ -14,7 +14,7 @@ object NewtonRaphson {
         return nextX
     }
 
-    // a recursive approach: there may be stack overflow for deep recursions
+    // a recursive approach: values are not dropped after use, may exhaust memory resource
     def sqrt2(n: Double, epsilon: Double): Double = {
         require(n >= 0.0)
         def next(x:Double): Double = (x + n / x) / 2.0
@@ -29,7 +29,7 @@ object NewtonRaphson {
         return recursive(n)
     }
 
-    // a functional approach: use Stream (Lazy List), evaluated when needed, no extra storage allocated
+    // a functional approach: use Stream (Lazy List), values are evaluated and dropped after use (no value is cached)
     def sqrt3(n: Double, epsilon: Double): Double = {
         require(n >= 0.0)
         def next(x: Double): Double = (x + n / x) / 2.0
