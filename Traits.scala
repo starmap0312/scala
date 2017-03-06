@@ -27,19 +27,19 @@
 // 1) object is a single instance of a class (singleton)
 // 2) object's methods are static, ex. A.f()
 // 3) object can have special methods: ex. apply(), unapply()
-trait Equal {                                     // no constructor parameter
-    def isEqual(x: Any): Boolean                  // specify only method signatures
-    def isNotEqual(x: Any): Boolean = !isEqual(x) // specify only method signatures
-}
-
-class Point(xc: Int, yc: Int) extends Equal {     // can have constructor parameter
-   var x: Int = xc
-   var y: Int = yc
-   def isEqual(obj: Any) = obj.isInstanceOf[Point] && obj.asInstanceOf[Point].x == y
-}
 
 object Demo {
     def main(args: Array[String]) {
+        trait Equal {                                     // no constructor parameter
+            def isEqual(x: Any): Boolean                  // specify only method signatures
+            def isNotEqual(x: Any): Boolean = !isEqual(x) // specify only method signatures
+        }
+
+        class Point(xc: Int, yc: Int) extends Equal {     // can have constructor parameter
+            var x: Int = xc
+            var y: Int = yc
+            def isEqual(obj: Any) = obj.isInstanceOf[Point] && obj.asInstanceOf[Point].x == y
+        }
         // example: trait & class
         val p1 = new Point(2, 3)
         val p2 = new Point(2, 4)

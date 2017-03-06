@@ -32,7 +32,6 @@ import scala.reflect.runtime.universe.TypeTag
 import scala.reflect.runtime.universe.typeTag
 import scala.reflect.runtime.universe.TypeRef
 import scala.reflect.runtime.universe.typeOf
-import shapeless._
 
 object Erasure {
     def filter1[T](list: List[Any]) = list.flatMap({
