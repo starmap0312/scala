@@ -4,7 +4,7 @@ import scala.reflect.runtime.universe.TypeTag
 object Erasure2 {
 
     def main(args: Array[String]) {
-        // (bad design: type unchecked, risk of getting exception at runtime)
+        // problem: matching function has list type unchecked, risk of getting exception at runtime
         trait Result
         case class Success[T](list: List[T]) extends Result  // type parameter T is erased when compiled
         // (the above can be viewed as the following)
@@ -22,11 +22,12 @@ object Erasure2 {
         handle(Success(List("a", "b", "cd")))
         // handle(Success(List("a", "b", 3))) // runtime exception: ClassCastException: Integer cannot be cast to String
 
-        // (good design: type checked, type mismatch error received at compile time)
+        // solution: type checked, type mismatch error received at compile time
+        // (assume that we have the permission to edit the function directly)
         trait Result2[T]
         case class Success2[T](list: List[T]) extends Result2[T]
         case class Failure2[T](msg: String)   extends Result2[T]
-        def handle2(result: Result2[String]): Unit = result match {
+        def handle2(result: Result2[String]): Unit = result match { // add list type to the function parameter for compiler to check
             case Failure2(msg)               => println("Failure: " + msg)
             case Success2(list)              => println("Success: total length of strings in the list = " + list.map(_.size).sum)
             case _                           => println("No match")
