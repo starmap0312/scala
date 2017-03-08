@@ -13,7 +13,7 @@ object TrySuccessFailure {
     }
 
     def main(args: Array[String]) {
-        // Try[T]/Success[T] extends Try[T]/Failure[T] extends Try[T]
+        // both Success[T] and Failure[T] extend Try[T]
         bad(3) match {
             case Success(num) => println(s"Success: $num")
             case Failure(ex)  => println(s"Failure: ${ex.getClass}")
