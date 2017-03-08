@@ -32,9 +32,9 @@ object Primitives {
         println(palindrome.concat(" appended"))
         println(palindrome + " appended")
 
-        // 2.1) Symbol: very similar to a String except that they are cached
-        //              to compare String instances, you may need to check character-by-character whether they are the same
-        //              to compare Symbol instances, it is only a constant time to look-up
+        // 2.1) Symbol: similar to a String except that they are cached
+        //              to compare String instances, you may need to check character-by-character
+        //              to compare Symbol instances, it is only a constant time look-up
         val symbols = Symbol("Symbol string")
         println(symbols)
 
