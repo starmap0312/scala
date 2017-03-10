@@ -84,9 +84,7 @@ object Primitives {
         val stream3 = Stream.cons(0, Stream.cons(1, Stream.empty))   // cons returns the rest of the stream NOT another new stream
         stream3.foreach(println)
 
-        // 6) upper, lower and view bounds: i.e. <: >: <%
-
-        // 7) define function of varying number of arguments
+        // 6) define function of varying number of arguments
         def printSeq(arg: Int*): Unit = {
             println(arg)
         }

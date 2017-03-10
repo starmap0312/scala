@@ -4,6 +4,7 @@
 //     0     for T is Int
 //     0L    for T is Long
 //     false for T is Boolean
+// upper, lower and view bounds: i.e. <: >: <%
 
 object GenericType {
     class Generic[T](arg: T) {
