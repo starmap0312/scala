@@ -33,8 +33,8 @@ object CaseClass2 {
 
     def main(args: Array[String]) {
         val tree: Tree = Sum(
-            Sum(Var("x"),Var("x")),
-            Sum(Const(7),Var("y"))
+            Sum(Var("x"), Var("x")),
+            Sum(Const(7), Var("y"))
         )
         val env: Environment = {
             case "x" => 5
