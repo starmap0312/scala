@@ -4,7 +4,7 @@
 // adding case keyword to class declaration causes compiler to add a number of useful features automatically
 // a) the keyword suggests an association with case expressions in pattern matching
 // b) compiler automatically converts the constructor arguments into immutable fields (vals)
-// c) compiler automatically implements equals(), hashCode(), and toString() methods to the clas
+// c) compiler automatically implements equals(), hashCode(), and toString() methods to the class
 //    it uses the fields specified in constructor arguments
 //    so, we no longer need our own toString() methods
 // 2) case object: no argument in the constructor, so it is a singleton, like a regular scala object is

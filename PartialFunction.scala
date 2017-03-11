@@ -1,7 +1,8 @@
 // Function is defined for every value of a given type
 // PartialFunction is only defined for certain value of a given type
-// 1) it is a unary function
-// 2) its domain does not necessarily include all values of type A
+// f: X' -> Y, where X' < X
+// 1) it is a unary function: i.e. f(x)
+// 2) its domain does not necessarily include all values of type X
 // 3) the isDefinedAt() function is automatically available to test if a value is in the domain
 // syntax:
 //   val functionName: PartialFunction[parameter type, return type] = {
