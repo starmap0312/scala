@@ -7,6 +7,16 @@
 // common use case:
 //    apply/map    : X -> Y
 //    unapply/unmap: Y -> X (i.e. Some(X) / None)
+// in other words,
+//   f: X -> Y
+//   f.apply(x) = y
+//   f.unapply(y) = Some(x)
+//   ex.
+//     f: Int -> Int
+//     f^-: Int -> Option[Int]
+//     f(21)   = f.apply(21)   = 42
+//     f^-(42) = f.unapply(42) = Some(21)
+//     f^-(41) = f.unapply(41) = None
 
 object Extractor {
     object Twice {
@@ -33,14 +43,14 @@ object Extractor {
     }
 
     def main(args: Array[String]) {
-        // 1) apply():
+        // 1) apply(): Int -> Int
         val twice1 = Twice(21)                   // invokes Twice.apply(21) 
         // is syntactic sugar for
         val twice2 = Twice.apply(21)             // apply/map parameter value: 21
         println(twice1)                          // prints 42 
         println(twice2)                          // prints 42 
 
-        // 2) unapply():
+        // 2) unapply(): Int -> Option[Int]
         val Twice(x1) = 42                       // unapply/unmap 42 to its parameter value
         // is syntactic sugar for
         val x2: Int = Twice.unapply(42) match {
@@ -50,11 +60,12 @@ object Extractor {
         println(x1)                             // prints 21
         println(x2)                             // prints 21
         // in other words, Twice.unapply(Twice.apply(21)) returns Some(21)
+        println(Twice.unapply(Twice.apply(21))) // prints Some(21) 
+        println(Twice.unapply(42))              // prints Some(21) 
 
         // unapply() used in pattern matching
-        42 match {                               // from val Twice(x) = 42, we can derive that x = 21 (because Twice.unapply(42) returns Some(21))
-            case Twice(x) => Console.println(x)  // prints 21
+        42 match {
+            case Twice(x) => Console.println(x)  // i.e. val Twice(x) = 42, so it prints 21
         }
-        println(Twice.unapply(42))               // prints Some(21) 
     }
 }

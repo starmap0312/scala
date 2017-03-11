@@ -4,7 +4,7 @@
 // 2) however, there are some exceptions to the above definition
 object Primitives {
 
-    def toInt(str: String): Option[Int] = {
+    def toInt(str: String): Option[Int] = {        // return a Option[Int] object (i.e. could be Some[Int] or None)
         try {
             Some(Integer.parseInt(str.trim))       // return a Some[Int] object
         } catch {
@@ -38,14 +38,14 @@ object Primitives {
         val symbols = Symbol("Symbol string")
         println(symbols)
 
-        // 3) Option[T]/None[T]/Some[T]: the latter two extend Option[T]:
+        // 3) None/Some[T] extend Option[T]:
         //    used to avoid problems you encounter when dealing with null values returned from functions
-        // ex1.
+        // ex1. toInt() returns a Option[Int]
         toInt("123") match {
             case Some(x) => println(x)
             case None    => println("None object")
         }
-        // ex2. Map.get() returns Option[T] which is either Some[T] or None
+        // ex2. Map.get() returns Option[T] (i.e. Some[T] or None)
         val myMap = Map(1 -> "one", 2 -> "two")
         def getMapValue(x: Int): String = myMap.get(x) match {
             case Some(key) => "Found in myMap: " + key
