@@ -2,6 +2,21 @@
 // 2) return a function
 object HigherOrderFunctions {
     def main(args: Array[String]) {
+        // 0) closure: storing a function[a] together with an environment
+        def startAt1(x: Int): (Int => Int) = {
+            def incrementBy(y: Int): Int = {
+                return x + y
+            }
+            return incrementBy                // return a named function
+        }
+        def startAt2(x: Int): (Int => Int) = {
+            return (y: Int) => (x + y)        // return an anonymous function
+        }
+        val startAtOne1 = startAt1(1)         // create an incrementBy function object that starts at 1
+        val startAtOne2 = startAt2(1)         // create an incrementBy function object that starts at 1
+        println(startAtOne1(2))               // 3
+        println(startAtOne2(2))               // 3
+
         // 1) function composition: ex. applying function in sequence, ex. g.f(x) = g(f(x))
         //    f  : X -> Y
         //    g  : Y -> Z
