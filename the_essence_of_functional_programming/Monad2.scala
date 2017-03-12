@@ -41,6 +41,7 @@
 // 2) it can be accompanied by other functional programming constructs such as pattern matching
 // 3) it improves readability and clearness
 //    it really improves reasoning about the code and lowers the number of bugs
+//    the code has fewer if-branches, nested loops with off-by-one errors and callbacks
 
 object Monad2 {
     // model a monad with a generic trait that provides methods unit() and flatMap()
