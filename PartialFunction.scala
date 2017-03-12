@@ -37,7 +37,7 @@ object PartialFunction {
             case x if (x % 2 == 0) => "even"
         }
         // 2.1) isDefinedAt([value]): check if a value is defined
-        //                       isDefinedAt() is automatically defined
+        //      isDefinedAt() is automatically defined
         if (partialFunc.isDefinedAt(4)) {
             println(partialFunc(4))
             // println(partialFunc(5)) // it will throw scala.MatchError if value not defined 
