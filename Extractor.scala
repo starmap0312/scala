@@ -50,12 +50,12 @@ object Extractor {
         println(twice1)                          // prints 42 
         println(twice2)                          // prints 42 
 
-        // 2) unapply(): Int -> Option[Int]
+        // 2) unapply(): Int -> Option[Int], a partial function with some values undefined
         val Twice(x1) = 42                       // unapply/unmap 42 to its parameter value
         // is syntactic sugar for
         val x2: Int = Twice.unapply(42) match {
-            case Some(x) => x
-            case None    => throw new scala.MatchError(42)
+            case Some(x) => x                              // value 42 is defined (unmapped to 21)
+            case None    => throw new scala.MatchError(42) // value 41 is undefined
         }
         println(x1)                             // prints 21
         println(x2)                             // prints 21
@@ -65,7 +65,8 @@ object Extractor {
 
         // unapply() used in pattern matching
         42 match {
-            case Twice(x) => Console.println(x)  // i.e. val Twice(x) = 42, so it prints 21
+            case Twice(x) => Console.println(x)  // constructor/extractor pattern 
         }
+        // i.e. val Twice(x) = 42, so it prints 21
     }
 }

@@ -1,5 +1,6 @@
 // Function is defined for every value of a given type
 // PartialFunction is only defined for certain value of a given type
+//   it may throw exception for some passed-in values or return an Option(None/Some) object
 // f: X' -> Y, where X' < X
 // 1) it is a unary function: i.e. f(x)
 // 2) its domain does not necessarily include all values of type X
