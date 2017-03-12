@@ -24,7 +24,7 @@
 //   2) right-identity law: m.flatMap(apply)        == m
 //   3) associativity law : m.flatMap(f).flatMap(g) == m.flatMap(x => f(x).flatMap(g))
 // 
-// Generic monad vs. Concrete monad
+// Example: Generic monad vs. Concrete monad
 // 1) generic monad : concept of monad
 // 2) concrete monad: implement the two functions, actually doing something, ex. IO monad
 // ex. generic monad:
@@ -36,6 +36,11 @@
 //     -------------- 
 //     apply  :  User => Option[User]
 //     flatMap: (User => Option[User]) => Option[User]
+// Why define and use Monads?
+// 1) we can chain operations and manipulate data using map, flatMap, filter etc.
+// 2) it can be accompanied by other functional programming constructs such as pattern matching
+// 3) it improves readability and clearness
+//    it really improves reasoning about the code and lowers the number of bugs
 
 object Monad2 {
     // model a monad with a generic trait that provides methods unit() and flatMap()
