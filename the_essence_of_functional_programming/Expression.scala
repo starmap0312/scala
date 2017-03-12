@@ -42,22 +42,22 @@ object Expression {
     //      so the if-then-else branches can be ommited
     def eval3(expr: Expr): Option[Int] = expr match {
         case Num(n)    => Some(n)
-        case Neg(e)    => eval2(e).flatMap(
+        case Neg(e)    => eval3(e).flatMap(
             (v: Int) => Some(-v)
         )
-        case Add(e1, e2) => eval2(e1).flatMap(
+        case Add(e1, e2) => eval3(e1).flatMap(
             (v1: Int) => {
-                eval2(e2).flatMap(
+                eval3(e2).flatMap(
                     (v2: Int) => Some(v1 + v2)
                 )
             }
         )
-        case Div(e1, e2) => eval2(e2).flatMap(
+        case Div(e1, e2) => eval3(e2).flatMap(
             (v2: Int) => {
                 if (v2 == 0) {
                     None
                 } else {
-                    eval2(e1).flatMap(
+                    eval3(e1).flatMap(
                         (v1: Int) => Some(v1 / v2)
                     )
                 }
