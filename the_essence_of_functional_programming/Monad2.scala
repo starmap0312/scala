@@ -12,7 +12,7 @@
 // Scala doesn’t come with a built-in monad type (unlike Haskell), we need to model monad ourselves
 //   there is no actual monad type class in plain Scala
 //     i.e. constructs such as List, Option, Future etc. don’t extend any special Monad trait
-//   this means that they are not obligated to provide us with methods unit() and flatMap()
+//   this means that they are not obligated to provide us with methods unit/apply() and flatMap()
 //   the obligation is developer's responsibility
 // Monad laws: monad must satisfy three laws
 // Given:
@@ -20,13 +20,22 @@
 //   m: a monad instance (holding some value)
 //   f and g: functions of type (Int => M[Int])
 // The Laws:
-//   1) left-identity law : unit(x).flatMap(f) == f(x)
-//   2) right-identity law: m.flatMap(unit) == m
+//   1) left-identity law : apply(x).flatMap(f)     == f(x)
+//   2) right-identity law: m.flatMap(apply)        == m
 //   3) associativity law : m.flatMap(f).flatMap(g) == m.flatMap(x => f(x).flatMap(g))
 // 
 // Generic monad vs. Concrete monad
 // 1) generic monad : concept of monad
 // 2) concrete monad: implement the two functions, actually doing something, ex. IO monad
+// ex. generic monad:
+//     --------------
+//     apply  :  A => M[A]           
+//     flatMap: (A => M[B]) => M[B]  
+//
+//     concrete monad:
+//     -------------- 
+//     apply  :  User => Option[User]
+//     flatMap: (User => Option[User]) => Option[User]
 
 object Monad2 {
     // model a monad with a generic trait that provides methods unit() and flatMap()
