@@ -1,4 +1,4 @@
-object Evaluation {
+object Expression {
     abstract class Expr
     case class Num(x: Int) extends Expr
     case class Neg(x: Expr) extends Expr
