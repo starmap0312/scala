@@ -1,9 +1,11 @@
-// reduce f e . map g = reduce (λ x y → f (g x) y) e
-// ex1.
-//   map f . map g = map (f . g)
-// ex2.
-//   for any value x and y, and functions h, f, and g, if h (f x y) = g x (h y), then we have
-//   h . reduce f e = reduce g (h e)
+// Composition Theorem:
+//   reduce(f, a) . map(g) = reduce( (x, y) => f(g(x), y), a )
+//   1) special case:
+//      map(f) . map(g) = map(f . g)
+//   2) special case:
+//      for any value x and y, and functions h, f, and g
+//      if h(f(x, y)) = g(x, h(y)),
+//      then h . reduce(f, a) = reduce(g, h(a))
 
 object CompositionTheorem {
 
@@ -53,5 +55,13 @@ object CompositionTheorem {
         println(sum(stream))
         println(sumSquare1(stream))
         println(sumSquare2(stream))
+
+        // example3: map(f) . map(g) = map(f . g)
+        def f = (x: Int) => x + 1
+        def g = (x: Int) => x + 2
+        val map_f_compose_map_g = map(f) compose map(g) 
+        val map_f_compose_g     = map(f compose g)
+        println(map_f_compose_map_g(stream).toList)
+        println(map_f_compose_g(stream).toList)
     }
 }
