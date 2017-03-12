@@ -38,8 +38,8 @@ object Evaluation {
     }
 
     // 2.2) write as apply() and flatMap() methods
-    //   as Option is a monad, i.e. defined with apply() and flatMap() methods,
-    //   so the if-then-else branches can be ommited
+    //      as Option is a monad, i.e. defined with apply() and flatMap() methods,
+    //      so the if-then-else branches can be ommited
     def eval3(expr: Expr): Option[Int] = expr match {
         case Num(n)    => Some(n)
         case Neg(e)    => eval2(e).flatMap(
