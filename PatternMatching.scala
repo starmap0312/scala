@@ -18,10 +18,10 @@ object PatternMatching {
     // match list
     def matchList[T](list: List[T]) = list match {
         case Nil        => ("value pattern matched: Nil")           // the empty list object
-        case x::Nil     => ("typed pattern matched: x::Nil")        // a single-element list 
-        case List(x)    => ("Constructor pattern matched: List(x)") // a single-element list (same as above)
-        case 1::2::cs   => ("typed pattern matched: 1::2::cs")      // a list object starting with 1 then 2 
-        case x::xs      => ("typed pattern matched: x::xs")         // at-least-one-element list
+        case x::Nil     => ("value pattern matched: x::Nil")        // a single-element list 
+        case List(x)    => ("constructor pattern matched: List(x)") // a single-element list (same as above)
+        case 1::2::cs   => ("value pattern matched: 1::2::cs")      // a list object starting with 1 then 2 
+        case x::xs      => ("constructor pattern matched: x::xs")   // at-least-one-element list
         case _          => ("nothing matched")
     }
 
@@ -36,9 +36,9 @@ object PatternMatching {
         // example 2: match List object
         println(matchList(Nil))
         println(matchList(List(1)))
-        println(matchList(List(1, 2)))
-        println(matchList(List(3, 4)))
-        println(matchList(List(5, 6, 7, 8, 9)))
+        println(matchList(List(2)))
+        println(matchList(List(1, 2, 3)))
+        println(matchList(List(1, 3, 4)))
 
         // example 3: pattern matching case object (singleton)
         trait Work
