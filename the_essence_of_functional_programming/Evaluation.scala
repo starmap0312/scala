@@ -13,6 +13,7 @@ object Evaluation {
     }
 
     // example2
+    // 2.1) write as if-then-else branches
     def eval2(expr: Expr): Option[Int] = expr match {
         case Num(n)    => Some(n)
         case Neg(e)    => eval2(e) match {
@@ -36,6 +37,34 @@ object Evaluation {
         }
     }
 
+    // 2.2) write as apply() and flatMap() methods
+    //   as Option is a monad, i.e. defined with apply() and flatMap() methods,
+    //   so the if-then-else branches can be ommited
+    def eval3(expr: Expr): Option[Int] = expr match {
+        case Num(n)    => Some(n)
+        case Neg(e)    => eval2(e).flatMap(
+            (v: Int) => Some(-v)
+        )
+        case Add(e1, e2) => eval2(e1).flatMap(
+            (v1: Int) => {
+                eval2(e2).flatMap(
+                    (v2: Int) => Some(v1 + v2)
+                )
+            }
+        )
+        case Div(e1, e2) => eval2(e2).flatMap(
+            (v2: Int) => {
+                if (v2 == 0) {
+                    None
+                } else {
+                    eval2(e1).flatMap(
+                        (v1: Int) => Some(v1 / v2)
+                    )
+                }
+            }
+        )
+    }
+
     def main(args: Array[String]) {
         // example1: only 3 operators: Num/Neg/Add
         val expr1: Expr = Add(Neg(Num(1)), Add(Neg(Num(2)), Neg(Num(3))))
@@ -44,11 +73,17 @@ object Evaluation {
         println("Evaluation = " + eval1(expr1))
 
         // example2: 4 operators: Num/Neg/Add/Div
+        // 2.1) write as if-then-else branches
         //   to add the Div operator, we can make eval() become a partial function
         //   ex. for inputs of divided by 0, the function needs to map to None (i.e. undefined)
         //   i.e. the funciton returns a Option(None/Some) object
         println("Evaluation = " + eval2(expr1))
         println("Evaluation = " + eval2(expr2))
         println("Evaluation = " + eval2(expr3))
+
+        // 2.2) write as apply() and flatMap() methods
+        println("Evaluation = " + eval3(expr1))
+        println("Evaluation = " + eval3(expr2))
+        println("Evaluation = " + eval3(expr3))
     }
 }
