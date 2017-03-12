@@ -12,10 +12,14 @@
 //
 // definition of a monad:
 // 1) a type constructor T 
-// 2) operation return (also called unit)
+// 2) operation identity:
+//    unit(): in Scala
+//    return: in Haskell
 //    unary return operation takes a value from a plain type (x)
 //    puts it into a container using the constructor T, creating a monadic value (with type T x)
-// 3) operation bind
+// 3) operation bind:
+//    flatMap(): in Scala
+//    >>=      : in Haskell
 //    binary bind operation takes two arguments:
 //      a monadic value with type T x 
 //      a function (x -> T y) that can transform the value
