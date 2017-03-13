@@ -24,10 +24,8 @@
 // The Laws:
 //   1) left-identity law : apply(x).flatMap(f)     == f(x)
 //      i.e. apply(x) does not have side effect 
-//           apply(x).flatMap(f) should be equavalent to f(x)
 //   2) right-identity law: m.flatMap(apply)        == m
-//      i.e. unwrap/unapply m to x, and then apply(x) should be equavalent to m
-//           it does not change anything
+//      i.e. unapply m to x and then apply(x) should not change anything
 //   3) associativity law : m.flatMap(f).flatMap(g) == m.flatMap(x => f(x).flatMap(g))
 //      i.e. similar to function composition: f(g(x)) == (f . g)(x)
 //           unwrap/unapply m to x, and then f(x), and then unwrap/unapply f(x) to y, and then g(y)
@@ -73,27 +71,70 @@ object Monad2 {
         //   M[A] ----------------------> M[M[B]] --------> M[B]
         // flatMap() is more powerful than map(): it gives us ability to chain operations together 
         def flatMap[B](f: A => M[B]): M[B]
+
+        // apply([object]): A => M[A]
+        //   it simply performs the wrapping part, like a monad constructor
+        def apply[A](x: A): M[A]
+        // it's better if we can define method apply() outside trait M[A]
+        //   because we don’t want to invoke it upon existing monadic object: ex. myMonad.apply("myBook")
+        //   this does not make much sense
     }
 
-    // apply([object]): A => M[A]
-    //   it simply performs the wrapping part, like a monad constructor
-    def apply[A](x: A): M[A]
-    // why we define method apply() outside trait M[A]? 
-    //   because we don’t want to invoke it upon existing monadic object: ex. myMonad.apply("myBook")
-    //   this does not make much sense
-
-    // ex. M is Option and A is Int
-    //     apply(): (Int => Option[Int]) 
-    //     flatMap([function]): (Option[Int] => Option[Option[Int]]) => Option[Int] 
-    //       [function]: Option[Int] => Option[Option[Int]]
-    //     in other words,
-    //                 (Option[Int] => Option[Option[Int]])                     flattened
-    //     Option[Int] -----------------------------------> Option[Option[Int]] --------> Option[Int]
-
-    // m map g = flatMap(x => apply(g(x)))
-
     def main(args: Array[String]) {
-        // example1: Option
-        //   a construct used to avoid null pointers in Scala (Maybe in Haskell)
+        // Monad laws
+        // 1) Left identity
+        //      if we put a value x in a default context with apply(), then fed into a function by using flatMap()
+        //      it is the same as just applying the function to value x 
+        //      i.e. apply(x).flatMap(f) == f(x)
+        // 1.1) Option:
+        val x1 = 3
+        def f1(x: Int) = Option.apply(x + 1)  // Some(4)
+        println(Option.apply(x1).flatMap(f1)) // Some(4)
+        println(f1(x1))
+        // 1.2) List
+        val x2 = 3
+        def f2(x: Int) = List.apply(x - 1, x, x + 1)
+        println(List.apply(x2).flatMap(f2))   // List(2, 3, 4)
+        println(f2(x2))                       // List(2, 3, 4)
+
+        // 2) Right identity
+        //    if a monadic value m is fed to apply() using flatMap(), the result is the original monadic value
+        //    i.e. m.flatMap(apply) == m
+        // 2.1) Option:
+        val m1 = Option(3)
+        println(m1.flatMap(Option.apply(_)))     // Some(3)
+        println(m1)                              // Some(3)
+        // 2.2) List:
+        val m2 = List(2, 3, 4)
+        println(m2.flatMap(List.apply(_)))          // List(2, 3, 4)
+        println(m2)                                 // List(2, 3, 4)
+
+        // 3) Associativity
+        //    if we have a chain of monadic function applications with flatMap()
+        //    it does not matter how they are nested
+        //    i.e. (m.flatMap(f)).flatMap(g) == m.flatMap({ x => f(x).flatMap(g) })
+        // 3.1) Option:
+        val m3 = Option(2)
+        def f3(x: Int) = Option(x + 1)
+        def g3(x: Int) = if (x % 2 == 0) Some(x / 2) else None
+        println(m3.flatMap(f3).flatMap(g3))                // None 
+        println(m3.flatMap((x: Int) => f3(x).flatMap(g3))) // None
+        println(m3.flatMap(f3(_).flatMap(g3)))             // None
+        // 3.2) List:
+        val m4 = List(3)
+        def f4(x: Int) = List(x - 1, x, x + 1)
+        def g4(x: Int) = List(x * 2, x * 3)
+        println(m4.flatMap(f4).flatMap(g4))                // List(4, 6, 6, 9, 8, 12)
+        println(m4.flatMap((x: Int) => f4(x).flatMap(g4))) // List(4, 6, 6, 9, 8, 12)
+        println(m4.flatMap(f4(_).flatMap(g4)))             // List(4, 6, 6, 9, 8, 12)
+
+        // Option: a construct used to avoid null pointers in Scala (Maybe in Haskell)
+        // ex. M is Option and A is Int
+        //     apply(): (Int => Option[Int]) 
+        //     flatMap([function]): (Option[Int] => Option[Option[Int]]) => Option[Int] 
+        //       [function]: Option[Int] => Option[Option[Int]]
+        //     in other words,
+        //                 (Option[Int] => Option[Option[Int]])                     flattened
+        //     Option[Int] -----------------------------------> Option[Option[Int]] --------> Option[Int]
     }
 }

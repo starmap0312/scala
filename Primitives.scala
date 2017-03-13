@@ -73,8 +73,8 @@ object Primitives {
         printSeq(7, 8, 9)                        // WrappedArray(7, 8, 9)
 
         // 5) new operator
-        class Foo { }
-        object Foo {
+        class Foo { } // class
+        object Foo {  // companion object: static members/methods
             def apply() = 7
         }
         println(new Foo)                         // Main$Foo$2@d59970a ... class's constructor
