@@ -1,7 +1,32 @@
-// use of {}:
-// 1) {} indicates a block of code, which is composed of multiple statements and declarations
-//    its value is that of the last statement
-// 2) however, there are some exceptions to the above definition
+// 1) use of {}:
+//    a) {} indicates a block of code, which is composed of multiple statements and declarations
+//       its value is that of the last statement
+//    b) however, there are some exceptions to the above definition
+// 2) new operator:
+//    a) use new when you want to refer to a class's own constructor
+//       ex.
+//         class Foo { }
+//         val foo = new Foo
+//    b) don't use new if you are referring to the companion object's apply method
+//       ex.
+//         class Foo { }
+//         object Foo {
+//             def apply() = new Foo
+//         }
+//       both of these are legal
+//         val foo1 = Foo()
+//         val foo2 = new Foo
+//    c) if you've made a case class
+//       ex.
+//         case class Foo()
+//       Scala secretly creates a companion object for you, turning it into this:
+//         class Foo { }
+//         object Foo {
+//             def apply() = new Foo
+//         }
+//       so you can do
+//         foo = Foo()
+
 object Primitives {
 
     def main(args: Array[String]) {
@@ -46,5 +71,13 @@ object Primitives {
             println(arg)
         }
         printSeq(7, 8, 9)                        // WrappedArray(7, 8, 9)
+
+        // 5) new operator
+        class Foo { }
+        object Foo {
+            def apply() = 7
+        }
+        println(new Foo)                         // Main$Foo$2@d59970a ... class's constructor
+        println(Foo())                           // 7                  ... companion object's apply() method
     }
 }
