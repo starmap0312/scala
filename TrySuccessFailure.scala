@@ -3,11 +3,11 @@ import scala.util.{Try, Success, Failure}
 object TrySuccessFailure {
 
     def bad(num: Int): Try[Int] = {
-        Try(                                 // return object will be wrapped in Success or Failure
+        Try(                                 // return object wrapped in Success or Failure
             if (num == 3) {
-                num                          // return Success[Int]
+                num                          // Int value, wrapped by Success[Int]
             } else {
-                throw new Exception("Boom!") // return Failure[Exception]
+                throw new Exception("Boom!") // throw an Exception, wrapped by Failure[Exception]
             }
         )
     }

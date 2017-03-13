@@ -26,9 +26,9 @@ object CaseClass2 {
     type Environment = (String => Int)
 
     def eval(tree: Tree, env: Environment): Int = tree match {
-        case Sum(x, y) => eval(x, env) + eval(y, env)          // typed pattern
-        case Var(x)    => env(x)                               // typed pattern
-        case Const(x)  => x                                    // typed pattern
+        case Sum(x, y) => eval(x, env) + eval(y, env)          // constructor pattern
+        case Var(x)    => env(x)                               // constructor pattern
+        case Const(x)  => x                                    // constructor pattern
     }
 
     def main(args: Array[String]) {
