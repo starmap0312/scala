@@ -3,20 +3,20 @@
 // 2) [generator] if [condition]: a filter
 // 3) multiple generators is conceptually similar to a nested loop (first/outmost generator varies slower)
 // 4) for (x <- e1; y <- e2 if f; z <- e4) yield {}
-//    can be written as:
+//    (can be written as)
 //    for {
 //        x <- e1
 //        y <- e2 if f
 //        z <- e4
 //    } yield {}
 // 5) for (x <- e1) yield e2
-//    is translated to:
+//    (is translated to)
 //    e1.map(x => e2)
 // 6) for (x <- e1 if f) yield e2
-//    is translated to:
+//    (is translated to)
 //    for (x <- e1.filter(x => f)) yield e2
 // 7) for (x <- e1; y <- e2) yield e4
-//    is translated to:
+//    (is translated to)
 //    e1.flatMap(x => for (y <- e2) yield e4)
 // 8) for-comprehension can be used for any type whose map(), flatMap() and filter() are defined
 
