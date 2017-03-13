@@ -62,5 +62,19 @@ object CaseClass {
                 case NoWork => println("value pattern matched: NoWork")
             }
         }
+
+        // example 3: case class of container types
+        case class Strings(data: List[String])
+        case class StringMap(data: Map[String, String])
+        def printStrings(strings: Strings): Unit = {
+            println(strings.data)
+        }
+        def printStringMap(strings: StringMap): Unit = {
+            println(strings.data)
+        }
+        printStrings(Strings(List("one", "two", "three")))                         // List(one, two, three)
+        //printStrings(Strings(List(1, 2, 3)))                                     // compile-time error: type mismatch
+        printStringMap(StringMap(Map("one" -> "1", "two" -> "2", "three" -> "3"))) // Map(one -> 1, two -> 2, three -> 3)
+        //printStringMap(StringMap(Map("one" -> 1, "two" -> 2, "three" -> 3)))     // compile-time error: type mismatch
     }
 }
