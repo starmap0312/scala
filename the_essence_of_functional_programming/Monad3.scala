@@ -116,11 +116,21 @@ object Monad3 {
         println(List(1, 2, 3).map(_ + 3)) // List(4, 5, 6)
         println(List(1, 2, 3).flatMap(_ => Nil))    // List()
         println(Nil.map(_ => List(1, 2, 3)))        // List()
-        //    (use of for-in notation)
-        val list = for {
-            n <- List(1, 2)
+        // 4) List comprehensions: a syntactic sugar for binding monads
+        //    for-in construct
+        val list1 = for {
+            n <- List(1, 2, 3, 4) if (n % 2 == 0)
             c <- List('a', 'b')
         } yield (n, c)
-        println(list)
+        // (is a syntactic sugar for)
+        val list2 = List(1, 2, 3, 4).filter(
+             _ % 2 == 0
+        ).flatMap(
+            (n: Int) => List('a', 'b').map(
+                (c: Char) => (n, c)
+            )
+        )
+        println(list1)                     // List((2,a), (2,b), (4,a), (4,b))
+        println(list2)                     // List((2,a), (2,b), (4,a), (4,b))
     }
 }
