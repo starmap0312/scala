@@ -113,8 +113,14 @@ object Monad3 {
         println(Some(4).flatMap(half))    // Some(2)
         println(Some(16).flatMap(half).flatMap(half).flatMap(half)) // Some(2)
         //    ex2. List is a Monad
-        println(List(1, 2, 3).map(x: Int => x + 3)) // List(4, 5, 6)
+        println(List(1, 2, 3).map(_ + 3)) // List(4, 5, 6)
         println(List(1, 2, 3).flatMap(_ => Nil))    // List()
         println(Nil.map(_ => List(1, 2, 3)))        // List()
+        //    (use of for-in notation)
+        val list = for {
+            n <- List(1, 2)
+            c <- List('a', 'b')
+        } yield (n, c)
+        println(list)
     }
 }
