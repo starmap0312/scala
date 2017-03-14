@@ -4,6 +4,8 @@
 //   ex.: Option/List/IO/Set/Future are monads (note: Future breaks the referential transparency though)
 //   1) Option(a) values represent computations that might have failed
 //   2) List(a) values represent computations that have several results (non-deterministic computations)
+//      ex. 5 is deterministic
+//      but List(1, 3, 5) contains several values, we can view it as many values at the same time
 //   3) IO(a) values represent values that have side-effects, etc.
 // Monad Operations: apply() and flatMap()
 //   1) apply([object]):      A => M[A]          ... also called identity (return in Haskell)

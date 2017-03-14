@@ -12,7 +12,7 @@ object PatternMatching {
         case "two"     => "value pattern matched: " + "two"
         case x: Int    => "typed pattern matched: " + "x: Int" 
         case x: Double => "typed pattern matched: " + "x: Double"
-        case _         => "nothing matched      : " + "_"
+        //case _       => "nothing matched" (throw scala.MatchError at runtime)
     }
 
     // match list
@@ -22,7 +22,7 @@ object PatternMatching {
         case List(x)    => ("constructor pattern matched: List(x)") // a single-element list (same as above)
         case 1::2::cs   => ("value pattern matched: 1::2::cs")      // a list object starting with 1 then 2 
         case x::xs      => ("constructor pattern matched: x::xs")   // at-least-one-element list
-        case _          => ("nothing matched")
+        case _          => ("all the other cases matched")          // for all the other cases
     }
 
     def main(args: Array[String]) {
@@ -31,7 +31,7 @@ object PatternMatching {
         println(matchNumber("two"))
         println(matchNumber(3))
         println(matchNumber(4.0))
-        println(matchNumber("N/A"))
+        // println(matchNumber("N/A")) // throw scala.MatchError at runtime
 
         // example 2: match List object
         println(matchList(Nil))

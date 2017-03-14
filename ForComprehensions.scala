@@ -12,12 +12,22 @@
 // 5) for (x <- e1) yield e2
 //    (is translated to)
 //    e1.map(x => e2)
-// 6) for (x <- e1 if f) yield e2
+// 6) for (x <- e1; y <- e2) yield e3
 //    (is translated to)
-//    for (x <- e1.filter(x => f)) yield e2
-// 7) for (x <- e1; y <- e2) yield e4
+//    e1.flatMap(
+//        x => e2.map(
+//            y => yield e3
+//        )
+//    )
+// 7) for (x <- e1 if f) yield e2
 //    (is translated to)
-//    e1.flatMap(x => for (y <- e2) yield e4)
+//    for (x <- e1.filter(f)) yield e2
+//    or
+//    e1.filter(
+//        f
+//    ).flatMap(
+//        x => yield e2
+//    )
 // 8) for-comprehension can be used for any type whose map(), flatMap() and filter() are defined
 
 object ForComprehensions {
