@@ -24,13 +24,13 @@
 //    ex. List is a Functor
 //        fmap:: (A -> B) -> (List[A] -> List[B])
 //          fmap(f)(List(1, 2, 3))  = List(f(1), f(2), f(3))
-//          fmap(f)(List([]))       = List([])
+//          fmap(f)(Nil)            = Nil
 //    Functor Laws:
 //    a) fmap(id) = id, where id: \x -> x is an identity function
 //       ex1. (fmap(id))(Some(3))       = Some(id(3))               = Some(3)       = id(Some(3))
 //            (fmap(id))(None)                                      = None          = id(None)
 //       ex2. (fmap(id))(List(1, 2, 3)) = List(id(1), id(2), id(3)) = List(1, 2, 3) = id(List(1, 2, 3))
-//            (fmap(id))(List([]))                                  = List([])      = id(List([]))
+//            (fmap(id))(Nil)                                       = Nil           = id(Nil)
 //    b) fmap(f . g)     = fmap(f) . fmap(g)
 //       fmap(f . g))(m) = (fmap(f))((fmap(g))(m)), where m: M is a Functor
 //       i.e. composing two functions and then mapping the resulting function over a functor
@@ -69,9 +69,22 @@
 //        flatMap: M[A] -> (A -> M[B]) -> M[B]
 //    ex.
 //    object Monad Option:
-//        apply(x) = Some(x)  
-//        None.flatMap(f) = None,    where f: A -> M[B]
-//        Some(x).flatMap(f) = f(x), where f: A -> M[B]
+//        apply(x)           = Some(x)  
+//        None.flatMap(f)    = None,    where f: A -> M[B]
+//        Some(x).flatMap(f) = f(x),    where f: A -> M[B]
+//        fail(_)            = None                        // used in pattern matching (when no case matched)          
+//    ex.
+//    object Monad List:
+//        apply(x)           = List(x)
+//        xs.flatMap(f)      = flatten((fmap(f))(xs))
+//        fail(_)            = Nil                   // used in pattern matching (when no case matched)
+//    (note: Nil is the equivalent of None, it signifies the absence of result)
+//    example:
+//      List(1, 2, 3).flatMap(x => List(x, -x)) = List(3, -3, 4, -4, 5, -5)
+//      x => List(x, -x)     ...... a function that returns a non-deterministic value
+//    example:
+//      Nil.flatMap(x => List(x, -x))           = Nil
+
 object Monad3 {
     def main(args: Array[String]) {
         // 1) Functors: map() ... fmap() in Haskell
@@ -80,7 +93,7 @@ object Monad3 {
         //      Some(2).map(x => x + 3) == Some(5)
         //      None.map(x => x + 3)    == None
         //    ex2. List is a Functor
-        println(List(1, 2, 3).map( x => x + 3)) // List(4, 5, 6)
+        println(List(1, 2, 3).map(x => x + 3)) // List(4, 5, 6)
         //    ex3. Function is a Functor
         //      val f = (x: Int) => x + 3
         //      val g = (y: Int) => y + 2
@@ -99,5 +112,9 @@ object Monad3 {
         println(Some(3).flatMap(half))    // None
         println(Some(4).flatMap(half))    // Some(2)
         println(Some(16).flatMap(half).flatMap(half).flatMap(half)) // Some(2)
+        //    ex2. List is a Monad
+        println(List(1, 2, 3).map(x: Int => x + 3)) // List(4, 5, 6)
+        println(List(1, 2, 3).flatMap(_ => Nil))    // List()
+        println(Nil.map(_ => List(1, 2, 3)))        // List()
     }
 }
