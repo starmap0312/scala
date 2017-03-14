@@ -24,8 +24,11 @@
 // The Laws:
 //   1) left-identity law : apply(x).flatMap(f)     == f(x)
 //      i.e. apply(x) does not have side effect 
+//      ex. for IO, apply() makes an I/O action no side-effects but just presents a value as its result
 //   2) right-identity law: m.flatMap(apply)        == m
 //      i.e. unapply m to x and then apply(x) should not change anything
+//      ex. for Option, it doesn't introduce any failure
+//      ex. for List, it doesn't introduce any extra non-determinism
 //   3) associativity law : m.flatMap(f).flatMap(g) == m.flatMap(x => f(x).flatMap(g))
 //      i.e. similar to function composition: f(g(x)) == (f . g)(x)
 //           unwrap/unapply m to x, and then f(x), and then unwrap/unapply f(x) to y, and then g(y)
@@ -85,7 +88,8 @@ object Monad2 {
         // 1) Left identity
         //      if we put a value x in a default context with apply(), then fed into a function by using flatMap()
         //      it is the same as just applying the function to value x 
-        //      i.e. apply(x).flatMap(f) == f(x)
+        //      i.e. apply(x).flatMap(f) == f(x) ... (return >=> f) == f
+        //                                            f . id        == f
         // 1.1) Option:
         val x1 = 3
         def f1(x: Int) = Option.apply(x + 1)  // Some(4)
@@ -99,20 +103,24 @@ object Monad2 {
 
         // 2) Right identity
         //    if a monadic value m is fed to apply() using flatMap(), the result is the original monadic value
-        //    i.e. m.flatMap(apply) == m
+        //    i.e. m.flatMap(apply) == m         ... (f >=> return) == f
+        //                                       ...  id . f        == f
         // 2.1) Option:
         val m1 = Option(3)
-        println(m1.flatMap(Option.apply(_)))     // Some(3)
-        println(m1)                              // Some(3)
+        println(m1.flatMap((x: Int) => Option.apply())) // Some(3)
+        println(m1.flatMap(Option.apply(_)))            // Some(3)
+        println(m1)                                     // Some(3)
         // 2.2) List:
         val m2 = List(2, 3, 4)
-        println(m2.flatMap(List.apply(_)))          // List(2, 3, 4)
-        println(m2)                                 // List(2, 3, 4)
+        println(m2.flatMap((x: Int) => List.apply(x)))  // List(2, 3, 4)
+        println(m2.flatMap(List.apply(_)))              // List(2, 3, 4)
+        println(m2)                                     // List(2, 3, 4)
 
         // 3) Associativity
         //    if we have a chain of monadic function applications with flatMap()
-        //    it does not matter how they are nested
-        //    i.e. (m.flatMap(f)).flatMap(g) == m.flatMap({ x => f(x).flatMap(g) })
+        //    for monads, the nesting of operations shouldn't matter
+        //    i.e. (m.flatMap(f)).flatMap(g) == m.flatMap(x => f(x).flatMap(g)) ... ((h >=> g) >=> f) == (h >=> (g >=> f))
+        //    i.e. (m.flatMap(f)).flatMap(g) == m.flatMap(f(_).flatMap(g))      ... f . (g . h)       == (f . g) . h
         // 3.1) Option:
         val m3 = Option(2)
         def f3(x: Int) = Option(x + 1)
