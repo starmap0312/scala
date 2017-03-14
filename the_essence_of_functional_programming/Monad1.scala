@@ -26,7 +26,7 @@
 //    it unwraps x and feeds it into function (x -> M y), creating a new monadic value
 //      which can be fed into the next bind operator
 //
-// the monad laws:
+// Monad Laws:
 //    it provides two functions which conform to three laws
 // 1) place a value into monadic context
 //    Scala's Option: Some()
@@ -38,7 +38,15 @@
 //    Java 8's Optional: flatMap()
 //
 // examples:
-// 1) List Monad: (List comprehension)
+// 1) Option Monad: a construct used to avoid null pointers in Scala (Maybe in Haskell)
+//    ex. M is Option and A is Int
+//      apply(): (Int => Option[Int]) 
+//      flatMap([function]): (Option[Int] => Option[Option[Int]]) => Option[Int] 
+//        [function]: Option[Int] => Option[Option[Int]]
+//      in other words,
+//                  (Option[Int] => Option[Option[Int]])                     flattened
+//      Option[Int] -----------------------------------> Option[Option[Int]] --------> Option[Int]
+// 2) List Monad: (List comprehension)
 //    create a List of the doubles of all odd numbers in the range from 1 to 4
 //      List(1, 2, ..., 4).filter(odd).flatMap(x => x * 2)
 //      (can be written as)
@@ -54,7 +62,7 @@
 //    List(1, 2, 3, 4) => List(List(1), List(), List(3), List()) => List(1, 3) => List(2, 6)
 //    the operations are chained such that if an operation returns a list, then the following operations are performed
 //      on every item in the list (like list.map([function]))
-// 2) I/O Monad:
+// 3) I/O Monad:
 //    while(true) {
 //        name <- getLine
 //        println("Welcome, " + name + "!")

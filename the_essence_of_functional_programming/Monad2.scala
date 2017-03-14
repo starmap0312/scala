@@ -11,6 +11,7 @@
 //   1) apply([object]):      A => M[A]          ... also called identity (return in Haskell)
 //      an operation that creates a monad M[A] from an object of type A
 //   2) flatMap([function]): (A => M[B]) => M[B] ... also called bind     (   >>= in Haskell)
+//      ex. List.flatMap(f) == flatten((fmap(f))(xs))
 // Monad Laws: monad must satisfy three laws
 //   Given:
 //     x: some value/object
@@ -90,16 +91,19 @@ object Monad2 {
         //      it is the same as just applying the function to value x 
         //      i.e. apply(x).flatMap(f) == f(x) ... (return >=> f) == f
         //                                            f . id        == f
-        // 1.1) Option:
+        // 1.1) Option Monad:
         val x1 = 3
         def f1(x: Int) = Option.apply(x + 1)  // Some(4)
         println(Option.apply(x1).flatMap(f1)) // Some(4)
         println(f1(x1))
-        // 1.2) List
+        // 1.2) List Monad:
         val x2 = 3
         def f2(x: Int) = List.apply(x - 1, x, x + 1)
         println(List.apply(x2).flatMap(f2))   // List(2, 3, 4)
         println(f2(x2))                       // List(2, 3, 4)
+        // 1.3) IO Monad:
+        //      IO.apply([action]) makes an I/O action that has no side-effects but just presents a value as its result
+        //      so this law holds for IO Monad
 
         // 2) Right identity
         //    if a monadic value m is fed to apply() using flatMap(), the result is the original monadic value
@@ -135,14 +139,5 @@ object Monad2 {
         println(m4.flatMap(f4).flatMap(g4))                // List(4, 6, 6, 9, 8, 12)
         println(m4.flatMap((x: Int) => f4(x).flatMap(g4))) // List(4, 6, 6, 9, 8, 12)
         println(m4.flatMap(f4(_).flatMap(g4)))             // List(4, 6, 6, 9, 8, 12)
-
-        // Option: a construct used to avoid null pointers in Scala (Maybe in Haskell)
-        // ex. M is Option and A is Int
-        //     apply(): (Int => Option[Int]) 
-        //     flatMap([function]): (Option[Int] => Option[Option[Int]]) => Option[Int] 
-        //       [function]: Option[Int] => Option[Option[Int]]
-        //     in other words,
-        //                 (Option[Int] => Option[Option[Int]])                     flattened
-        //     Option[Int] -----------------------------------> Option[Option[Int]] --------> Option[Int]
     }
 }
