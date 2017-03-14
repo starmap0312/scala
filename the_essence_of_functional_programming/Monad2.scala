@@ -29,6 +29,22 @@
 //      i.e. similar to function composition: f(g(x)) == (f . g)(x)
 //           unwrap/unapply m to x, and then f(x), and then unwrap/unapply f(x) to y, and then g(y)
 //             should be equavalent to unwrap/unapply m to x, and then f(x).flatMap(g)
+//      ex.
+//        (.)  : (B -> C) -> (A -> B) -> (A -> C)  
+//          f . g   = (\x -> f(g(x)))
+//        (<=<): (Monad M) => (B -> M[C]) -> (A -> M[B]) -> (A -> M[C])  
+//          f <=< g = (\x -> (g(x) >>= f))
+//      the law can be viewed as a law of compositions
+//        i.e. f <=< (g <=< h) is the same as (f <=< g) <=< h
+//   Revisit The Laws:
+//   1) left-identity law : f <=< return        == f
+//   2) right identity law: return <=< f        == f
+//   3) associativity law : f <=< (g <=< h)     == (f <=< g) <=< h
+//   Analogy to normal function:
+//   1) left-identity law : f . id              == f
+//   2) right identity law: id . f              == f
+//   3) associativity law : (f . g) . h         == f . (g . h)
+//
 // Example: Generic monad vs. Concrete monad
 // 1) generic monad : concept of monad
 // 2) concrete monad: implement the two functions, actually doing something, ex. IO monad
