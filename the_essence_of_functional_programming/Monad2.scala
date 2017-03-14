@@ -30,20 +30,24 @@
 //           unwrap/unapply m to x, and then f(x), and then unwrap/unapply f(x) to y, and then g(y)
 //             should be equavalent to unwrap/unapply m to x, and then f(x).flatMap(g)
 //      ex.
+//        Monad Law:
+//        (<<=): (Monad M) => (B -> M[C]) -> (A -> M[B]) -> (A -> M[C])  
+//                                (g <<= f)     == (\x -> (f(x) >>= g))
+//        Function Composition:
 //        (.)  : (B -> C) -> (A -> B) -> (A -> C)  
-//          f . g   = (\x -> f(g(x)))
-//        (<=<): (Monad M) => (B -> M[C]) -> (A -> M[B]) -> (A -> M[C])  
-//          f <=< g = (\x -> (g(x) >>= f))
-//      the law can be viewed as a law of compositions
-//        i.e. f <=< (g <=< h) is the same as (f <=< g) <=< h
+//                                  (g . f)     == (\x -> g(f(x)))
+//      the law can be viewed as a law of compositions:
+//                          h <<= (g <<= f)     == (h <<= g) <<= f
 //   Revisit The Laws:
-//   1) left-identity law : f <=< return        == f
-//   2) right identity law: return <=< f        == f
-//   3) associativity law : f <=< (g <=< h)     == (f <=< g) <=< h
+//   1) left-identity law : f <<= apply         == f
+//   2) right identity law: apply <<= f         == f
+//   3) associativity law : h <<= (g <<= f)     == (h <<= g) <<= f
+//             (f(x).flatMap(g)).flatMap(h)     == f(x).flatMap(x => g(x).flatMap(h))
 //   Analogy to normal function:
 //   1) left-identity law : f . id              == f
 //   2) right identity law: id . f              == f
-//   3) associativity law : (f . g) . h         == f . (g . h)
+//   3) associativity law : (h . g) . f         == h . (g . f)
+//                   (x => h(g(x))) . f         == h . (x => g(f(x)))              == h(g(f(x)))
 //
 // Example: Generic monad vs. Concrete monad
 // 1) generic monad : concept of monad
@@ -105,7 +109,7 @@ object Monad2 {
         // 1) Left identity
         //      if we put a value x in a default context with apply(), then fed into a function by using flatMap()
         //      it is the same as just applying the function to value x 
-        //      i.e. apply(x).flatMap(f) == f(x) ... (return >=> f) == f
+        //      i.e. apply(x).flatMap(f) == f(x) ... (apply >=> f) == f
         //                                            f . id        == f
         // 1.1) Option Monad:
         val x1 = 3
@@ -123,7 +127,7 @@ object Monad2 {
 
         // 2) Right identity
         //    if a monadic value m is fed to apply() using flatMap(), the result is the original monadic value
-        //    i.e. m.flatMap(apply) == m         ... (f >=> return) == f
+        //    i.e. m.flatMap(apply) == m         ... (f >=> apply)  == f
         //                                       ...  id . f        == f
         // 2.1) Option:
         val m1 = Option(3)
