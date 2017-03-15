@@ -22,9 +22,9 @@ object Composition {
         // 1) compose: makes a new function that composes two functions
         //    i.e. g(x) compose f(x) = g(f(x))
         def f(x: String): String = "f(" + x + ")"
-        def g(x: String): String = "g(" + x + ")"               // not an instance of Function1
+        def g(x: String): String = "g(" + x + ")"               // instance of Function1 not yet created
         //def g_of_f0: (String => String) = g.compose(f)        // compiler error: missing arguments for method g
-        def g_of_f0: (String => String) = (g _).compose(f)      // (g _) is an instance of Function1
+        def g_of_f0: (String => String) = (g _).compose(f)      // (g _) evaluates g, so creating an instance of Function1
         def g_of_f1: (String => String) = g _ compose f
         def g_of_f2: (String => String) = (g _) compose (f _)
         def g_of_f3(x: String): String  = g(f(x))
@@ -33,6 +33,7 @@ object Composition {
         println(g_of_f2("x"))
         println(g_of_f3("x"))
         println(g_of_f4("x"))
+
         // 2) andThen: it works like compose but in the reverse order
         //    i.e. g(x) andThen f(x) = f(g(x))
         //    def andThen[C](func: (B) => C): PartialFunction[A, C]
@@ -41,5 +42,11 @@ object Composition {
         def f_then_g2(x: String): String = g(f(x))
         println(f_then_g1("x"))
         println(f_then_g2("x"))
+
+        // 3) def [function] vs. val [funciton]
+        val f2: (String => String) = "f(" + _ + ")"
+        val g2: (String => String) = "g(" + _ + ")"
+        def g_of_f5: (String => String) = g2 compose f2         // g2 are an instance of Function1, no compiler error
+        println(g_of_f5("x"))
     }
 }

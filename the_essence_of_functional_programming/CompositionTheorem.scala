@@ -34,8 +34,8 @@ object CompositionTheorem {
 
         // example2: sumSquare([ 1, 7, 5, 8 ]) = 1² + 7² + 5² + 8² = 139
         // 2.1) use map(square) andThen sum() composition:
-        val sum = reduce(add, 0)
-        val sumSquare1 = sum compose map(square) // i.e. sumSquare1 = sum . map(square)
+        val sum = reduce(add, 0)                 // val sum evaluates reduce, creating an instance of Function1
+        val sumSquare1 = sum compose map(square) // which has compose() method, i.e. sumSquare1 = sum . map(square)
         // alternatively,
         //   val sumSquare1 = map(square) andThen sum
         // the above is a shorthand of
