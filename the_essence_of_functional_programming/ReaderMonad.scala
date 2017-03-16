@@ -23,6 +23,17 @@
 //      Reader(
 //        \config -> (unapply(f((unapply(m))(config))))(config)
 //      )
+//    i.e.
+//    m >>= f =
+//      Reader(
+//        \config -> (
+//            unapply(
+//                f(
+//                    (unapply(m))(config)
+//                )
+//            )
+//        )(config)
+//      )
 object ReaderMonad {
 
     def main(args: Array[String]) {
