@@ -31,17 +31,17 @@
 //             should be equavalent to unwrap/unapply m to x, and then f(x).flatMap(g)
 //      ex.
 //        Monad Law:
-//        (<<=): (Monad M) => (B -> M[C]) -> (A -> M[B]) -> (A -> M[C])  
-//                                (g <<= f)     == (\x -> (f(x) >>= g))
+//        (<=<): (Monad M) => (B -> M[C]) -> (A -> M[B]) -> (A -> M[C])  
+//                                (g <=< f)     == (\x -> (f(x) >>= g))
 //        Function Composition:
 //        (.)  : (B -> C) -> (A -> B) -> (A -> C)  
 //                                  (g . f)     == (\x -> g(f(x)))
 //      the law can be viewed as a law of compositions:
-//                          h <<= (g <<= f)     == (h <<= g) <<= f
+//                          h <=< (g <=< f)     == (h <=< g) <=< f
 //   Revisit The Laws:
-//   1) left-identity law : f <<= apply         == f
-//   2) right identity law: apply <<= f         == f
-//   3) associativity law : h <<= (g <<= f)     == (h <<= g) <<= f
+//   1) left-identity law : f <=< apply         == f
+//   2) right identity law: apply <=< f         == f
+//   3) associativity law : h <=< (g <=< f)     == (h <=< g) <=< f
 //             (f(x).flatMap(g)).flatMap(h)     == f(x).flatMap(x => g(x).flatMap(h))
 //   Analogy to normal function:
 //   1) left-identity law : f . id              == f
