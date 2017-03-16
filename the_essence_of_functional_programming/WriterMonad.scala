@@ -1,7 +1,8 @@
 // WriterMonad
+//   the writer monad encapsulates a value and a log
 // 1) half: Int -> Writer[Int, String]
 //    half(x) =
-//      (x / 2, log("half(" ++ show(x) ++ ") logged;"))
+//      apply(x / 2, log("half(" ++ show(x) ++ ") logged;"))
 // 2) apply(value, log) =
 //      Writer(value, log)
 //    apply(value) =
