@@ -120,7 +120,7 @@ object Primitives {
         // 8) Scala method
         //    syntax:
         //    def methodname(param1: Type1, param2: Type2) : returnType = { body }
-        def method1(arg1: String, arg2: Int) : String = {
+        def method1(arg1: String, arg2: Int): String = {
             return arg1 + arg2 + ",return string"  // if we use "return" keyword, we need to write the returnType
         }
         def method2(arg1: String, arg2: Int) = {

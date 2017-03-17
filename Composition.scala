@@ -23,7 +23,8 @@ object Composition {
         //    i.e. g(x) compose f(x) = g(f(x))
         def f(x: String): String = "f(" + x + ")"
         def g(x: String): String = "g(" + x + ")"               // instance of Function1 not yet created
-        //def g_of_f0: (String => String) = g.compose(f)        // compiler error: missing arguments for method g
+        //def g_of_f0: (String => String) = g compose f         // compiler error: missing arguments for method g
+        //   because compiler tries to call method g but it does not find its String argument
         def g_of_f0: (String => String) = (g _).compose(f)      // (g _) evaluates g, so creating an instance of Function1
         def g_of_f1: (String => String) = g _ compose f
         def g_of_f2: (String => String) = (g _) compose (f _)
@@ -44,8 +45,8 @@ object Composition {
         println(f_then_g2("x"))
 
         // 3) def [function] vs. val [funciton]
-        val f2: (String => String) = "f(" + _ + ")"
-        val g2: (String => String) = "g(" + _ + ")"
+        def f2: (String => String) = "f(" + _ + ")"
+        def g2: (String => String) = "g(" + _ + ")"
         def g_of_f5: (String => String) = g2 compose f2         // g2 are an instance of Function1, no compiler error
         println(g_of_f5("x"))
     }
