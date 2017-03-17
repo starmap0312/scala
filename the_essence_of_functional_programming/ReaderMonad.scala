@@ -7,28 +7,42 @@
 //   ex. when you want to perform the same computation with different values (coinfiguration/environment)
 //   ex. you need a database connection in every query function you execute
 //   ex. configuration options read from a file that are needed across a number of functions
-// Reader env a
-//   env: environment
-//   a: a value (or function) you create from that environment
+//   Reader is different because it's only field is a function
+//     you can use runReader() to get that function
+//     then you give this function some environment to get a value back (derived from the value encapsulated in Reader)
+// in Monad terms,
+// Reader(\env -> value)
+//   env  : environment
+//   value: a value (expression, function, etc.) you create from that environment
 // ex.
-//   reader = Monad.apply(5) :: Reader String Int    ...... create a Reader that takes in a String and returns an Int
-//   String: environment of the Reader
-//   Int   : one can use runReader to get the Int value out of the reader
-// runReader: (Reader env a) -> env -> a
-//   runReader takes in a (Reader env a) and an environment (env) and returns a value (a)
-// ex.
-//   (runReader reader) "some environment"  == 5
+//   reader = Reader(\env -> 5)
+//     Reader[String, Int]: create a Reader that encapsulates a function that takes in a String and returns an Int
+//     \env: String       : environment of the Reader
+//     5: Int             : one can use unapply to get the Int value 5 out of the reader
+//   unapply([Reader]):
+//     unwraps the reader to get a function: (Reader(\env -> value)) -> (\env -> value)
+//     unapply() takes in a Reader(\env -> value) and then an environment (env) and returns a value (value)
+//     i.e. (unapply(reader))("some environment")  == 5
 // Real Example:
-// 1) reader: Reader String String
+// 1) reader: Reader[String, String]
 //    reader = do
-//      name <- ask                      ...... ask: used to retrieve the environment
-//      return ("hello, " ++ name)       ...... a value created for the environment
-// 2) runReader:
-//    (runReader reader) "andy"             == "hello, andy"
-//    (runReader reader) "bob"              == "hello, bob"
-// 3) >>=:
-//    reader >>= func =
-//      Reader (\env -> runReader (func (runReader reader env)) env
+//      name <- ask                      ...... ask(): used to retrieve the environment
+//      return ("hello, " ++ name)       ...... return a value, which is created for that environment
+//    i.e.
+//    reader = Reader(\env -> "hello" ++ env)
+// 2) unapply:
+//    (unapply(reader))("andy")             == "hello, andy"
+//    (unapply(reader))("bob")              == "hello, bob"
+// 3) flatMap(>>=): pipe reader1 to a function to get another reader
+//    reader1 >>= func =
+//    Reader(
+//          \env -> (unapply(func(unapply(reader1))(env)))(env)
+//    )
+//    a) (unapply(reader1))      = (\env -> value1)
+//    b) (unapply(reader1))(env) = value1
+//    c) func(value1)            = reader2
+//    d) (unapply(reader2))(env) = value2
+//    reader >>= func = Reader(\env -> value2)
 object ReaderMonad {
 
     def main(args: Array[String]) {
