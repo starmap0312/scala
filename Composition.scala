@@ -23,7 +23,10 @@ object Composition {
         //    i.e. g(x) compose f(x) = g(f(x))
         def f(x: String): String = "f(" + x + ")"
         def g(x: String): String = "g(" + x + ")"               // instance of Function1 not yet created
-        //def g_of_f0: (String => String) = g compose f         // compiler error: missing arguments for method g
+        //def g_of_f0: (String => String) = g compose f
+        // compiler error: missing arguments for method g
+        //   because unapplied methods are only converted to functions when a function type is expected
+        //   we need to make this conversion explicit by writing `g _` or `g(_)` instead of `g`
         //   because compiler tries to call method g but it does not find its String argument
         def g_of_f0: (String => String) = (g _).compose(f)      // (g _) evaluates g, so creating an instance of Function1
         def g_of_f1: (String => String) = g _ compose f
