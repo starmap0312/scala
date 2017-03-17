@@ -116,5 +116,35 @@ object Primitives {
         }
         val greeter3 = new Greeter3()
         greeter3.SayHi()
+
+        // 8) Scala method
+        //    syntax:
+        //    def methodname(param1: Type1, param2: Type2) : returnType = { body }
+        def method1(arg1: String, arg2: Int) : String = {
+            return arg1 + arg2 + ",return string"  // if we use "return" keyword, we need to write the returnType
+        }
+        def method2(arg1: String, arg2: Int) = {
+            arg1 + arg2 + ",return string"         // syntax sugar: omit "return" keyword and let compiler infer returnType
+        }
+        // the compiler assumes that we want to return the value of the last statement
+        // so if we want to return from the middle of a method the return keyword is needed
+        println(method1("one,", 2))
+        println(method2("one,", 2))
+
+        // 9) infix notation
+        //    when calling methods that have either "none" or "single parameter"
+        //    a) the dot after the variable name and the parenthesis after the method name is optional
+        //    b) it can then be replaced with a whitespace
+        greeter3.SayHi()            // traditional
+        greeter3 SayHi()            // omit .
+        greeter3 SayHi              // omit ()
+        // note: we can also omit the parenthesis's when declaring methods that doesn’t have any parameters
+        def method3 = {
+             "return string"
+        }
+        def method4 = "return string"
+        // the convention is to omit the parenthesis when calling methods that don’t have any side effects
+        println(method3)
+        println(method4)
     }
 }
