@@ -79,5 +79,12 @@ object Primitives {
         }
         println(new Foo)                         // Main$Foo$2@d59970a ... class's constructor
         println(Foo())                           // 7                  ... companion object's apply() method
+
+        // 6) fixity
+        //    almost everything in Scala is read left to right, except for : (read right to left)
+        //    ex. def x: Int = 3
+        //        val x      = 1::2::Nil
+        println(1 + 2 :: Nil)                    // List(3)
+        println(Nil.::((1).+(2)))                // List(3)
     }
 }
