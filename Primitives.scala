@@ -86,5 +86,35 @@ object Primitives {
         //        val x      = 1::2::Nil
         println(1 + 2 :: Nil)                    // List(3)
         println(Nil.::((1).+(2)))                // List(3)
+
+        // 7) Scala class constructor
+        // 7.1) primary constructor
+        //      class' body is the primary constructor
+        //      class' parameter is just like a public final field in Java (i.e. val (immutable) and public)
+        class Greeter1(message: String) {
+            println("A greeter is being instantiated")
+            def SayHi() = println(message)
+        }
+        val greeter1 = new Greeter1("Hello Greeter1!") // A greeter is being instantiated
+        greeter1.SayHi()                           // Hello world!
+        // 7.2) auxiliary constructor
+        //      an auxiliary constructor must, on the first line of it’s body
+        //      it can call another auxiliary constructor declared before it or the primary constructor
+        class Greeter2(message: String, secondaryMessage: String) { // primary constructor
+            def this(message: String) = this(message, "")          // secondary constructor
+            def SayHi() = println(message + secondaryMessage)
+        }
+        val greeter2 = new Greeter2("Hello Greeter2!")
+        greeter2.SayHi()
+        // 7.3) abstract class
+        abstract class AbstractGreeter {
+            val message: String                 // only abstract classes can have declared but undefined members
+            def SayHi() = println(message)
+        }
+        class Greeter3 extends AbstractGreeter {
+            val message = "Hello Greeter3!"
+        }
+        val greeter3 = new Greeter3()
+        greeter3.SayHi()
     }
 }
