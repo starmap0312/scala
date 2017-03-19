@@ -82,7 +82,7 @@ object Expression {
         case Div(e1, e2) => eval4(e2).flatMap(
             (v2: Int) => {
                 if (v2 == 0) {
-                    Nil
+                    Nil                          // i.e. List.empty
                 } else {
                     eval4(e1).flatMap(
                         (v1: Int) => List(v1 / v2)
@@ -90,7 +90,7 @@ object Expression {
                 }
             }
         )
-        case Or(e1, e2) => eval4(e1):::eval4(e2)
+        case Or(e1, e2) => eval4(e1):::eval4(e2) // i.e. eval4(e1)++eval4(e2)
     }
 
     def main(args: Array[String]) {
