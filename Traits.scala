@@ -1,10 +1,10 @@
 // object
 // 1) object is a single instance of an anonymous class (singleton)
-//    automatically instantiated, access the object directly by name, no new keyword is needed
+//    automatically instantiated when first-time access, access the object directly by name, no new keyword is needed
 //    note: until it is accessed the first time it won’t get instantiated
 // 2) object's methods and fields are static, ex. object A.func() or A.x
-//    in class, there are static methods, not tied to instance data and accessible without instantiation
-//    not safe: ex. accidentally invoking class's global method or storing mutable data in class's global field
+//      if there are static methods in class (i.e. not tied to instance data and accessible without instantiation)
+//      then it is not safe (ex. accidentally invoking class's global method or storing mutable data in class's global field)
 // 3) object can have special methods: ex. apply(), unapply()
 // class
 //   defined once but can be instantiated an unlimited number of times
