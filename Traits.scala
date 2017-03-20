@@ -29,7 +29,6 @@
 // object vs. class
 // 1) object is a single instance of a class (singleton)
 // 2) object's methods are static, ex. A.f()
-// 3) object can have special methods: ex. apply(), unapply()
 
 object Traits {
     def main(args: Array[String]) {
