@@ -23,12 +23,15 @@
 // 2) class         : if the behavior will not be reused, then make it a concrete class
 //    abstract class: if you want to inherit from a trait in Java code, use an abstract class
 //    trait         : if the behavior might be reused in multiple, unrelated classes, make it a trait
+// abstract class vs. trait
+// 1) a class can extend several traits, but a class can extend only one abstract class
+// 2) trait constructors cannot take parameters, but abstract class constructors can
 // object vs. class
 // 1) object is a single instance of a class (singleton)
 // 2) object's methods are static, ex. A.f()
 // 3) object can have special methods: ex. apply(), unapply()
 
-object Demo {
+object Traits {
     def main(args: Array[String]) {
         trait Equal {                                     // no constructor parameter
             def isEqual(x: Any): Boolean                  // specify only method signatures
