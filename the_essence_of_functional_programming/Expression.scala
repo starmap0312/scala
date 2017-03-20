@@ -1,3 +1,10 @@
+// Option Monad tries to model behaviors with exceptions
+//   it uses a default Null object, i.e. None, instead of ad-hoc exception handling
+//   the flatMap() method takes care of the Null cases, so that if-else branches can be omitted
+// List Monad tries to model behaviors with non-deterministic results/choices
+//   it is a natural extension of Option Monad (List.empty or Nil is the default Null object)
+//   the flatMap() method flattens List of List results
+//   it has an additional concat operation for merging List of non-derterministic results/chocies
 object Expression {
     abstract class Expr
     case class Num(x: Int)           extends Expr
