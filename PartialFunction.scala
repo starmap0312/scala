@@ -1,28 +1,24 @@
-// Function Type vs. Method Type
-// 1) Function Type: a type (trait) of the form (T1, ..., Tn) => U
-//                   a shorthand for trait FunctionN in the standard library
-//      function declaration:
-//        it includes a type (Method Type) and a body (expression or block)
-//      note:
-//        Anonymous Function is an instance of a Function Type (i.e. an instance of trait FunctionN)
-// 2) Method Type  : a non-value type (i.e. there is no value: no object, no instance)
-//                   a Method Value actually has a Function Type
-//                   a method type is a def declaration (everything about a def except its body)
-// Function:
-//   function declaration
-//     it includes a type (Method Type) and a body (expression or block)
-//   a function is an object which includes one of FunctionX traits, ex. Function0, Function1, Function2, etc.
-//     it might include PartialFunction as well, which extends Function1
-//   it has: def apply(v1: T1): R
-//     it applies the body of this function to the arguments
-//     it returns something of type R
-//     it is contra-variant on the parameters it receives, and co-variant on the result
+// Function vs. Method
+// 1) Function: a type (trait) of the form (T1, ..., Tn) => U
+//              a shorthand for trait FunctionN in the standard library (Function0, Function1, Function2, etc.)
+//              it defines the apply() syntactic sugar
+//                i.e. allowing us to call it directly (i.e. func() == func.apply())
+//                     it applies the body of this function to the arguments and returns something
+//              declaration:
+//                it includes a method type (ex. (Int) => Int) and a body (expression or block)
+//              anonymous function:
+//                an instance of trait FunctionN
+//              it is contra-variant on the parameters it receives, and co-variant on the result
+// 2) Method: a non-value type (i.e. there is no value, no object, no instance, it's just a declaration)
+//              a method type is a def declaration (everything about a def except its body)
 // Class Method:
-//   methods are just functions that can access the state of a class
+//   class methods are just methods that can access the state of a class
 // Total Function:
-//   defined for every value of a given type
+//   function that is defined for every value of a given type
 // PartialFunction is only defined for certain value of a given type
-//   it may throw exception for some passed-in values or return an Option(None/Some) object
+//   function that is NOT defined for every value of a given type
+//     it throws exception for some values or return an Option(None/Some) object
+//   it extends Function1
 // f: X' -> Y, where X' < X
 // 1) it is a unary function: i.e. f(x)
 // 2) its domain does not necessarily include all values of type X
