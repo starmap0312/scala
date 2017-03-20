@@ -1,4 +1,6 @@
 // case class:
+//   case classes are used to conveniently store and match on the contents of a class
+//   you can construct instances of case classes without using new
 //   it take arguments, so each instance of that case class can be different based on the arguments
 // 1) syntax:
 //    case class [classname]
