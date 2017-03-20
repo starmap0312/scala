@@ -30,7 +30,7 @@ object PatternMatching {
             case List(x)    => ("constructor pattern matched: List(x)") // a single-element list (same as above)
             case 1::2::cs   => ("value pattern matched: 1::2::cs")      // a list object starting with 1 then 2 
             case x::xs      => ("constructor pattern matched: x::xs")   // at-least-one-element list
-            case _          => ("all the other cases matched")          // for all the other cases
+            case _          => ("all the other cases matched")          // atching with guards, for all the other cases
         }
         println(matchList(Nil))
         println(matchList(List(1)))
