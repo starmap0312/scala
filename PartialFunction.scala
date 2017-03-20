@@ -29,18 +29,21 @@ object PartialFunction {
         println(func1(4))
         println(func2(4))
         println(func3(4))
-        // println(func(5)) // it will throw scala.MatchError if value not defined
+        // println(func(5))       // throw scala.MatchError if value not defined
 
         println("example 2")
         // 2) partial function definition (must use syntactical shorthand)
         val partialFunc: PartialFunction[Int, String] = {
             case x if (x % 2 == 0) => "even"
         }
-        // 2.1) isDefinedAt([value]): check if a value is defined
-        //      isDefinedAt() is automatically defined
+        //println(partialFunc(3)) // throw scala.MatchError
+        //println(totalFunc2(3))  // throw scala.MatchError
+
+        // 2.1) isDefinedAt([value]): automatically defined, check if a value is defined
+        //      a PartialFunction must provides method isDefinedAt
+        //      this allows the caller to know whether the function can return a result for a given input value
         if (partialFunc.isDefinedAt(4)) {
             println(partialFunc(4))
-            // println(partialFunc(5)) // it will throw scala.MatchError if value not defined 
         }
         // 2.2) orElse:                 // maybe a bad usage because of mutable function object? 
         val totalFunc: (Int => String) = partialFunc orElse {
