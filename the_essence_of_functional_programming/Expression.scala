@@ -39,7 +39,7 @@ object Expression {
     }
 
     // 2.2) use Option Monad:
-    //      Option has apply() and flatMap() methods so that we can omit the if-else branches
+    //      Option Monad has apply() and flatMap() methods so that we can omit the if-else branches
     def eval3(expr: Expr): Option[Int] = expr match {
         case Num(n)    => Some(n)
         case Neg(e)    => eval3(e).flatMap(
@@ -67,6 +67,7 @@ object Expression {
 
     // example 3: data Expr = Num Int | Neg Expr | Add Expr Expr | Div Expr Expr | Or Expr Expr
     // 3) use List Monad
+    //    List Monad has a List concat operation: ++/:::
     def eval4(expr: Expr): List[Int] = expr match {
         case Num(n)    => List(n)
         case Neg(e)    => eval4(e).flatMap(
@@ -116,7 +117,9 @@ object Expression {
 
         // example3: 5 operators: Num/Neg/Add/Div/Or
         // 3) use List Monad
-        println(eval4(Add(Or(Num(1), Num(2)), Or(Num(3), Num(4)))))              // List(4, 5, 5, 6)
-        println(eval4(Add(Or(Num(1), Div(Num(2), Num(0))), Or(Num(3), Num(4))))) // List(4, 5)
+        val expr4: Expr = Add(Or(Num(1), Num(2)), Or(Num(3), Num(4))) 
+        val expr5: Expr = Add(Or(Num(1), Div(Num(2), Num(0))), Or(Num(3), Num(4)))
+        println(eval4(expr4))              // List(4, 5, 5, 6)
+        println(eval4(expr5))              // List(4, 5)
     }
 }
