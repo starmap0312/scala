@@ -15,6 +15,7 @@
 //      object Foo {
 //          def apply() = new Foo
 //      }
+//      val foo = Foo()           // no new keyword when instantiation: val foo = new Foo
 // case object:
 //   no argument in the constructor, so it is a singleton, like a regular scala object is
 // 1) syntax:

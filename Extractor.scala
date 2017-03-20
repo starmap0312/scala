@@ -1,6 +1,6 @@
 // Extractor objects
 // 1) apply():
-//    when you treat your object like a function, apply is the method that is called
+//    when you treat your object like a function, apply is the method that is called (provides a syntactic sugar)
 //    i.e. Scala turns obj(a, b, c) into obj.apply(a, b, c)
 // 2) unapply():
 //    used in Scala's pattern matching 
@@ -43,6 +43,21 @@ object Extractor {
     }
 
     def main(args: Array[String]) {
+        // 0) apply() method
+        // 0.1)
+        class Foo {}
+        object Foo { // companion object
+            def apply() = new Foo
+        }
+        val foo  = new Foo
+        val foo2 = Foo()    // i.e. val foo2 = Foo.apply()
+        // 0.2)
+        class Bar {
+            def apply() = 2
+        }
+        val bar = new Bar
+        println(bar())      // 2, i.e. bar.apply()
+
         // 1) apply(): Int -> Int
         val twice1 = Twice(21)                   // invokes Twice.apply(21) 
         // is syntactic sugar for
