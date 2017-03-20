@@ -1,9 +1,10 @@
 // Extractor objects
 // 1) apply():
-//    when you treat your object like a function, apply is the method that is called (provides a syntactic sugar)
-//    i.e. Scala turns obj(a, b, c) into obj.apply(a, b, c)
+//    when you treat your object like a function, apply is the method that is called
+//    i.e. it provides a syntactic sugar of () --> apply()
+//    ex. Scala turns obj(a, b, c) into obj.apply(a, b, c)
 // 2) unapply():
-//    used in Scala's pattern matching 
+//    it provides a syntactic sugar for Scala's pattern matching 
 // common use case:
 //    apply/map    : X -> Y
 //    unapply/unmap: Y -> X (i.e. Some(X) / None)
