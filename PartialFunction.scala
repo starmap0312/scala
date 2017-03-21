@@ -11,6 +11,8 @@
 //              it is contra-variant on the parameters it receives, and co-variant on the result
 // 2) Method: a non-value type (i.e. there is no value, no object, no instance, it's just a declaration)
 //              a method type is a def declaration (everything about a def except its body)
+// ETA expansion
+//   a mechanism for transforming methods into functions
 // Class Method:
 //   class methods are just methods that can access the state of a class
 // Total Function:
