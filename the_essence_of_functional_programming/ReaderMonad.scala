@@ -43,31 +43,24 @@
 //      apply(
 //        \env -> (
 //          unapply(
-//            func((unapply(reader1))(env))    ...... = func(value1)            = reader2
-//          )
-//        )(env)                               ...... = (unapply(reader2))(env) = value2
-//      )                                      ...... = apply(\env -> value2)   = reader3
+//            func(
+//              (unapply(reader1))(env)        ...... unwrap reader1 which will take env to produce value1
+//            )                                ...... func then takes value1 to produce reader2
+//          )(env)                             ...... unwrap reader2 which will take env to produce value2
+//        )
+//      )                                      ...... wrap funciton \env -> value2 to produce reader3
 // 3.1) (unapply(reader1))      = (\env -> value1)
 // 3.2) (unapply(reader1))(env) = value1
 // 3.3) func(value1)            = reader2
 // 3.4) (unapply(reader2))(env) = value2
 // 3.5) reader1.flatMap(func)   = Reader(\env -> value2) = reader3
-// Reader Composition
+//   we can then unwrap reader3 to get function \env -> value2,
+//     by passing some environment to that function, the environment in effect passes through
+//     both reader1's wrapped function as well as func's wrapped function 
+// Composition of Reader Monad
 //   for any functions f, g that takes a value and returns a Reader
-//   if you compose them as such:
-//     (g <=< f)("some environment")                 = f("some environment").flatMap(g)
-//   the environement will be passed on to function g 
-//     unapply(f("some environment")) = \env -> value1 (based on "some environment")
-//     g(value1)                      = Reader(\env -> value2)
-//     (g <=< f)("some environment")
-//     = f("some environment").flatMap(g)
-//     = apply(
-//         \env -> (
-//           unapply(
-//             g( (unapply(f("some environment")))(env) )
-//           )
-//         )(env)
-//       )     
+//   we can compose them as such:
+//     (g <=< f)("some environment") = f("some environment").flatMap(g)
 object ReaderMonad {
 
     def main(args: Array[String]) {
