@@ -2,7 +2,7 @@
 //   the writer monad encapsulates a value and a log
 // 1) half: Int -> Writer[Int, String]
 //    half(x) =
-//      apply(x / 2, log("half(" ++ show(x) ++ ") logged;"))
+//      apply(x / 2, log("log: half(" ++ show(x) ++ ");"))
 // 2) apply(value, log) =
 //      Writer(value, log)
 //    apply(value) =
@@ -11,8 +11,8 @@
 //      (4, "half(8) logged")
 //    (half(8) >>= half) =
 //      (2, "half(8) logged;half(4) logged")
-// 4) flatMap()/>>=: knows how to combine two writers
-//    writer1 >>= func =
+// 4) flatMap()/>>=: needs to knows how to combine two writers
+//    writer1.flatMap(func) =
 //      val (value1, log1) = unapply(writer1)
 //      val (value2, log2) = unapply(func(value1))
 //      apply(value2, log1++log2)
