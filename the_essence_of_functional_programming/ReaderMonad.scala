@@ -43,12 +43,12 @@
 // 3.2) (unapply(reader1))(env) = value1
 // 3.3) func(value1)            = reader2
 // 3.4) (unapply(reader2))(env) = value2
-// 3.5) reader1.flatMap(func) = Reader(\env -> value2) = reader3
-// so for any functions f, g that return a Reader instance, 
-// if you compose them as such:
-//   (reader.flatMap(f)).flatMap(g)
-// then you pass in some configuration:
-//   unapply(reader)("some configuration"), the will go through f and g
+// 3.5) reader1.flatMap(func)   = Reader(\env -> value2) = reader3
+// Reader Composition
+//   so for any functions f, g that return a Reader instance, 
+//   if you compose them as such:
+//     (g <=< f)("some environment")                 = f("some environment").flatMap(g)
+//   the environement/configuration will be passed on to the composition of computation
 object ReaderMonad {
 
     def main(args: Array[String]) {
