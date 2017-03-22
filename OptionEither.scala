@@ -2,7 +2,7 @@
 // 1) {} indicates a block of code, which is composed of multiple statements and declarations
 //    its value is that of the last statement
 // 2) however, there are some exceptions to the above definition
-object Options {
+object OptionEither {
 
     def toInt(str: String): Option[Int] = {        // return a Option[Int] object (i.e. could be Some[Int] or None)
         try {
@@ -41,6 +41,7 @@ object Options {
 
         // 2) Either[A, B]/Left/Right: a container type, the latter two extend Either
         //    used when need to deal with situations where the result can be of one of two possible types
+        //    (a special case of List)
         def double: ((Int) => Either[Int, Double]) = {
             case x: Int if x < 5  => Left(x * 2)
             case x: Int if x >= 5 => Right(x * 2.0)
