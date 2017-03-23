@@ -38,6 +38,9 @@
 //    unwrap the reader, obtaining a function that takes an environment and returns a value based on that environment
 //    (unapply(reader))("andy")             == "hello, andy"
 //    (unapply(reader))("bob")              == "hello, bob"
+// 3) apply([function]):
+//    Reader([function])
+//    wrap function inside a Reader
 // 3) flatMap(>>=): pipe reader1 to a function to get another reader
 //    reader1.flatMap(func) =
 //      apply(
@@ -64,5 +67,12 @@
 object ReaderMonad {
 
     def main(args: Array[String]) {
+
+        object Reader {
+            def apply[T, R](x: T => R): Reader[T, R] =
+        }
+        class Reader[T, R] {
+        }
+        
     }
 }
