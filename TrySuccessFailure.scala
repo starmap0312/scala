@@ -3,7 +3,7 @@ import scala.util.{Try, Success, Failure}
 object TrySuccessFailure {
 
     def bad(num: Int): Try[Int] = {
-        // Try({expression}) will wrap the successfully evaluated value or the thrown exception
+        // Try({expression}) will wrap the successfully evaluated value or any exception thrown
         //   a way to handle the error late and continue to pass it on to the pipeline (operation chain)
         Try(                                 // return object wrapped in Success or Failure
             if (num == 3) {
