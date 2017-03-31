@@ -1,17 +1,30 @@
-// Option Monad tries to model behaviors with exceptions
-//   it uses a default Null object, i.e. None, instead of ad-hoc exception handling
-//   the flatMap() method takes care of the Null cases, so that if-else branches can be omitted
-// List Monad tries to model behaviors with non-deterministic results/choices
-//   it is a natural extension of Option Monad (List.empty or Nil is the default Null object)
-//   the flatMap() method flattens List of List results
-//   it has an additional concat operation for merging List of non-derterministic results/chocies
+// 1) Option Monad tries to model behaviors with exceptions
+//    it uses a default Null object, i.e. None, instead of ad-hoc exception handling
+//    the flatMap() method takes care of the Null cases, so that if-else branches can be omitted
+// 2) List Monad tries to model behaviors with non-deterministic results/choices
+//    it is a natural extension of Option Monad (List.empty/Nil vs. None)
+//    the flatMap() method flattens List of List results
+//    it has an additional concat operation for merging List of non-derterministic results/chocies
 object Expression {
     abstract class Expr
     case class Num(x: Int)           extends Expr
     case class Neg(x: Expr)          extends Expr
     case class Add(x: Expr, y: Expr) extends Expr
-    case class Div(x: Expr, y: Expr) extends Expr
-    case class Or(x: Expr, y: Expr)  extends Expr
+    case class Div(x: Expr, y: Expr) extends Expr // this needs Option Monad
+    case class Or (x: Expr, y: Expr) extends Expr // this needs List   Monad
+
+    /*
+    type Env = List[(String, Int)]
+    type Reader = (Env => Expr)
+    object Reader {
+        def apply(env: Env, expr: Expr): Reader = {
+
+        }
+    }
+    abstract class Reader(env: Env, expr: Expr) {
+        
+    }
+    */
 
     // example1: data Expr = Num Int | Neg Expr | Add Expr Expr
     def eval1(expr: Expr): Int = expr match {
@@ -74,7 +87,7 @@ object Expression {
 
     // example 3: data Expr = Num Int | Neg Expr | Add Expr Expr | Div Expr Expr | Or Expr Expr
     // 3) use List Monad
-    //    List Monad has a List concat operation: ++/:::
+    //    List Monad has List concat operations, i.e. ++, :::
     def eval4(expr: Expr): List[Int] = expr match {
         case Num(n)    => List(n)
         case Neg(e)    => eval4(e).flatMap(
@@ -98,8 +111,14 @@ object Expression {
                 }
             }
         )
-        case Or(e1, e2) => eval4(e1):::eval4(e2) // i.e. eval4(e1)++eval4(e2)
+        case Or(e1, e2) => eval4(e1)++eval4(e2)  // i.e. eval4(e1):::eval4(e2)
     }
+
+    // example4: data Expr = Num Int | Neg Expr | Add Expr Expr | Var Name | Let Var Expr Expr
+    //           eval :: Expr -> Env -> Int
+    //           m.flatMap(f) = m >>= f
+    //                        = Reader(\env -> runReader (f (runReader m env)) env)
+    // 4) use Reader Monad
 
     def main(args: Array[String]) {
         // example1: only 3 operators: Num/Neg/Add

@@ -12,7 +12,7 @@
 //     then you give this function some environment to get a value back (derived from the value encapsulated in Reader)
 // Reader(\env -> value)
 //   env  : environment
-//   value: a value (expression, function, etc.) you create from that environment
+//   value: a value (expression) you create from that environment
 // ex.
 //   reader = Reader(\env -> 5)
 //     Reader[String, Int]: create a Reader that encapsulates a function that takes in a String and returns an Int
@@ -23,8 +23,8 @@
 //     it takes in a Reader(\env -> value) and then an environment (env) and returns a value (value)
 //     i.e. (unapply(reader))("some environment")  == 5
 //   apply(a):
-//     Reader(\_ -> a)
-//     ex. apply(2) = Reader(\_ -> 2)
+//     Reader(\env -> a)
+//     ex. apply(2) = Reader(\env -> 2)  ...... no matter what env is, it always returns 2
 //   ask():
 //     Reader(\x -> x)
 // Real Example:
@@ -61,9 +61,9 @@
 //     by passing some environment to that function, the environment in effect passes through
 //     both reader1's wrapped function as well as func's wrapped function 
 // Composition of Reader Monad
-//   for any functions f, g that takes a value and returns a Reader
+//   for any readers(functions) f, g that takes a value and returns a Reader
 //   we can compose them as such:
-//     (g <=< f)("some environment") = f("some environment").flatMap(g)
+//     (g <=< f)(env) = f(env).flatMap(g)
 object ReaderMonad {
 
     def main(args: Array[String]) {

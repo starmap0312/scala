@@ -132,7 +132,7 @@ object Primitives {
         println(method2("one,", 2))
 
         // 9) infix notation
-        //    when calling methods that have either "none" or "single parameter"
+        //    when calling methods that have either "zero" or "single parameter"
         //    a) the dot after the variable name and the parenthesis after the method name is optional
         //    b) it can then be replaced with a whitespace
         greeter3.SayHi()            // traditional

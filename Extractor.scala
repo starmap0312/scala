@@ -75,11 +75,11 @@ object Extractor {
             case Some(x) => x                              // value 42 is defined (unmapped to 21)
             case None    => throw new scala.MatchError(42) // value 41 is undefined
         }
-        println(x1)                             // prints 21
-        println(x2)                             // prints 21
+        println(x1)                              // prints 21
+        println(x2)                              // prints 21
         // in other words, Twice.unapply(Twice.apply(21)) returns Some(21)
-        println(Twice.unapply(Twice.apply(21))) // prints Some(21) 
-        println(Twice.unapply(42))              // prints Some(21) 
+        println(Twice.unapply(Twice.apply(21)))  // prints Some(21) 
+        println(Twice.unapply(42))               // prints Some(21) 
 
         // unapply() used in pattern matching
         42 match {
