@@ -1,10 +1,9 @@
 // Case class 
-// Uses of notation "=>":
 // 1) anonymous funciton
 //    syntax:
 //      ([list of parameters]) => { function body }
 //    ex.
-//      var inc = (x:Int) => x+1
+//      var inc = (x:Int) => {x + 1}
 // 2) pattern matching
 //    syntax:
 //      [variable] match {
@@ -23,7 +22,7 @@ object CaseClass2 {
     case class Var(x: String)        extends Tree
     case class Const(x: Int)         extends Tree
 
-    type Environment = (String => Int)
+    type Environment = (String => Int)                         // an alias of Function1[String, Int]
 
     def eval(tree: Tree, env: Environment): Int = tree match {
         case Sum(x, y) => eval(x, env) + eval(y, env)          // constructor pattern

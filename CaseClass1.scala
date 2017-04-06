@@ -1,6 +1,6 @@
 // case class:
-//   case classes are used to conveniently store and match on the contents of a class
-//   you can construct instances of case classes without using new
+//   case classes are used to conveniently store and match on the contents of a class (a wrapper as well as a class)
+//   you can construct instances of case classes without using new (syntactic sugar)
 //   it take arguments, so each instance of that case class can be different based on the arguments
 // 1) syntax:
 //    case class [classname]
@@ -11,15 +11,17 @@
 //       it uses the fields specified in constructor arguments
 //       so, we no longer need our own toString() methods
 // 3) if you've made a case class:
-//      case class Foo()
+//    ex . case class Foo()
 //    Scala secretly creates a companion object for you, turning it into this:
-//      class Foo { }
-//      object Foo {
-//          def apply() = new Foo
-//      }
-//      val foo = Foo()           // no new keyword when instantiation: val foo = new Foo
+//    i.e. class Foo { }
+//         object Foo {
+//             def apply() = new Foo
+//         }
+//         val foo = Foo()           // no new keyword when instantiation: val foo = new Foo
 // case object:
-//   no argument in the constructor, so it is a singleton, like a regular scala object is
+//   no argument in the constructor
+//   it is a singleton
+//   it is like a regular scala object
 // 1) syntax:
 //    case object [objectname]
 
@@ -52,7 +54,6 @@ object CaseClass {
         println("alice == bob: " + (alice == bob))
         println("alice.equals(bob): " + (alice.equals(bob)))
         println("alice == Person(\"Alice\", 25): " + (alice == Person("Alice", 25)))
-
         for (person <- List(alice, bob, charlie)) {
             matchPerson(person)
         }
@@ -67,16 +68,16 @@ object CaseClass {
         }
 
         // example 3: case class of container types
-        case class Strings(data: List[String])
+        case class StringList(data: List[String])
         case class StringMap(data: Map[String, String])
-        def printStrings(strings: Strings): Unit = {
+        def printStringList(strings: StringList): Unit = {
             println(strings.data)
         }
         def printStringMap(strings: StringMap): Unit = {
             println(strings.data)
         }
-        printStrings(Strings(List("one", "two", "three")))                         // List(one, two, three)
-        //printStrings(Strings(List(1, 2, 3)))                                     // compile-time error: type mismatch
+        printStringList(StringList(List("one", "two", "three")))                   // List(one, two, three)
+        //printStringList(StringList(List(1, 2, 3)))                               // compile-time error: type mismatch
         printStringMap(StringMap(Map("one" -> "1", "two" -> "2", "three" -> "3"))) // Map(one -> 1, two -> 2, three -> 3)
         //printStringMap(StringMap(Map("one" -> 1, "two" -> 2, "three" -> 3)))     // compile-time error: type mismatch
     }

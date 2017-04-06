@@ -12,7 +12,7 @@ object CaseClass3 {
                 print("^" + x + ".")
                 printTerm(b)
             case App(f, v) =>
-                Console.print("(")
+                print("(")
                 printTerm(f)
                 print(" ")
                 printTerm(v)

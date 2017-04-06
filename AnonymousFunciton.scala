@@ -12,18 +12,18 @@ object AnonymousFunciton {
         println(mul(3, 4))
 
         // ex3.
-        // 1) normal function definition
+        // 1) method definition
         def toString1(x: Int): String = x match {
             case 1 => "one"
             case 2 => "two"
         }
-        // 2) anonymous function definition
+        // 2) Function1 definition
         def toString2 = (x: Int) => x match {
             case 1 => "one"
             case 2 => "two"
         }
         // 3) syntax suger: p => p match { case ... } can be replaced by { case ... }
-        def toString3: (Int => String) = {
+        def toString3: (Int => String) = { // type (Int => String) cannot be omitted
             case 1 => "one"
             case 2 => "two"
         }

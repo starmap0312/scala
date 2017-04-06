@@ -16,7 +16,7 @@
 //    (is translated to)
 //    e1.flatMap(
 //        x => e2.map(
-//            y => yield e3
+//            y => e3
 //        )
 //    )
 // 7) for (x <- e1 if f) yield e2
@@ -26,7 +26,7 @@
 //    e1.filter(
 //        f
 //    ).flatMap(
-//        x => yield e2
+//        x => e2
 //    )
 // 8) for-comprehension can be used for any type whose map(), flatMap() and filter() are defined
 

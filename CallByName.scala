@@ -4,17 +4,18 @@
 // 2) call-by-name:
 //    recompute the passed-in expression's value every time it is accessed (lazy evaluation?)
 object CallByName {
-    def getX() = {
+    def getX() = {                                    // method: ()Int
         println("side effect of calling getX()")
         1                                             // return value 1
     }
 
-    def callByValue(x: Int) = {
+    def callByValue(x: Int) = {                       // method: (x: Int)Unit
         println("callByValue: x =" + x)
         println("callByValue: x =" + x)
     }
 
-    def callByName(x: => Int) = {
+    def callByName(x: => Int) = {                     // method: (x: => Int)Unit
+        println(x.getClass)                           // int
         println("callByName: x =" + x)
         println("callByName: x =" + x)
     }
