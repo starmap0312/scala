@@ -1,6 +1,6 @@
 // Pattern Matching: match/case contruct
 // Syntax
-//   [value/typed pattern] match {
+//   [value] match {
 //       case [pattern] => [expression]
 //       case [pattern] => [expression]
 //   }

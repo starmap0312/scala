@@ -26,22 +26,21 @@ object OptionEither {
             case Some(key) => "Found in myMap: " + key
             case None      => "Not found in myMap"
         }
-        println(getMapValue(1))
-        println(getMapValue(2))
-        println(getMapValue(3))
-        // syntax suger for pattern matching an Option value
+        println(getMapValue(1)) // Found in myMap: one
+        println(getMapValue(2)) // Found in myMap: two
+        println(getMapValue(3)) // Not found in myMap
+        // a syntax suger of the above pattern matching an Option value (map handles case None, getOrElse() provides default value for None)
         def getMapValue2(x: Int): String = myMap.get(x).map(
             "Found in myMap: " + _
         ).getOrElse(
             "Not found in myMap"
         )
-        println(getMapValue2(1))
-        println(getMapValue2(2))
-        println(getMapValue2(3))
+        println(getMapValue2(1)) // Found in myMap: one
+        println(getMapValue2(2)) // Found in myMap: two
+        println(getMapValue2(3)) // Not found in myMap
 
         // 2) Either[A, B]/Left/Right: a container type, the latter two extend Either
-        //    used when need to deal with situations where the result can be of one of two possible types
-        //    (a special case of List)
+        //    used when need to deal with situations where the result can be of one of two possible types (a generalization of Option)
         def double: ((Int) => Either[Int, Double]) = {
             case x: Int if x < 5  => Left(x * 2)
             case x: Int if x >= 5 => Right(x * 2.0)

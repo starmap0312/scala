@@ -1,31 +1,28 @@
 // Function vs. Method
 // 1) Function: a type (trait) of the form (T1, ..., Tn) => U
 //              a shorthand for trait FunctionN in the standard library (Function0, Function1, Function2, etc.)
-//              it defines the apply() syntactic sugar
-//                i.e. allowing us to call it directly (i.e. func() == func.apply())
-//                     it applies the body of this function to the arguments and returns something
-//              declaration:
-//                it includes a method type (ex. (Int) => Int) and a body (expression or block)
-//              anonymous function:
-//                an instance of trait FunctionN
-//              it is contra-variant on the parameters it receives, and co-variant on the result
+//              it defines the apply() syntactic sugar: func.apply(x) -> func(x)
+//              i.e. allowing us to call it directly
+//              anonymous function: an instance of trait FunctionN
+//              it is contra-variant on the parameters it receives, and co-variant on the return result
 // 2) Method: a non-value type (i.e. there is no value, no object, no instance, it's just a declaration)
-//              a method type is a def declaration (everything about a def except its body)
+//            a method type is a def declaration (everything about a def except its body)
 // ETA expansion
 //   a mechanism for transforming methods into functions
 // Class Method:
 //   class methods are just methods that can access the state of a class
-// Total Function:
-//   function that is defined for every value of a given type
-// PartialFunction is only defined for certain value of a given type
-//   function that is NOT defined for every value of a given type
-//     it throws exception for some values or return an Option(None/Some) object
-//   it extends Function1
-// f: X' -> Y, where X' < X
-// 1) it is a unary function: i.e. f(x)
-// 2) its domain does not necessarily include all values of type X
-// 3) the isDefinedAt() function is automatically available to test if a value is in the domain
-// syntax:
+// Total Function vs. PartialFunction
+// 1) Total Function:
+//    function that is defined for every value of a given type
+// 2) PartialFunction is only defined for certain value of a given type
+//    function that is NOT defined for every value of a given type
+//    it throws exception for some values or return an Option(None/Some) object
+//    it extends Function1 (i.e. a unary function instance)
+//    PartialFunction f: X' -> Y, where X' < X
+//    a) it is a unary function: i.e. f(x)
+//    b) its domain does not necessarily include all values of type X
+//    c) the isDefinedAt() function is automatically available to test if a value is in the domain
+// syntax sugar:
 //   val functionName: PartialFunction[parameter type, return type] = {
 //       case x if ([condition]) => [expr]
 //       case x if ([condition]) => [expr]
@@ -34,11 +31,11 @@
 object PartialFunction {
     def main(args: Array[String]) {
         println("example 1")
-        // 1.1) normal function definition
+        // 1.1) method
         def func1(x: Int): String = x match {
             case x if (x % 2 == 0) => "even"
         }
-        // 1.2) anonymous function definition
+        // 1.2) function 
         def func2 = (x: Int) => x match {
             case x if (x % 2 == 0) => "even"
         }
