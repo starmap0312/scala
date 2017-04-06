@@ -8,9 +8,9 @@ object ClosureFunciton {
 
     def main(args: Array[String]) {
         var factor = 3
-        val multiplier = (num:Int) => num * factor
+        val multiplier = (num: Int) => num * factor
         // object multiplier encapsulates an anonymous function object with an outside object
-        print(multiplier, 5)
+        print(multiplier, 5)        // 15
     }
 }
 

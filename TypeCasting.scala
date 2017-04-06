@@ -1,8 +1,8 @@
 // isInstanceOf/asInstanceOf/classOf
-object Casting {
+object TypeCasting {
 
     def main(args: Array[String]) {
-        // isInstanceOf[T]: check if object is an instance of type T
+        // 1) isInstanceOf[T]: check if object is an instance of type T
         class Foo
         class Bar extends Foo
         val foo = new Foo   
@@ -11,14 +11,11 @@ object Casting {
         println(bar.isInstanceOf[Foo])                    // true
         println("string".isInstanceOf[String])            // true
         println(1.isInstanceOf[Double])                   // false 
-        // erasure problem: as type argument is erased as part of compilation
-        //                  it is not possible to check whether the list are of requested type
-        println(List(1, 2).isInstanceOf[List[String]])    // true (receive warning: fruitless type test)
 
         // 2) asInstanceOf[T]: cast an instance to type T (a runtime operation)
         //                     compiler believes that the type can be casted (it throws ClassCastException at runtime if casting fails) 
         println(1.asInstanceOf[Double])                   // 1.0: cast Int to Double at runtime
-        //println(1.asInstanceOf[String])                   // ClassCastException at runtime
+        //println(1.asInstanceOf[String])                 // ClassCastException at runtime
         // erasure problem: as type argument is erased as part of compilation
         //                  it is not possible to check whether the list are of requested type
         println(List(1, 2, 3).asInstanceOf[List[String]]) // not working as parameterized type [String] will be eliminated by erasure

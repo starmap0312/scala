@@ -1,18 +1,18 @@
 object ClassHierarchies {
     abstract class TopLevel {                 // an abstract class
-        def method1(x: Int): Int
+        def method1(x: Int): Int              // method1 undefined
         def method2(x: Int): Int = {
             println("TopLevel::method2")
             return x
         }
     }
 
-    class LowLevel extends TopLevel {  
-        def method1(x: Int): Int = {          // a concrete class
+    class LowLevel extends TopLevel {         // a concrete class 
+        def method1(x: Int): Int = {          // method1 defined
             println("LowLevel::method1")
             return x + 1
         }
-        override def method2(x: Int): Int = { // override method
+        override def method2(x: Int): Int = { // method2 overriden
             println("LowLevel::method2")
             return x + 2 
         }
@@ -26,7 +26,7 @@ object ClassHierarchies {
     }
 
     def main(args: Array[String]) {
-        // val obj = new TopLevel() // abstract class cannot be instantiated 
+        // val obj = new TopLevel()           // abstract class cannot be instantiated 
         val obj1 = new LowLevel()
         println(obj1.method1(3))
         println(obj1.method2(3))
