@@ -4,9 +4,9 @@ object Containers {
         // 0) Tuples: a sequence of immutable items
         // 0.1) Tuple2: a pair of immutable items
         val pair1 = (1, "two")
-        // which is syntactic sugar of
-        val pair2 = new Tuple2(1, "two") 
-        val pair3 = (1 -> "two") 
+        val pair2 = (1 -> "two") 
+        // which are syntactic sugar of
+        val pair3 = new Tuple2(1, "two") 
         println(pair1)
         println(pair2)
         println(pair3)
@@ -30,6 +30,8 @@ object Containers {
         for (x <- arr2) {
             println(x)
         }
+        // 1.3) foreach([function])
+        arr2.foreach(println _)
 
         // 2) List[T]
         val fruits: List[String] = List("apple", "orange", "pear")
