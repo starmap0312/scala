@@ -1,21 +1,21 @@
 // Scala supports first-class functions
-//   functions can be expressed in function literal syntax
-//   functions can be represented by objects (also known as function values)
-// 1) function literal syntax :
+//   functions can be expressed in function literal syntax: a method
+//   functions can be represented by objects: a function value, i.e. FunctionN instance
+// 1) method: (function literal syntax)
 //    syntax:
 //    def functionName([list of parameters]): [return type] = {
-//            return [expr] 
-//        }
+//        return [expr] 
+//    }
 //    use {} to define multiple statements
 //    ({} indicates a block of code composed of multiple statements and its value is that of the last statement)
-// 2) function values: 
+// 2) function (function value):
 //    syntax:
 //    def/val/lazy val functionName: [return type] = [expr/expr with _ variable]
 //    shorthand to nullary or unary function definition, i.e. _ indicates the anonymous single argument
 
 object NamedFunciton {
     def main(args: Array[String]) {
-        // 1) function literal syntax 
+        // 1) method (function literal syntax)
         def add(a:Int, b:Int): Int = {
             println("statement 1")
             println("statement 2")
@@ -23,7 +23,7 @@ object NamedFunciton {
         }
         println("1 + 2 = " + add(1, 2)) // a new function object add(1, 2) is created when called
 
-        // 2) function values:
+        // 2) function (function value)
         // ex1
         def even1(x: Int): Boolean = (x % 2 == 0)       // function literal syntax
         def even2     : (Int => Boolean) = (_ % 2 == 0) // function value
@@ -43,18 +43,25 @@ object NamedFunciton {
         println(g_of_f2("x"))
 
         // ex3
-        def toInt1(x: String): Int = x match {
+        def toInt1(x: String): Int = x match { // method: (x: String)Int
             case "1" => 1
             case "2" => 2
             case _   => 100
         }
-        val toInt2: (String => Int) = { // a shorthand to define a match function of type (String => Int)
+        def toInt2 = (x: String) => x match {  // function: String => Int 
             case "1" => 1
             case "2" => 2
             case _   => 100
         }
-        println(toInt1("1") + toInt1("2") + toInt1("3"))
-        println(toInt2("1") + toInt2("2") + toInt2("3"))
+        // a shorthand of defining the above match function 
+        def toInt3: (String => Int) = {        // function: String => Int
+            case "1" => 1
+            case "2" => 2
+            case _   => 100
+        }
+        println(toInt1("1") + toInt1("2") + toInt1("3")) // 103
+        println(toInt2("1") + toInt2("2") + toInt2("3")) // 103
+        println(toInt3("1") + toInt3("2") + toInt3("3")) // 103
     }
 }
 
