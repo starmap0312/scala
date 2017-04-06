@@ -12,7 +12,7 @@
 //
 // 2) for(x <- c1; y <- c2) yield {...expression of x & y...}
 //    is translated to:
-//    c1.flatMap(x => c2.flatMap(y => {...expression of x & y...})))
+//    c1.flatMap(x => c2.map(y => {...expression of x & y...})))
 //    (generators & stream/lazy list)
 
 object Yield {
