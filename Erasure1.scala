@@ -72,6 +72,10 @@ object Erasure1 {
     })
 
     def main(args: Array[String]) {
+        def func(x: List[String]) = {}
+        func(List("a", "b"))
+        func(List(1, 2))
+
         val list = List(1, "string1", List(), "string2")
         // problem: we expect the pattern matching of filter() can figure out the type T == String
         //          however, generic types will be erased after compilation (i.e. eliminated by erasure)
