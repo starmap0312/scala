@@ -22,9 +22,12 @@ object TypeCasting {
         println(List(1, 2, 3).asInstanceOf[List[_]])      // the above is interpreted by compiler as 
 
         // 3) classOf[T]: returns a runtime representation of the Scala class type T
-        //                it retrieves the runtime representation of a class type
-        //                classOf[T] is equivalent to the class literal T.class in Java
+        //    def classOf[T]: java.lang.Class[T]          // i.e. a value of type Class[T] 
+        //      it retrieves the runtime representation of a class type
+        //      classOf[T] is equivalent to the class literal T.class in Java
         println(classOf[String])                          // class java.lang.String
         println(classOf[Array[String]])                   // class [Ljava.lang.String;
+        println(classOf[Double])                          // double 
+        //println(classOf[Double].cast(1))                // ClassCastException: Cannot cast java.lang.Integer to double
     }
 }
