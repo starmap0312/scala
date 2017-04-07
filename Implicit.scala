@@ -1,3 +1,13 @@
+// Types of Implicits
+// implicits: either a value that can be passed automatically, or a conversion from one type to another that is made automatically
+// 1) Implicit Conversion:
+//    if one calls a method m on an object o of a class C but that class does not support method m
+//    then Scala will look for an implicit conversion from C to something that does support m 
+//    ex. 
+//      "abc".map(_.toInt)                         ... String does not have map() method defined
+//      (new StringOps("abc")).map(_.toInt)        ... there is an implicit conversion from String to StringOps
+//      (see implicit def augmentString() in Predef.scala)
+
 object Implicit {
     def main(args: Array[String]) {
         // 1) implicit parameters:
@@ -12,19 +22,24 @@ object Implicit {
         // 2) implicit classes:
         //    the implicit keyword makes the class' primary constructor available for implicit conversions when the class is in scope
         implicit class IntWithTimes(x: Int) {
-            def times[A](f: => A): Unit = {
-                def loop(current: Int): Unit =
+            def times[A](f: => A): Unit = {           // method: [A](f: => A)Unit, where f is a by-name parameter
+                def loop(current: Int): Unit = {
                     if(current > 0) {
                         f
                         loop(current - 1)
                     }
+                }
                 loop(x)
             }
         }
         // this class wraps an Int value and provides a new method: times()
         // to use this class, just import it into scope and call the times method
         // ex.
-        3 times print("Hi ")                                               // Hi Hi Hi 
+        3 times print("Hi ")                          // Hi Hi Hi 
+        println
+        3.times(print("Hi "))                         // Hi Hi Hi 
+        println
+        (IntWithTimes(3)).times(print("Hi "))         // Hi Hi Hi 
         println
         // implicit classes have the following restrictions:
         // a) they must be defined inside of another trait/class/object

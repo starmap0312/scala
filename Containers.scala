@@ -54,10 +54,16 @@ object Containers {
 
         // 3) Map[T1, T2]: a hash table from key of type T1 to value of type T2
         val integers = Map("one" -> 1, "two" -> 2)
-        println(integers.keys)   // Set(one, two) 
-        println(integers.values) // MapLike(1, 2)
+        println(integers.keys)           // Set(one, two) 
+        println(integers.values)         // MapLike(1, 2)
         integers.keys.foreach(
             k => println(k, integers(k))
         )
+        // 3.1) filterKeys() and mapValues():
+        //      transformations that produce a new map by filtering and transforming bindings of an existing map
+        //      ex. mp.filterKeys(p): p is a predicate, a view containing only those mappings in mp where the key satisfies predicate p
+        //          mp.mapValues(f):  f is a function/mapping, applying function f to each value associated with a key in mp 
+        val mp = Map("a" -> 1, "b" -> 2)
+        println(mp.mapValues(_ + 1))     // Map(a -> 2, b -> 3)
     }
 }
