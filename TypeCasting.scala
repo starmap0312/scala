@@ -1,5 +1,27 @@
-// isInstanceOf[T]/asInstanceOf[T]
-// classOf[T]
+// classOf[T]/isInstanceOf[T]/asInstanceOf[T]
+// 1) classOf[T]:
+//    a global method that returns a Class[T] instance (a runtime type representation of class T)
+//    defined in scala.Predef as:
+//    object Predef {
+//        def classOf[T]: Class[T] = null 
+//    }
+// 2) isInstanceOf[T] and asInstanceOf[T]:
+//    defined in scala.Any
+//    ex. obj.isInstanceOf[String]
+//        obj.asInstanceOf[List[_]]
+// Scala               vs. Java
+// -------------------     ----------------
+// classOf[T]          vs. T.class
+// obj.isInstanceOf[T] vs. obj instanceof T
+// obj.asInstanceOf[T] vs. (T)obj
+//
+// obj.getClass() vs. T.class in Java
+//   obj.getClass() returns the runtime type representation of obj
+//     ex. "123".getClass: i.e. Class[_ <: String] = class java.lang.String
+//     i.e. if you have A a = new B(), then a.getClass() will return the B class
+//   A.class evaluates to the A class statically
+//     it is used for other purposes often related to reflection
+
 object TypeCasting {
 
     def main(args: Array[String]) {
@@ -29,7 +51,9 @@ object TypeCasting {
         //    note: classOf[T] is equivalent to the class literal T.class in Java
         println(classOf[Number])                          // a Class[Number] instance, i.e. a Number type representation
         println(classOf[String])                          // a Class[String] instance, i.e. a String type representation
-        println(classOf[List[String]])                    // a Class[List[String]] instance, i.e. a List type representation 
+        println(classOf[List[String]])                    // a Class[List[_]] instance, i.e. a List type representation 
+        // the above is equavalient to the following 
+        println(classOf[List[_]])                         // a Class[List[_]] instance, i.e. a List type representation 
         // 3.1) isInstance(obj): Boolean
         //      if ctag = classOf[T], ctag.isInstance(obj) == obj.isInstanceOf[T]
         //      determines if the specified Object is assignment-compatible with the object represented by this Class
