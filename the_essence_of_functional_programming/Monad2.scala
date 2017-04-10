@@ -19,16 +19,16 @@
 //     f and g: functions of type (A => M[B])
 //   The Laws:
 //   1) left-identity law : apply(x).flatMap(f)     == f(x)
-//      i.e. apply(x) has no side effect (pure function) 
+//      i.e. apply has no side effect (pure function) 
+//      i.e. injecting a value into the monad is basically the same as passing it down the chain
 //      ex. for IO, apply() makes an I/O action no side-effects but just presents a value as its result
 //   2) right-identity law: m.flatMap(apply)        == m
-//      i.e. unapply m to x and then apply(x) should not change anything
+//      i.e. apply is just identity, so passing something into return shouldn’t affect it
 //      ex. for Option, it doesn't introduce any failure
 //      ex. for List, it doesn't introduce any extra non-determinism
 //   3) associativity law : m.flatMap(f).flatMap(g) == m.flatMap(x => f(x).flatMap(g))
 //      i.e. similar to function composition: f(g(x)) == (f . g)(x)
-//           unwrap/unapply m to x, and then f(x), and then unwrap/unapply f(x) to y, and then g(y)
-//             should be equavalent to unwrap/unapply m to x, and then f(x).flatMap(g)
+//      i.e. implementation of flatMap needs to be semantically equivalent to the usual translation (it must behave like a functor composition)
 //      ex.
 //        Monad Law:
 //        (<=<): (Monad M) => (B -> M[C]) -> (A -> M[B]) -> (A -> M[C])  
@@ -62,7 +62,12 @@
 //     apply  :  Int => Option[Int]
 //     flatMap: (Int => Option[Int]) => Option[Int]
 // Why define and use Monads?
-// 1) we can chain operations and manipulate data using map, flatMap, filter etc.
+// 0) monads handle non-functional computations i.e. ones that do (file or terminal) I/O, alter global variables, etc
+//    a monadic computation which can be done perfectly well without monads (just need a lot of if-else branches)
+//    so using monads is convenient
+// 1) monads make composition of monadic functions as easy as composition of regular (non-monadic) functions
+//    we can chain operations and manipulate data using map, flatMap, filter etc.
+//    ex. f11 = f1 >=> f2 >=> f3 >=> f4 >=> f5 >=> f6 >=> f7 >=> f8 >=> f9 >=> f10
 // 2) it can be accompanied by other functional programming constructs such as pattern matching
 // 3) it improves readability and clearness
 //    it really improves reasoning about the code and lowers the number of bugs
