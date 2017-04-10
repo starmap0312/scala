@@ -39,13 +39,13 @@
 //      the law can be viewed as a law of compositions:
 //                          h <=< (g <=< f)     == (h <=< g) <=< f
 //   Revisit The Laws:
-//   1) left-identity law : f <=< apply         == f
-//   2) right identity law: apply <=< f         == f
-//   3) associativity law : h <=< (g <=< f)     == (h <=< g) <=< f
+//   1) right-identity law: apply <=< f         == f
+//   2) left-identity law:  f     <=< apply     == f
+//   3) associativity law:  h <=< (g <=< f)     == (h <=< g) <=< f
 //             (f(x).flatMap(g)).flatMap(h)     == f(x).flatMap(x => g(x).flatMap(h))
 //   Analogy to normal function:
-//   1) left-identity law : f . id              == f
-//   2) right identity law: id . f              == f
+//   1) left-identity law : id . f              == f
+//   2) right-identity law: f . id              == f
 //   3) associativity law : (h . g) . f         == h . (g . f)
 //                   (x => h(g(x))) . f         == h . (x => g(f(x)))              == h(g(f(x)))
 //

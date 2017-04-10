@@ -97,7 +97,6 @@ object Erasure2 {
             case _                               => println("No match")
         }
         handle5(List("a", "b", "cd"))
-        //handle5(Strings(List("a", "b", 3)))  // compile error: type mismatch, found: Int(3), required: String
         handle5(List(1, 2, 3))                 // No match (no compile or runtime error)
     }
 }

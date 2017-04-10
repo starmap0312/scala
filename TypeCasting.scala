@@ -1,12 +1,13 @@
 // classOf[T]/isInstanceOf[T]/asInstanceOf[T]
 // 1) classOf[T]:
 //    a global method that returns a Class[T] instance (a runtime type representation of class T)
-//    defined in scala.Predef as:
+//    it is defined in scala.Predef as:
 //    object Predef {
 //        def classOf[T]: Class[T] = null 
 //    }
 // 2) isInstanceOf[T] and asInstanceOf[T]:
-//    defined in scala.Any
+//    a method of Any object used to check if the object's type is compatiable with class T
+//    it is defined in scala.Any
 //    ex. obj.isInstanceOf[String]
 //        obj.asInstanceOf[List[_]]
 // Scala               vs. Java
@@ -27,6 +28,7 @@ object TypeCasting {
     def main(args: Array[String]) {
         // 1) isInstanceOf[T]: check if object is an instance of calss T
         println("string".isInstanceOf[String])            // true
+        println("string".isInstanceOf[Any])               // true
         println(1.isInstanceOf[Double])                   // false 
         class Foo
         class Bar extends Foo
