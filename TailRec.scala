@@ -6,19 +6,16 @@
 import scala.annotation.tailrec
 
 object TailRec {
-    class Factorial {
-        def factorial(n: Int): Int = {
-            @tailrec
-            def factorialAcc(acc: Int, n: Int): Int = { // a recursive method
-                if (n <= 1) acc                         // base case
-                else factorialAcc(n * acc, n - 1)       // inductive step
-            }
-            factorialAcc(1, n)                          // evaluate the recursive method
+    def factorial(n: Int): Int = {
+        @tailrec
+        def factorialAcc(acc: Int, n: Int): Int = { // a recursive method
+            if (n <= 1) acc                         // base case
+            else factorialAcc(n * acc, n - 1)       // inductive step
         }
+        factorialAcc(1, n)                          // evaluate the recursive method
     }
 
     def main(args: Array[String]) {
-        val f = new Factorial
-        println(f.factorial(3)) // 6
+        println(factorial(3)) // 6
     }
 }
