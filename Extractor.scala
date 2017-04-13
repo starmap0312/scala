@@ -24,7 +24,7 @@
 object Extractor {
     object Twice {
         // apply() method is not necessary for pattern matching
-        //   it is only used to mimick constructor
+        //   it is only used to mimic constructor
         //   ex. val x = Twice(21) is syntactic sugar for val x = Twice.apply(21)
         def apply(x: Int): Int = x * 2
 

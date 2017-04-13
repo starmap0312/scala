@@ -6,12 +6,12 @@
 //   }
 // they are used for conditional execution, destructuring, and casting into one construct
 // ex.
-//   (bad design)
+// (bad design)
 //   animal match {
 //       case dog: Dog => "dog (%s)".format(dog.breed) // type pattern
 //       case _        => animal.species
 //   }
-//   (good design)
+// (good design)
 //   animal match {
 //       case Dog(breed) => "dog (%s)".format(breed)   // constructor pattern
 //       case other      => other.species

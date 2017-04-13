@@ -1,30 +1,28 @@
 // case class:
-//   case classes are used to conveniently store and match on the contents of a class (a wrapper as well as a class)
-//   you can construct instances of case classes without using new (syntactic sugar)
-//   it take arguments, so each instance of that case class can be different based on the arguments
-// 1) syntax:
-//    case class [classname]
-// 2) adding case keyword to class declaration causes compiler to add a number of useful features automatically
-//    a) the keyword suggests an association with case expressions in pattern matching
-//    b) compiler automatically converts the constructor arguments into immutable fields (vals)
-//    c) compiler automatically implements equals(), hashCode(), and toString() methods to the class
-//       it uses the fields specified in constructor arguments
-//       so, we no longer need our own toString() methods
-// 3) if you've made a case class:
-//    ex . case class Foo()
-//    Scala secretly creates a companion object for you, turning it into this:
-//    i.e. class Foo { }
-//         object Foo {
-//             def apply() = new Foo
-//         }
-//         val foo = Foo()           // no new keyword when instantiation: val foo = new Foo
+// 1) case classes are used to conveniently store and match on the contents of a class (a wrapper as well as a class)
+// 2) Scala defines apply() method in companion object for you: construct instances of case classes without using new
+// 3) Scala defines unapply() method for you: so it is an extractor
+// syntax:
+//   case class [classname]
+// adding case keyword to class declaration causes compiler to add a number of useful features automatically
+// 1) the keyword suggests an association with case expressions in pattern matching
+// 2) compiler automatically converts the constructor arguments into immutable fields (vals)
+// 3)) compiler automatically implements equals(), hashCode(), and toString() methods to the class
+//     it uses the fields specified in constructor arguments, so, we no longer need our own toString() methods
+// if you've made a case class:
+//   ex . case class Foo()
+//   Scala secretly creates a companion object for you, turning it into this:
+//   i.e. class Foo { }
+//        object Foo {
+//            def apply() = new Foo
+//        }
+//        val foo = Foo()           // no new keyword when instantiation: val foo = new Foo
 // case object:
 //   no argument in the constructor
 //   it is a singleton
 //   it is like a regular scala object
 // 1) syntax:
 //    case object [objectname]
-
 object CaseClass {
 
     case class Person(name: String, age: Int) // the constructor accepts two arguments
