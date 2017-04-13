@@ -60,7 +60,7 @@ object CaseClass {
              def apply(name: String) = new FreeUser2(name)
              def unapply(user: FreeUser2): Option[String] = Some(user.name)
          }
-         class FreeUser2(val name: String) extends User2
+         class FreeUser2(val name: String) extends User2 // if write only FreeUser2(name: String), name could be a private field
          val user1 = FreeUser1("John") // apply()
          val user2 = FreeUser2("John") // apply()
          val FreeUser1(name1) = user1  // unapply()
