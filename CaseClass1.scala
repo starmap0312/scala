@@ -10,13 +10,26 @@
 // 3)) compiler automatically implements equals(), hashCode(), and toString() methods to the class
 //     it uses the fields specified in constructor arguments, so, we no longer need our own toString() methods
 // if you've made a case class:
-//   ex . case class Foo()
-//   Scala secretly creates a companion object for you, turning it into this:
-//   i.e. class Foo { }
+//   ex1. case class Foo()
+//   (Scala secretly creates a companion object for you, turning it into the following)
 //        object Foo {
 //            def apply() = new Foo
 //        }
+//        class Foo()
 //        val foo = Foo()           // no new keyword when instantiation: val foo = new Foo
+//
+//   ex2. trait User
+//        case case FreeUser(name: String) extends User
+//   (Scala secretly creates a companion object for you, turning it into the following)
+//   i.e. trait User {
+//            def name: String
+//        }
+//        object FreeUser {
+//            def apply(name: String) = new FreeUser(name)
+//            def unapply(user: FreeUser): Option[String] = Some(user.name)
+//        }
+//        class FreeUser(val name: String) extends User
+//
 // case object:
 //   no argument in the constructor
 //   it is a singleton
@@ -36,6 +49,25 @@ object CaseClass {
     // case object: singleton object with syntactic suger similar to case class
 
     def main(args: Array[String]) {
+        // example 0:
+         trait User1
+         case class FreeUser1(val name: String) extends User1
+         // is a syntactic sugar of the following 
+         trait User2 {
+             def name: String
+         }
+         object FreeUser2 {
+             def apply(name: String) = new FreeUser2(name)
+             def unapply(user: FreeUser2): Option[String] = Some(user.name)
+         }
+         class FreeUser2(val name: String) extends User2
+         val user1 = FreeUser1("John") // apply()
+         val user2 = FreeUser2("John") // apply()
+         val FreeUser1(name1) = user1  // unapply()
+         val FreeUser2(name2) = user2  // unapply()
+         println(name1)
+         println(name2)
+
         // example 1: pattern matching objects of case class
         def matchPerson(person: Person): Unit = person match {
             case Person("Alice", 25) => println("value pattern matched: Person(Alice, 25)")
