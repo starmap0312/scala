@@ -1,7 +1,9 @@
+// use of Visitor design pattern
+// 1) simulate pattern matching using double dispatch
 object OOVisitors {
     // class hierarchy
     trait Visitor[T] {
-        def caseNum(t:  Num): T = default(t)
+        def caseNum(t:  Num): T = default(t)              // case-methods
         def caseVar(t:  Var): T = default(t)
         def caseMul(t:  Mul): T = default(t)
         def default(t: Expr): T = throw new MatchError(t)
