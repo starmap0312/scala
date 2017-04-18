@@ -2,6 +2,7 @@
 // 1) unlike case-classes, extractors can be used to hide data representations
 //    the library interface might expose only the objects Num, Var, and Mul, but not the corresponding classes
 //    that way, one can modify any of the classes representing arithmetic expressions without affecting client code
+//    this allows easy extensions by both new variants and new patterns, since patterns are resolved to user-defined methods
 // 2) note that each of the extraction methods takes an argument of its specific type, not the common type Expr
 //    this is is possible because an implicit type test gets added when matching on a term
 //    otherwise, implicit casting just happens and may throw ClassCastException at runtime
