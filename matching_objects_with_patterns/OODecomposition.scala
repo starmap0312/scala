@@ -11,7 +11,7 @@ object OODecomposition {
     }
 
     // each subclass re-implements its own accessor method and test method
-    class Num(override val value: Int)   extends Expr {     // override val: unify class constructor and overriding accessor method as one
+    class Num(override val value: Int)   extends Expr { // override val: unify class constructor and overriding accessor method as one
         override def isNum = true
     }
 
@@ -25,8 +25,8 @@ object OODecomposition {
 
     // simplification rule
     def simplify(expr: Expr) = {
-        if (expr.isMul) {                                 // use test method is distinguish match patterns
-            val r = expr.right                            // use accessor method to get the public field
+        if (expr.isMul) {                               // use test method is distinguish match patterns
+            val r = expr.right                          // use accessor method to get the public field
             if (r.isNum && r.value == 1) {
                 expr.left
             } else {
