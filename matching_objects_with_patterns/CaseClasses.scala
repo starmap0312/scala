@@ -1,6 +1,7 @@
 // use of Case Classes
 // 1) case class
 //    Scala provides convenient shorthands for constructing and analyzing data
+//    case class is syntactic sugar for a normal class with an injector/extractor (companion) object
 // 2) the case modifier has several effects:
 //    apply()  : convenient for constructing data without having to write new
 //    unapply(): it allows pattern matching on their constructor

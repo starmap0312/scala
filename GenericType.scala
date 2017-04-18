@@ -1,3 +1,6 @@
+// challenges:
+// 1) a subclass in a class hierarchy might have either fewer or more type parameters than its base class
+// 2) in pattern matching, how to recover static type information from patterns
 // variable that is assigned with value _ has the default value of its type:
 //   syntax: var variable: T = _
 //   ex.

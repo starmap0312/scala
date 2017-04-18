@@ -1,11 +1,13 @@
 // use of Typecase
-// 1) it is logically the same as Type-Tests and Type-Casts, but more concise and secure
+// 1) it plays an important role as the type-theoretic foundation of pattern matching in the presence of parametricity
+//    i.e. matching typed pattern that has type parameters
+// 2) it is logically the same as Type-Tests and Type-Casts, but more concise and secure
 //    it is concise for shallow patterns
 //    but it becomes more verbose as patterns grow deeper, because of nested match-expressions
-// 2) it replies on Scala pattern matching expressions but uses only type patterns for matching cases 
+// 3) it replies on Scala pattern matching expressions but uses only type patterns for matching cases 
 //    case x: T =>  ... the case is matched if and only if x is a subclass of T
 //    i.e. x.isInstanceOf[T] = true and val x = x.asInstanceOf[T] happens implicitly
-// 3) it requires zero overhead for the class hierarchy
+// 4) it requires zero overhead for the class hierarchy
 object Typecase {
     // Class hierarchy:
     trait Expr
