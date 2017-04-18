@@ -1,6 +1,8 @@
 // case class:
 // 1) case classes are used to conveniently store and match on the contents of a class (a wrapper as well as a class)
 // 2) Scala defines apply() method in companion object for you: construct instances of case classes without using new
+//    note: Scala defines different name spaces for types and terms
+//    so it is legal to use the same name for a class (types) and an object (terms)
 // 3) Scala defines unapply() method for you: so it is an extractor
 // syntax:
 //   case class [classname]

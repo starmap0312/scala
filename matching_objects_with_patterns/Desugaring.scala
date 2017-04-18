@@ -3,6 +3,8 @@ object Desugaring {
     // Class hierarchy:
     trait Expr
 
+    case class Num(value: Int) extends Expr
+
     // case class Mul(left: Expr, right: Expr) extends Expr
     // the above is desugared as below:
     object Mul {
@@ -26,8 +28,14 @@ object Desugaring {
         override def toString = "Mul(" + left + ", " + right + ")"
     }
 
+    // Simplification rule:
+    def simplify(expr: Expr) = expr match {
+        case Mul(x, Num(1)) => x
+        case _ => expr
+    }
+
     def main(args: Array[String]) {
-        //val expr = Mul(Num(21), Num(1)) // i.e. val expr = new Mul(new Num(21), new Num(1))
-        //assert(simplify(expr).asInstanceOf[Num].value == 21)
+        val expr = Mul(Num(21), Num(1)) // i.e. val expr = new Mul(new Num(21), new Num(1))
+        assert(simplify(expr).asInstanceOf[Num].value == 21)
     }
 }
