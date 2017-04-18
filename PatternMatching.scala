@@ -38,9 +38,9 @@ object PatternMatching {
         // match list
         def matchList[T](list: List[T]) = list match {
             case Nil        => ("value pattern matched: Nil")           // the empty list object
-            case x::Nil     => ("value pattern matched: x::Nil")        // a single-element list 
+            case x::Nil     => ("constructor pattern matched: x::Nil")  // a single-element list 
             case List(x)    => ("constructor pattern matched: List(x)") // a single-element list (same as above)
-            case 1::2::cs   => ("value pattern matched: 1::2::cs")      // a list object starting with 1 then 2 
+            case 1::2::cs   => ("constructor pattern matched: 1::2::cs")// a list object starting with 1 then 2 
             case x::xs      => ("constructor pattern matched: x::xs")   // at-least-one-element list
             case _          => ("all the other cases matched")          // atching with guards, for all the other cases
         }
