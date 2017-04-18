@@ -1,12 +1,16 @@
 // Extractor objects
-// 1) apply():
+// 1) apply(): known as injection
 //    when you treat your object like a function, apply is the method that is called
 //    i.e. it provides a syntactic sugar of obj() --> obj.apply()
 //    ex. Scala turns obj(a, b, c) into obj.apply(a, b, c)
 //    it helps unify the duality of object and functional programming
 //    i.e. you can pass objects around and use them as functions (functions are just instances of classes)
-// 2) unapply():
+// 2) unapply(): known as extraction
 //    it provides a syntactic sugar for Scala's pattern matching 
+// 3) in most use cases, injections and extractions satisfy the following equality:
+//      F.unapply(F.apply(x)) == Some(x)
+//    but this is not required for special cases
+// 4) unlike case-classes, extractors can be used to hide data representations
 // common use case:
 //    apply/map    : X -> Y
 //    unapply/unmap: Y -> X (Option: Some(X) / None)
@@ -75,16 +79,24 @@ object Extractor {
             case Some(x) => x                              // value 42 is defined (unmapped to 21)
             case None    => throw new scala.MatchError(42) // value 41 is undefined
         }
+        // i.e. val Twice(x) = 41 throws scala.MatchError
         println(x1)                              // prints 21
         println(x2)                              // prints 21
         // in other words, Twice.unapply(Twice.apply(21)) returns Some(21)
         println(Twice.unapply(Twice.apply(21)))  // prints Some(21) 
         println(Twice.unapply(42))               // prints Some(21) 
 
-        // unapply() used in pattern matching
+        // Twice.unapply(42) is called in the following pattern matching, i.e. val Twice(x) = 42, so it will print 21
         42 match {
             case Twice(x) => Console.println(x)  // constructor/extractor pattern 
         }
-        // i.e. val Twice(x) = 42, so it prints 21
+        // note:
+        //   Pattern matching in Scala is loosely typed
+        //     i.e. the type of a pattern does not restrict the set of legal types of corresponding selector value
+        //   the same principle applies to extractor patterns
+        //     ex. it is possible to match a value of type Any with the pattern Twice(y)
+        //         in this case, the call to Twice.unapply(x) is preceded by a type test whether the argument x has type Int
+        //         if x is not an Int, the pattern match would fail without executing the unapply method of Twice
+        //     this avoids many type tests in unapply methods which would otherwise be necessary
     }
 }
