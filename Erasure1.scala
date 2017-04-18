@@ -27,6 +27,15 @@
 //   typeTag()
 //   classTag()
 //   weakTypeTag()
+// Context Bound
+// 1) context bounds are implemented with implicit parameters
+//    def g[T: B](x: T) = f(x)
+//    (the above can be desugared as the following)
+//    def g[T](x: T)(implicit ev: B[T]) = f(x)
+// ex.
+//    def g[T: ClassTag](x: T) = f(x)
+//    (the above can be desugared as the following)
+//    def g[T](x: T)(implicit ctag: ClassTag[T]) = f(x)
 import scala.reflect.ClassTag
 import scala.reflect.classTag
 import scala.reflect.runtime.universe.TypeTag
@@ -74,11 +83,11 @@ object Erasure1 {
     def main(args: Array[String]) {
         def func(x: List[String]) = {}
         func(List("a", "b"))
-        func(List(1, 2))
+        //func(List(1, 2)) // type mismatch
 
         val list = List(1, "string1", List(), "string2")
-        // problem: we expect the pattern matching of filter() can figure out the type T == String
-        //          however, generic types will be erased after compilation (i.e. eliminated by erasure)
+        // 1) problem: we expect the pattern matching of filter() can figure out the type T == String
+        //             however, generic types will be erased after compilation (i.e. eliminated by erasure)
         val result1 = filter1[String](list)
         val result2 = filter2(list)
         // T will be intepreted as its upperbound, i.e. Object, so filter() will not filter out String type as expected 
@@ -93,9 +102,9 @@ object Erasure1 {
         val result4 = filter4[String](list)
         println(result4)                    // List(string1, string2), i.e. there is type check
 
-        // problem: Class tags cannot differentiate on a higher level
-        //          i.e. it can differentiate between sets and lists
-        //               but it cannot tell one list from another (ex. List[Int] vs List[String])
+        // 2) problem: Class tags cannot differentiate on a higher level
+        //             i.e. it can differentiate between sets and lists
+        //             but it cannot tell one list from another (ex. List[Int] vs List[String])
         val list2: List[List[Any]] = List(List(1, 2), List("a", "b"))
         val result5 = filter4[List[Int]](list2)
         println(result5)                    // List(List(1, 2), List(a, b)), i.e. both are printed out, no type check
@@ -121,7 +130,7 @@ object Erasure1 {
         func1[Int]()                                       // Int 
         func2[String]()                                    // String
 
-        // problem: type erased by Erasure in pattern matching
+        // 3) problem: type erased by Erasure in pattern matching
         val list3 = List[String]("one", "two", "three")
         val list4 = List[Int](1, 2, 3)
         def printList1(x: Any): Unit = x match {
@@ -147,5 +156,12 @@ object Erasure1 {
         //printList3(IntList(list3))                        // this does not compile as IntList accepts only List[Int] 
         printList3(IntList(list4))                          // the list will be printed out, which is what we expect
         // solution2: use a TypeTag instance to recover the type information of generic type
+
+        // 4) context bound
+        def mkArray1[T: ClassTag](elems: T*) = Array[T](elems: _*)                   // [T](elems: T*)(implicit evidence$1: ClassTag[T])Array[T] 
+        def mkArray2[T](elems: T*)(implicit ctag: ClassTag[T]) = Array[T](elems: _*) // [T](elems: T*)(implicit ctag: ClassTag[T])Array[T]
+        //val arr = mkArray1[String](1, 2, 3)                                        // type mismatch 
+        val arr1 = mkArray1[String]("a", "b")                                        // Array[String] = Array(a, b)
+        val arr2 = mkArray2[String]("a", "b")                                        // Array[String] = Array(a, b)
     }
 }
