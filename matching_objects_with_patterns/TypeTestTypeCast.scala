@@ -1,6 +1,6 @@
 // use of Type-Test and Type-Cast
-// 1) Type-Test: x.isInstanceOf[T ]
-//    Type-Cast: x.asInstanceOf[T ]
+// 1) Type-Test: x.isInstanceOf[T]
+//    Type-Cast: x.asInstanceOf[T]
 // 2) most direct form of decomposition
 //    zero overhead for the class hierarchy
 // 3) type-casts are potentially unsafe because they can raise ClassCastExceptions

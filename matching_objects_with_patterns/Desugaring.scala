@@ -3,7 +3,27 @@ object Desugaring {
     // Class hierarchy:
     trait Expr
 
-    case class Num(value: Int) extends Expr
+    //case class Num(value: Int) extends Expr
+    // the above is desugared as below:
+    object Num {
+        def apply(value: Int) = new Num(value)
+        def unapply(num: Num) = Some(num.value)
+    }
+    class Num(_value: Int) extends Expr {
+
+        // Accessors for constructor arguments
+        def value = _value
+
+        // Standard methods
+        override def equals(other : Any) = other match {
+            case num: Num => value == num.value
+            case _ => false
+        }
+
+        //override def hashCode = hash(this.getClass, value.hashCode)
+
+        override def toString = "Num(" + value + ")"
+    }
 
     // case class Mul(left: Expr, right: Expr) extends Expr
     // the above is desugared as below:
