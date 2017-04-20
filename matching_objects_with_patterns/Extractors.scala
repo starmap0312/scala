@@ -14,31 +14,32 @@ object Extractors {
 
     object Num {
         def apply(value: Int) = new Num(value)
-        def unapply(num: Num) = Some(num.value)
+        def unapply(num: Num) = Some(num.value)             // unapply() takes Num instead of Expr
     }
     class Num(val value: Int)                  extends Expr // this can be hidden from client
 
     object Var {
         def apply(name: String)    = new Var(name)
-        def unapply(variable: Var) = Some(variable.name)
+        def unapply(variable: Var) = Some(variable.name)    // unapply() takes Var instead of Expr
     }
     class Var(val name: String)                extends Expr // this can be hidden from client
 
     object Mul {
         def apply(left: Expr, right: Expr) = new Mul(left, right)
-        def unapply(mul: Mul)              = Some(mul.left, mul.right)
+        def unapply(mul: Mul)              = Some(mul.left, mul.right) // unapply() takes Mul instead of Expr
         // we can write the type test by ourself to avoid potential ClassCastException at runtime, see below
         //def unapply(x: Expr) = x match {
         //    case mul: Mul => Some(mul.left, mul.right)
         //    case _ => None
         //}
+        // if we don't write like the above, then val Mul(x, y) = expr may throw ClassCastException if downcasting fails
     }
     class Mul(val left: Expr, val right: Expr) extends Expr // this can be hidden from client
 
     // Simplification rule:
     def simplify(expr: Expr) = expr match {
-        case Mul(x, Num(1)) => x        // implicit type tests, i.e. Mul and Num, are added when matching 
-        case _ => expr
+        case Mul(x, Num(1)) => x        // implicit type tests are added when matching 
+        case _ => expr                  // i.e. case mul: Mul => mul match { case Mul(x, Num(1)) => ... } happens implicitly
     }
 
     def main(args: Array[String]) {
