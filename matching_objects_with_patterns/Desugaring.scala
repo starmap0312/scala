@@ -1,4 +1,7 @@
 // Desugaring case class 
+// Unlike Java, you compare the equality of two objects with ==
+// 1) in Java, the == operator compares "reference equality"
+// 2) in Scala,the == operator compares "equality of two instances"
 object Desugaring {
     // Class hierarchy:
     trait Expr
@@ -15,12 +18,12 @@ object Desugaring {
         def value = _value
 
         // Standard methods
-        override def equals(other : Any) = other match {
+        override def equals(other : Any) = other match { // for instance comparison
             case num: Num => value == num.value
             case _ => false
         }
 
-        //override def hashCode = hash(this.getClass, value.hashCode)
+        override def hashCode = super.hashCode
 
         override def toString = "Num(" + value + ")"
     }
@@ -43,19 +46,21 @@ object Desugaring {
             case _ => false
         }
 
-        //override def hashCode = hash(this.getClass, left.hashCode, right.hashCode)
+        override def hashCode = super.hashCode
 
         override def toString = "Mul(" + left + ", " + right + ")"
     }
 
     // Simplification rule:
     def simplify(expr: Expr) = expr match {
-        case Mul(x, Num(1)) => x
+        //case Mul(x, Num(1)) => x
+        // the above is syntactic sugar of the following
+        case Mul(x, y) if y.equals(Num(1)) => x
         case _ => expr
     }
 
     def main(args: Array[String]) {
-        val expr = Mul(Num(21), Num(1)) // i.e. val expr = new Mul(new Num(21), new Num(1))
-        assert(simplify(expr).asInstanceOf[Num].value == 21)
+        val expr = Mul(Num(21), Num(1))   // i.e. val expr = new Mul(new Num(21), new Num(1))
+        assert(simplify(expr) == Num(21)) // as equals() method is defined, we can compare two instances with ==
     }
 }

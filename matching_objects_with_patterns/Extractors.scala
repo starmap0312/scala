@@ -42,7 +42,8 @@ object Extractors {
     }
 
     def main(args: Array[String]) {
-        val expr = Mul(Num(21), Num(1)) // i.e. val expr = new Mul(new Num(21), new Num(1))
+        val expr = Mul(Num(21), Num(1))      // i.e. val expr = new Mul(new Num(21), new Num(1))
         assert(simplify(expr).asInstanceOf[Num].value == 21)
+        // assert(simplify(expr) == Num(21)) // the default comparison operator does not work, unless we override equals() method in subclasses
     }
 }
