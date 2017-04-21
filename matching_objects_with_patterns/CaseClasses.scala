@@ -9,6 +9,15 @@
 // Unlike Java, you compare the equality of two objects with ==
 // 1) in Java, the == operator compares "reference equality"
 // 2) in Scala,the == operator compares "equality of two instances"
+// characteristics
+// 1) no notational overhead for the class hierarchy
+// 2) pattern matching code is concise for both shallow and nested patterns
+// 3) it exposes object representation
+// 4) mixed characteristics with respect to extensibility
+//    adding new variants is straightforward
+//    but it is not possible to define new kinds of patterns
+//      because patterns are in a one-to-one correspondence with (the types of) case classes
+// the shortcoming is eliminated when case classes are paired with extractors
 object CaseClasses {
     // Class hierarchy:
     trait Expr

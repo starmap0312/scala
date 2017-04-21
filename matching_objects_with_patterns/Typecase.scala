@@ -8,6 +8,14 @@
 //    case x: T =>  ... the case is matched if and only if x is a subclass of T
 //    i.e. x.isInstanceOf[T] = true and val x = x.asInstanceOf[T] happens implicitly
 // 4) it requires zero overhead for the class hierarchy
+// characteristics
+// 1) zero overhead for the class hierarchy
+// 2) the pattern matching is concise for shallow patterns
+//    but becomes more verbose as patterns grow deeper, because we will need nested match-expressions
+// 3) it completely exposes object representation
+// 4) same extensibility as type-test/typecast
+//    adding new variants poses no problems
+//    but adding new patterns require a different syntax
 object Typecase {
     // Class hierarchy:
     trait Expr

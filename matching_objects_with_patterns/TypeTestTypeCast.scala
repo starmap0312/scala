@@ -4,6 +4,12 @@
 // 2) most direct form of decomposition
 //    zero overhead for the class hierarchy
 // 3) type-casts are potentially unsafe because they can raise ClassCastExceptions
+// characteristics
+// 1) no representation independence
+//    type-tests and type-casts completely expose representation
+// 2) mixed characteristics with respect to extensibility
+//    one can add new variants without changing the framework (because nothing to be done in the framework itself)
+//    one cannot invent new patterns over existing variants that use the same syntax
 object TypeTestTypeCast {
     // Class hierarchy:
     trait Expr
