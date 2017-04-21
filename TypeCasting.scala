@@ -10,6 +10,14 @@
 //    it is defined in scala.Any
 //    ex. obj.isInstanceOf[String]
 //        obj.asInstanceOf[List[_]]
+// Type-Cast: x.asInstanceOf[T]
+//   it is a cast, it is only needed by the compiler to enforce the type compatibility
+//   it does not need to do anything at all: a reference is a reference, regarding of the type of underlying object
+// Type-Test: x.isInstanceOf[T]
+//   isInstanceOf is the opposite: compiler does not know anything about it, it's just a function call
+//   it is executed at runtime to check whether the given object is of the expected type
+//   so we will need a real Class instance if we need the information at runtime
+// note type parameters are not available at runtime, all information they carry can only be used by the compiler
 // Scala               vs. Java
 // -------------------     ----------------
 // classOf[T]          vs. T.class
@@ -69,5 +77,19 @@ object TypeCasting {
         println(classOf[Number].cast(1))                  // cast object 1 into Number class 
         //println(classOf[Number].cast("a"))              // ClassCastException: Cannot cast String to Number 
         //println("a".asInstanceOf[Number])               // ClassCastException: Cannot cast String to Number 
+
+        // 4) asInstanceOf[T] vs. isInstanceOf[T]
+        val num: Any = 123
+        val str: Any = "abc"
+        //num.asInstanceOf[String]                        // compiler trusts you about the casting, but we will get ClassCastException at runtime
+        str.asInstanceOf[String]                          // OK, String = abc
+        num.isInstanceOf[String]                          // OK, Boolean = false
+        str.isInstanceOf[String]                          // OK, Boolean = true
+        def as[T](x: Any): T = x.asInstanceOf[T]          // generic type will be lost at runtime
+        as[String](num)                                   // OK, no effect
+        as[String](str)                                   // OK, no effect
+        def is[T](x: Any): Boolean = x.isInstanceOf[T]    // compile warning: abstract type T is unchecked since it is eliminated by erasure
+        is[String](num)                                   // OK, Boolean = true
+        is[String](str)                                   // OK, Boolean = true
     }
 }
