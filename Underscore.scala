@@ -30,5 +30,14 @@ object Underscore {
         // 3) Wildcards
         // 3.1) Wildcard imports
         import java.util._
+
+        // 4) Default value
+        class MyClass {                     // initialises the variable to a default value
+            var num : Int     = _           // num: Int = 0
+            var str : String  = _           // str: String = null
+            var flag: Boolean = _           // flag: Boolean = false
+            // setting a var to a default value makes sense since a var is expected to change
+            // but if we write "val num: Int = _", we would get compile error, as for constant variable we should assign a value explicitly
+        }
     }
 }
