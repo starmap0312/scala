@@ -1,17 +1,17 @@
 // 1) Variable can be viewed as an alias to a function without parameter: ex. myVar()
 //    assign the value of an expression to a variable is just like assign a function without parameter
-//    ex. myVar = expr
-//        println(myVar) == println(expr())
+//    ex. def myExpr = expr
+//        println(myExpr) == println(expr())
 //    when the variable is needed, we can evaluate the expression (i.e. call the function) or do that when defined
 //    there can be different timings when the evaluation is executed (and value cached/stored) 
-//    ex. def expr(): Int = { 3 + 2 }   // some expression is like a function without parameter
-//        val myVar1 = expr()           // evaluated when defined
-//        def myVar2 = expr             // no evaluation when defined
-//        println(myVar2)               // evaluated when accessed (i.e. call expr())
+//    ex. def expr(): Int = { 3 + 2 }   // a method without parameter
+//        def myExpr = expr             // name an expression, no evaluation when defined
+//        val myVar = expr              // local variable (storage) is allocated and value evaluated when defined
+//        println(myExpr)               // evaluated when accessed (i.e. compute expr)
 // 2) Array/List can be viewed as an alias to a function with one parameter: ex. myArr(index)
 //    there can be different policies how the values are cached/stored and dropped
 //    Array/List, Stream, vs. View
-//    Array/List  : storage allocated when created and kept the whole time
+//    Array/List  : storage allocated when created and kept the whole time (List is a linked list)
 //    Stream      : storage allocated when accessed and kept if still needed
 //    View        : no storage allocated, compute online for everytime access 
 object LazyEvaluation {
