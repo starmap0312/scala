@@ -1,13 +1,20 @@
 object OODecomposition {
     // class hierarchy
     trait Expr {
-        def isNum: Boolean = false                         // test methods return false by default
-        def isVar: Boolean = false
+        // in statically typed language, ex. C++/Java/Scala, we need to define the test methods and accessor methods in base class
+        // test methods return false by default
+        def isNum: Boolean = false                         // we need to define all test methods in base class;
+        def isVar: Boolean = false                         // otherwise, we will get value isVar is not a member of Expr
         def isMul: Boolean = false
-        def value: Int     = throw new NotImplementedError // accessor methods
-        def name : String  = throw new NotImplementedError
+        // accessor methods
+        def value: Int     = throw new NotImplementedError // we need to define all accessor methods in base class;
+        def name : String  = throw new NotImplementedError // otherwise, we will get value name is not a member of Expr
         def left:  Expr    = throw new NotImplementedError
         def right: Expr    = throw new NotImplementedError
+        // in dyanamically typed languages, ex. Python, SmallTalk
+        // only test methods need to be defined in base class, accessor methods are not needed in base class
+        //   missing accessors will be automatically caught and turned into Exceptions at runtime
+        // ex. Python is duck-typing, so we don't need this class hierarchy at all if we don't want it
     }
 
     // each subclass re-implements its own accessor method and test method

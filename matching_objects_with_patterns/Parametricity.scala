@@ -1,4 +1,15 @@
 // Parametricity
+// static typing vs. dynamic typing
+// 1) static typing: ex. C/C++, Java/Scala
+//    a language is statically typed if the type of a variable is known at compile time
+//    a programmer must specify what type each variable is
+// 2) offer some form of type inference: ex. Scala/Haskell
+//    the type system will try to deduce the type of a variable
+// advantages of the above: type-checking by the compiler (less bug)
+// 3) dynamic typing: ex. Perl, Ruby, Python
+//    a language is dynamically typed if the type is associated with run-time values, and not named variables/fields/etc.
+//    a programmer does not need to specify types every time 
+//    most scripting languages do not have compiler to do static type-checking 
 // example: typed evaluator for lambda expressions 
 object Parametricity {
     // Class hierarchy:

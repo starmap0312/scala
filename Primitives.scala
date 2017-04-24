@@ -146,5 +146,9 @@ object Primitives {
         // the convention is to omit the parenthesis when calling methods that don’t have any side effects
         println(method3)
         println(method4)
+
+        // 10) passing multiple parameters
+        def method5(arg: Int*) = arg // (arg: Int*)Seq[Int]
+        method5(1, 2, 3)             // Seq[Int] = WrappedArray(1, 2, 3)
     }
 }

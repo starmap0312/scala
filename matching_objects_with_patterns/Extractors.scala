@@ -31,6 +31,8 @@
 //     ex. Type-tests/type-casts, case classes are completely exposing representation
 //   extraction can play the role of a representative object
 //     its constituents (if any) can be bound or matched further with nested pattern matches
+//   let clients use only objects Num/Var/Mul for construction and extraction
+//     this decouples clients from class definitions
 object Extractors {
     // Class hierarchy:
     trait Expr
@@ -62,8 +64,18 @@ object Extractors {
 
     // Simplification rule:
     def simplify(expr: Expr) = expr match {
-        case Mul(x, Num(1)) => x        // implicit type tests are added when matching 
-        case _ => expr                  // i.e. case mul: Mul => mul match { case Mul(x, Num(1)) => } happens implicitly
+        case Mul(x, Num(1)) => x
+        case _ => expr
+        // the above is intepreted as the following: implicit type tests are added when before and after unapply()
+        /*
+        case mul: Mul => Mul.unapply(mul) match {
+            case Some(_) => mul match {
+                case Mul(x, Num(1)) => x
+            }
+            case _ => expr
+        }
+        case _ => expr
+        */
     }
 
     def main(args: Array[String]) {

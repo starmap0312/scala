@@ -1,4 +1,5 @@
 // Pattern Matching: match/case contruct
+//   used in message exchange between distributed systems, UI event handling, etc.
 // Syntax
 //   [value] match {
 //       case [pattern] => [expression]

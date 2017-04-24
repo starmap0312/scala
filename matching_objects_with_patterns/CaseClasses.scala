@@ -10,8 +10,9 @@
 // 1) in Java, the == operator compares "reference equality"
 // 2) in Scala,the == operator compares "equality of two instances"
 // characteristics
+// (good conciseness)
 // 1) no notational overhead for the class hierarchy
-// 2) pattern matching code is concise for both shallow and nested patterns
+// 2) pattern matching code is concise for both shallow and deep (nested) patterns
 // 3) it exposes object representation
 // 4) mixed characteristics with respect to extensibility
 //    adding new variants is straightforward

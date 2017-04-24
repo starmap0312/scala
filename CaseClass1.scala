@@ -19,6 +19,8 @@
 //        }
 //        class Foo()
 //        val foo = Foo()           // no new keyword when instantiation: val foo = new Foo
+//   note: Scala defines separate namespaces for types (objects/values) and terms (expressions/methods)
+//         so companion object can have the same name as the class name
 //
 //   ex2. trait User
 //        case case FreeUser(name: String) extends User

@@ -9,9 +9,10 @@
 //    i.e. x.isInstanceOf[T] = true and val x = x.asInstanceOf[T] happens implicitly
 // 4) it requires zero overhead for the class hierarchy
 // characteristics
+// (good conciseness)
 // 1) zero overhead for the class hierarchy
 // 2) the pattern matching is concise for shallow patterns
-//    but becomes more verbose as patterns grow deeper, because we will need nested match-expressions
+//    but more verbose for deep patterns, in which case it contains nested match-expressions
 // 3) it completely exposes object representation
 // 4) same extensibility as type-test/typecast
 //    adding new variants poses no problems
