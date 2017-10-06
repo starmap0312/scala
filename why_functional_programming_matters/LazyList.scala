@@ -54,7 +54,7 @@ object LazyList {
         // 1) Stream[T]:
         // 1.1) explicitly define a stream
         val stream1 = 1#::2#::3#::Stream.empty
-        val stream2:Stream[Int] = Stream.cons(1, Stream.cons(2, Stream.cons(3, Stream.empty)))
+        val stream2: Stream[Int] = Stream.cons(1, Stream.cons(2, Stream.cons(3, Stream.empty)))
         val stream3 = (1 to 3).toStream
         val stream4 = (1 until 3).iterator.toStream // convert an iterator to a Stream
         println(stream1)      // Stream(1, ?): tail of the stream is not evaluated yet
@@ -72,7 +72,7 @@ object LazyList {
         println(repeat(1))                       // Stream(1, ?)
         repeat(1).take(3).foreach(println)       // 1 1 1
         // ex2.
-        def repeatSum(x: Int, y: Int): Stream[Int] = (x + y)#::repeatSum(x, y)
+        def repeatSum(x: Int, y: Int): Stream[Int] = (x + y) #:: repeatSum(x, y)
         println("ex2.")
         println(repeatSum(1, 2))                 // Stream(3, ?)
         repeatSum(1, 2).take(3).foreach(println) // 3 3 3 

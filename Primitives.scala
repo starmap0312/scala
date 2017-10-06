@@ -150,5 +150,15 @@ object Primitives {
         // 10) passing multiple parameters
         def method5(arg: Int*) = arg // (arg: Int*)Seq[Int]
         method5(1, 2, 3)             // Seq[Int] = WrappedArray(1, 2, 3)
+
+        // 11) List methods
+        // 11.1) list.groupBy([function: element => key value])
+        //       group the list into a Map whose key is determined by a function
+        println(List(("x", 1), ("x", 2), ("y", 1)).groupBy(_._1))             // Map(y -> List((y,1)), x -> List((x,1), (x,2)))
+
+        // 12) Map methods
+        // 12.1) map.mapValues([function])
+        //       map a Map into another Map with all its values applied by a function
+        println(Map("x"-> (1, 2), "y" -> (2, 3)).mapValues(x => x._1 + x._2)) // Map(x -> 3, y -> 5)
     }
 }

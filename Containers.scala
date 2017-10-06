@@ -1,4 +1,5 @@
-
+// final case class Tuple1[+T1](_1: T1)
+// final case class Tuple2[+T1, +T2](_1: T1, _2: T2)
 object Containers {
     def main(args: Array[String]) {
         // 0) Tuples: a sequence of immutable items
@@ -6,19 +7,19 @@ object Containers {
         val pair1 = (1, "two")
         val pair2 = (1 -> "two") 
         // which are syntactic sugar of
-        val pair3 = new Tuple2(1, "two") 
+        val pair3 = Tuple2(1, "two")       // because Tuple2 is a case class, we can omit the new operator 
         println(pair1)
         println(pair2)
         println(pair3)
         // 0.2) Tuple3: a triple of immutable items
         val tuple1 = (1, "two", 3.0)
         // which is syntactic sugar of
-        val tuple2 = new Tuple3(1, "two", 3.0) 
+        val tuple2 = Tuple3(1, "two", 3.0) // because Tuple3 is a case class, we can omit the new operator
         println(tuple1)
         println(tuple2._1, tuple2._2, tuple2._3)
 
         // 1) Array[T]
-        val arr1:Array[String] = new Array[String](3) // var arr1 = new Array[String](3)
+        val arr1: Array[String] = new Array[String](3) // var arr1 = new Array[String](3)
         val arr2 = Array("zero", "one", "two")
         arr1(0) = "zero"
         println(arr1(0))

@@ -37,9 +37,9 @@ object Parametricity {
 
     // Evaluation:
     def eval[A, B, C](t : Term[A], env : Env): A = t match {
-        case v: Var[B] => env(v)                                       // A = B
-        case n: Num    => n.value                                      // A = Int
-        case i: Suc    => { y: Int => y + 1 }                          // A = Int => Int
+        case v: Var[B]    => env(v)                                    // A = B
+        case n: Num       => n.value                                   // A = Int
+        case _: Suc       => { y: Int => y + 1 }                       // A = Int => Int
         case f: Lam[B, C] => { y: B => eval(f.e, env.extend(f.x, y)) } // A = B => C
         case a: App[B, C] => eval(a.f, env)(eval(a.e, env))            // A = C
     }
