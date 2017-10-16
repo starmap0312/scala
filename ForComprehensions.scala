@@ -29,6 +29,7 @@
 //        x => e2
 //    )
 // 8) for-comprehension can be used for any type whose map(), flatMap() and filter() are defined
+import scala.util.{ Success, Failure, Try }
 
 object ForComprehensions {
     def main(args: Array[String]) {
@@ -62,5 +63,15 @@ object ForComprehensions {
         )
         for (x <- e4) println(x)
         for (x <- e5) println(x)
+
+        // ex3.
+        val e6 = for (x <- Try { 3 }) yield x
+        println(e6) // Success(3)
+        val e7 = for (x <- Try { throw new Exception("exception in try {...}") }) yield x
+        println(e7) // Failure(java.lang.Exception: exception in try {...})
+        e7 match {
+          case Success(x) => println(x)
+          case Failure(x) => println(x) // java.lang.Exception: exception in try {...}
+        }
     }
 }
