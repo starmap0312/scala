@@ -1,3 +1,7 @@
+// syntax: for ([sequence of generators and filers]) { [the code] }
+// 1) for(x <- c1; y <- c2; z <-c3) {...}
+//    (is translated into)
+//    c1.foreach(x => c2.foreach(y => c3.foreach(z => {...})))
 // syntax: for ([sequence of generators and filers]) yield [the result]
 // 1) [element] <- [collection] : a generator
 // 2) [generator] if [condition]: a filter
