@@ -1,0 +1,197 @@
+// 1) Evaluation Rules
+// ex1. def, val, lazy val
+def example = 2           // evaluated when called
+val example = 2           // evaluated immediately
+lazy val example = 2      // evaluated once when needed
+// 1.1) Call by value: evaluates the function arguments before calling the function
+// ex2. call-by-call
+def square(x: Double)     // call by value
+// 1.2) Call by name: evaluates the function first, and then evaluates the arguments if need be
+// ex3. call-by-name
+def square(x: => Double)  // call by name
+// ex4. varying # of arguments
+def myFct(bindings: Int*) = { ... } // bindings is a sequence of int, containing a varying # of arguments
+
+// 2) Higher order functions
+//    functions that take a function as a parameter or return functions
+// ex1. higher-order method sum() returns a Function2 that takes two integers and returns an integer  
+def sum(f: Int => Int): (Int, Int) => Int = {  
+  def sumf(a: Int, b: Int): Int = { f(a) + f(b) }
+  sumf
+} 
+sum(x => x * x * x)(1, 10) // sum of cubes from 1 to 10
+
+// ex2. curried method, it is the same as the above, but its type is (Int => Int) => (Int, Int) => Int  
+def sum(f: Int => Int)(a: Int, b: Int): Int = { f(a) + f(b) } 
+// Called like this
+sum((x: Int) => x * x * x) // the parameter is an nnonymous function, i.e. it does not have a name  
+sum(x => x * x * x)        // same as the above anonymous function but with type inferred
+sum(x => x * x * x)(1, 10) // sum of cubes from 1 to 10
+
+def cube(x: Int) = x * x * x  
+sum(cube)(1, 10)           // same as above   
+
+// 3) Currying
+//    convert method with multiple arguments into a function with fewer arguments (i.e. returns another function)
+def f(a: Int, b: Int): Int // uncurried method (type is (Int, Int) => Int)
+def f(a: Int)(b: Int): Int // curried method (type is Int => Int => Int)
+
+// 4) Classes
+//    a scala class body is the primary constructor, which is called when use the "new" operator
+//    its parameters is just like a public final field in Java (i.e. val (immutable) and public)
+// ex1.
+class MyClass(x: Int, y: Int) {           // Defines a new type MyClass with a constructor  
+  require(y > 0, "y must be positive")    // precondition, triggering an IllegalArgumentException if not met  
+  def this(x: Int) = { this(x, 0) }       // auxiliary constructor
+  def nb1 = x                             // public method computed every time it is called  
+  def nb2 = y  
+  private def test(a: Int): Int = { ... } // private method  
+  val nb3 = x + y                         // computed only once, called during instantiation 
+  override def toString =                 // overridden method  
+    member1 + ", " + member2 
+}
+
+new MyClass(1, 2)                         // creates a new object of type MyClass
+// ex2.
+assert(condition)                       // throws AssertionError if condition is not met
+
+// 4) Operators
+// ex1. infix notation
+myObject myMethod 1        // this is the same as calling myObject.myMethod(1)
+//    operator (i.e. method) names can be alphanumeric, symbolic (ex. x1, *, +?%&, vector_++, counter_=)
+3 + 4                      // this is the same as calling 3.+(4)
+//    the precedence of an operator is determined by its first character, with the following increasing priority
+// ex2. (all letters)
+//      |
+//      ^
+//      &
+//      < >
+//      = !
+//      :
+//      + -
+//      * / %
+//      (all other special characters)
+
+// the associativity of an operator is determined by its last character
+//   Right-associative if ending with :
+//   ex. (a: Int) => a + 1
+//       1: 2: Nil
+//   Left-associative otherwise
+// note: assignment operators have lowest precedence
+
+// 5) Class hierarchies
+// ex1. abstract class & singleton (object)
+abstract class TopLevel {            // abstract class: cannot be instantiated
+  def method1(x: Int): Int           // abstract method, a non-implemented method 
+  def method2(x: Int): Int = { ... } // implemented method 
+}
+
+class Level1 extends TopLevel {      // concrete class 
+  def method1(x: Int): Int = { ... } // implement the non-implemented method here
+  override def method2(x: Int): Int = { ...} // TopLevel's method2 needs to be explicitly overridden  
+}
+
+object MyObject extends TopLevel { ... } // defines a singleton object. No other instance can be created
+
+// ex2. create a runnable application in Scala
+object Hello {  
+  def main(args: Array[String]) = println("Hello world")  
+}
+// or
+object Hello extends App { // the singleton's body is executed during instantiation
+  println("Hello World")
+}
+
+// 6) Class Organization
+// Classes and objects are organized in packages
+// ex1.
+package myPackage
+
+// Classes and objects in a package can be referenced through import statements
+// ex2.
+import myPackage.MyClass              // import a class
+import myPackage._                    // import everything public in a package
+import myPackage.{MyClass1, MyClass2} // import two classes
+import myPackage.{MyClass1 => A}      // import a class and give it an alias
+
+// they can also be directly referenced in the code with the fully qualified name
+// ex3.
+new myPackage.MyClass1
+
+// the following are automatically imported in Scala
+//   all members of packages scala
+//   all members of java.lang
+//   all members of the object scala.Predef
+
+// Traits are similar to Java interfaces, except they can have non-abstract members
+// ex4.
+trait Planar { ... }
+class Square extends Shape with Planar
+
+// General object hierarchy
+//   scala.Any:    base type of all types
+//     it has methods hashCode() and toString() that can be overridden
+//   scala.AnyVal: base type of all primitive types
+//     ex. scala.Double, scala.Float, etc.
+//   scala.AnyRef: base type of all reference types
+//     i.e. alias of java.lang.Object, supertype of java.lang.String, scala.List, any user-defined class
+//   scala.Null:   a subtype of any scala.AnyRef
+//     null is the only instance of type scala.Null
+//     scala.Nothing is a subtype of any other type without any instance
+
+// 7) Type Parameters
+// conceptually similar to C++ templates or Java generics
+// it can be used when defining classes, traits or functions, etc.
+// ex1.
+class MyClass[T](arg1: T) { ... }  
+new MyClass[Int](1)  
+new MyClass(1)   // the type is being inferred, i.e. determined based on the value arguments  
+
+// restrict the type being used
+// ex2.
+def myFct[T <: TopLevel](arg: T): T = { ... } // T must derive from TopLevel or be TopLevel
+def myFct[T >: Level1](arg: T): T = { ... }   // T must be a supertype of Level1
+def myFct[T >: Level1 <: Top Level](arg: T): T = { ... }
+
+// 8) Variance
+// Given A <: B
+//   If C[A] <: C[B], C is covariant
+//   If C[A] >: C[B], C is contravariant
+//   Otherwise C is nonvariant
+// ex.
+class C[+A] { ... }     // C is covariant
+class C[-A] { ... }     // C is contravariant
+class C[A]  { ... }     // C is nonvariant
+// ex.
+//   For a function, if A2 <: A1 and B1 <: B2, then (A1 => B1) <: (A2 => B2)
+
+// Functions must be contravariant in their argument types and covariant in their result types
+// ex.
+trait Function1[-T, +U] {
+  def apply(x: T): U
+}                       // this definition is OK because T is contravariant and U is covariant
+
+class Array[+T] {
+  def update(x: T)
+}                       // this definition is NOT OK 
+
+// 9) Pattern Matching
+// pattern matching is used for decomposing data structures (unwrapping objects)
+// ex1.
+unknownObject match {
+  case MyClass(n) => ...
+  case MyClass2(a, b) => ...
+}
+
+// ex2.
+(someList: List[T]) match {
+  case Nil => ...          // empty list
+  case x :: Nil => ...     // list with only one element
+  case List(x) => ...      // same as above
+  case x :: xs => ...      // a list with at least one element. x is bound to the head, and
+                           // xs to the tail. xs could be Nil or some other list
+  case 1 :: 2 :: cs => ... // lists that starts with 1 and then 2
+  case (x, y) :: ps => ... // a list where the head element is a pair (a sub-pattern)
+  case _ => ...            // default case if none of the above matches
+}
+

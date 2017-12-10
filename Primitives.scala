@@ -96,12 +96,12 @@ object Primitives {
             def SayHi() = println(message)
         }
         val greeter1 = new Greeter1("Hello Greeter1!") // A greeter is being instantiated
-        greeter1.SayHi()                           // Hello world!
+        greeter1.SayHi()                               // Hello world!
         // 7.2) auxiliary constructor
         //      an auxiliary constructor must, on the first line of it’s body
         //      it can call another auxiliary constructor declared before it or the primary constructor
         class Greeter2(message: String, secondaryMessage: String) { // primary constructor
-            def this(message: String) = this(message, "")          // secondary constructor
+            def this(message: String) = this(message, "")           // secondary constructor
             def SayHi() = println(message + secondaryMessage)
         }
         val greeter2 = new Greeter2("Hello Greeter2!")
