@@ -195,3 +195,39 @@ unknownObject match {
   case _ => ...            // default case if none of the above matches
 }
 
+// 9) Options
+//    some functions (ex. Map.get) return a value of type Option[T] which is either Some[T] or None
+// ex. Options used with pattern matching
+val myMap = Map("a" -> 42, "b" -> 43)
+def getMapValue(s: String): String = {
+  myMap get s match {
+    case Some(nb) => "Value found in Map: " + nb
+    case None => "No value found in Map"
+  }
+}
+getMapValue("a")  // "Value found in Map: 42"
+getMapValue("c")  // "No value found in Map"
+// ex. the function getMapValue can be defined using combinator methods of Option class, ex. map(), getOrElse()
+def getMapValue(s: String): String =
+  myMap.get(s).map("Value found in Map: " + _).getOrElse("No value found in Map")
+  // Some(x).map(x => f(x)) returns Some(f(x)), thus Some(x).map(x => f(x)).getOrElse() returns f(x)
+  // None.map(x => f(x)) returns None,          thus None.map(x => f(x)).getOrElse([expr]) returns [expr]
+
+// 10) Pattern Matching in Anonymous Functions
+// Pattern matches are also used quite often in anonymous functions
+// ex.
+val pairs: List[(Char, Int)] = ('a', 2) :: ('b', 3) :: Nil
+val chars: List[Char] = pairs.map(
+  pair => pair match {
+    case (ch, num) => ch
+  }
+) // List('a', 'b'), i.e. 'a' :: 'b' :: Nil
+
+// a shorthand for the above partial function defintion
+val chars: List[Char] = pairs map {
+  case (ch, num) => ch
+} // List('a', 'b'), i.e. 'a' :: 'b' :: Nil 
+
+// 11) Collections
+// 11.1) Base Classes
+
