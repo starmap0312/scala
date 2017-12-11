@@ -229,5 +229,51 @@ val chars: List[Char] = pairs map {
 } // List('a', 'b'), i.e. 'a' :: 'b' :: Nil 
 
 // 11) Collections
-// 11.1) Base Classes
+// Base Classes of scala.collection.mutable and scala.collection.immutable:
+//   Iterable -> Seq
+//            -> Set
+//            -> Map
+//   (Iterable is collections you can iterate on, Seq is ordered sequences, and Map is lookup data structure)
+// 11.1) scala.collection.mutable (Mutable Collections)
+//                         -> Seq -> IndexedSeq
+//                                -> LinearSeq
+// Traversable -> Iterable -> Set -> SortedSet
+//                                -> BitSet
+//                         -> Map -> SortedMap
+// Array: Scala arrays are native JVM arrays at runtime, therefore they are very performant
+// Array[T] is Scala's representation for Java's T[]
+final class Array[T] extends java.io.Serializable with java.lang.Cloneable
 
+// Array is mutable, indexed collections of values
+val numbers = Array(1, 2, 3, 4) // Array is mutable, indexed collections of values
+val first = numbers(0)          // read the first element
+numbers(3) = 100                // replace the 4th array element with 100
+
+// scala.collection.mutable.IndexedSeq
+trait IndexedSeq[A] extends Seq[A] with collection.IndexedSeq[A]
+val numbers = scala.collection.mutable.IndexedSeq(1, 2, 3, 4)  // scala.collection.mutable.IndexedSeq[Int] = ArrayBuffer(1, 2, 3, 4)
+numbers(3) = 100                                               // scala.collection.mutable.IndexedSeq[Int] = ArrayBuffer(1, 2, 3, 100)
+
+//   Scala also has mutable Map and Set: these should only be used if there are performance issues with immutable types
+val myMap = scala.collection.mutable.Map("a" -> 42, "b" -> 43) // scala.collection.mutable.Map[String,Int] = Map(b -> 43, a -> 42)
+myMap("a") = 100                                               // scala.collection.mutable.Map[String,Int] = Map(b -> 43, a -> 100)
+//   note: a java.util.Map is mutable, so we need to convert a scala immutable Map to a java mutable Map before passing to a Java function
+//         ex. conver a scala.collection.immutable.Map[String, Double] to a java.util.Map[String, java.lang.Double]
+val scalaImmutableMap = Map[String, Double]("one" -> 1.0, "two" -> 2.0) // scala.collection.immutable.Map[String,Double] = Map(one -> 1.0, two -> 2.0)
+val scalaImmutableDoubleMap: Map[String, java.lang.Double] = scalaImmutableMap.mapValues(Double.box) 
+val scalaMutableDoubleMap: scala.collection.mutable.Map[String, java.lang.Double] = scala.collection.mutable.Map(
+  scalaImmutableDoubleMap.toSeq: _*
+)
+import scala.collection.JavaConverters._
+val javaMutableDoubleMap : java.util.Map[String, java.lang.Double] = scalaMutableDoubleMap.asJava // java.util.Map[String,Double] = {one=1.0, two=2.0}
+
+// 11.2) scala.collection.immutable (Immutable Collections)
+//                         -> Seq -> IndexedSeq -> String / Vector / Range / NumericRange
+//                                -> LinearSeq  -> List   / Stream / Queue / Stack
+// Traversable -> Iterable -> Set -> SortedSet  -> TreeSet
+//                                -> BitSet
+//                                -> HashSet
+//                                -> ListSet
+//                         -> Map -> SortedMap  -> TreeMap
+//                                -> HashMap
+//                                -> ListMap
