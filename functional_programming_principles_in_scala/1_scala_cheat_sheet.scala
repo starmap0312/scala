@@ -277,3 +277,7 @@ val javaMutableDoubleMap : java.util.Map[String, java.lang.Double] = scalaMutabl
 //                         -> Map -> SortedMap  -> TreeMap
 //                                -> HashMap
 //                                -> ListMap
+//
+// scala.collection.immutable.List[+A] ... List is covariant in its result type: +A
+sealed abstract class List[+A] extends AbstractSeq[A] with LinearSeq[A]
+
