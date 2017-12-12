@@ -278,6 +278,164 @@ val javaMutableDoubleMap : java.util.Map[String, java.lang.Double] = scalaMutabl
 //                                -> HashMap
 //                                -> ListMap
 //
-// scala.collection.immutable.List[+A] ... List is covariant in its result type: +A
+// scala.collection.immutable.List[+A]   // covariant: i.e. List[Int] is a List[AnyVal], because class Int extends AnyVal
 sealed abstract class List[+A] extends AbstractSeq[A] with LinearSeq[A]
+// i)   apply(): construct a immutable List (defined by trait TraversableOnce)
+val fruitList = List("apples", "oranges", "pears")
+// ii)  final case class ::[B](override val head: B, private[scala] var tl: List[B]) extends List[B] 
+//      alternative syntax for constructing a immutable List
+val fruit = "apples" :: ("oranges" :: ("pears" :: Nil)) // parens optional, :: is right-associative
+// iii) head() and tail()
+fruit.head                  // "apples"
+fruit.tail                  // List("oranges", "pears")
+// iv) case object Nil extends List[Nothing]
+val empty = List()          // an instance of type List[Nothing]
+val empty = Nil             // a sigleton of type List[Nothing], i.e. case object Nil extends List[Nothing]
 
+// scala.collection.immutable.Vector[+A] // covariant: i.e. Vector[Int] is a Vector[AnyVal], because class Int extends AnyVal
+final class Vector[+A] extends AbstractSeq[A] with IndexedSeq[A]
+// i)    apply(): construct a immutable Vector (defined by abstract class GenericCompanion)
+val nums = Vector("louis", "frank", "hiromi")
+nums(1)                     // returns "frank": complexity O(log(n))
+nums.updated(2, "helena")   // returns a new Vector with a different string at index 2: complexity O(log(n))
+
+// scala.collection.immutable.Set[A]     // nonvariant : i.e. Set[Int] is NOT a Set[AnyVal]
+// i)    apply(): construct a immutable Set (defined by abstract class GenericCompanion)
+val fruitSet = Set("apple", "banana", "pear", "banana")
+fruitSet.size               // returns 3: there are no duplicates, only one banana
+
+// scala.collection.immutable.Range
+sealed class Range(val start: Int, val end: Int, val step: Int) extends scala.collection.AbstractSeq[Int] with IndexedSeq[Int]
+// i)   def until(end: Int): Range
+//      construct a Range, defined by final class RichInt(val self: Int)
+val r1: Range = 1 until 5    // scala.collection.immutable.Range = Range 1 until 5:            i.e. 1, 2, 3, 4
+// ii)  def to(end: Int, step: Int): Range.Inclusive
+//      construct a Range, defined by class RichInt(val self: Int))
+val r2: Range = 1 to 5       // scala.collection.immutable.Range.Inclusive = Range 1 to 5:     i.e. 1, 2, 3, 4, 5
+// iii) def by(step: Int): Range
+//      construct a Range, defined by class Range
+val r3 = 1 to 10 by 3        // scala.collection.immutable.Range = Range 1 to 10 by 3:         i.e. 1, 4, 7, 10
+val r4 = 6 to 1 by -2        // scala.collection.immutable.Range = inexact Range 6 to 1 by -2: i.e. 6, 4, 2 
+val s = (1 to 6).toSet       // or (1 to 6).toSeq
+
+// java.lang.String: i.e. scala String
+// i) often used with scala.collection.immutable.StringOps for combinatortory methods such as map(), filter(), etc.
+//    new StringOps([String]).filter(), where class StringOps is a sub-sub-subclass of class TraversableLike, where filter() is defined
+val s = "Hello World"        // implicit conversion of new StringOps(s) takes place in the following statement
+s filter (c => c.isUpper)    // returns "HW"; strings can be treated as Seq[Char]
+
+// Operations on sequences: ex. List
+val xs = List(1, 2, 3)
+val ys = List(4, 5)
+xs.length   // number of elements, complexity O(n)
+xs.last     // last element (exception if xs is empty), complexity O(n)
+xs.init     // all elements of xs but the last (exception if xs is empty), complexity O(n), ex. List(1, 2, 3).init = List(1, 2)
+xs take n   // first n elements of xs, ex. List(1, 2, 3) take 2 = List(1, 2)
+xs drop n   // the rest of the collection after taking n elements, ex. List(1, 2, 3) drop 1 = List(2, 3)
+xs(n)       // the nth element of xs, complexity O(n)
+xs ++ ys    // concatenation, complexity O(n)
+xs.reverse  // reverse the order, complexity O(n)
+xs updated(n, x)  // same list than xs, except at index n where it contains x, complexity O(n)
+xs indexOf x      // the index of the first element equal to x (-1 otherwise)
+xs contains x     // same as xs indexOf x >= 0
+xs filter p       // returns a list of the elements that satisfy the predicate p
+xs filterNot p    // filter with negated p 
+xs partition p    // same as (xs filter p, xs filterNot p)
+xs takeWhile p    // the longest prefix consisting of elements that satisfy p
+xs dropWhile p    // the remainder of the list after any leading element satisfying p have been removed
+xs span p         // same as (xs takeWhile p, xs dropWhile p)
+
+List(x1, ..., xn) reduceLeft op    // (...(x1 op x2) op x3) op ...) op xn
+List(x1, ..., xn).foldLeft(z)(op)  // (...( z op x1) op x2) op ...) op xn
+List(x1, ..., xn) reduceRight op   // x1 op (... (x{n-1} op xn) ...)
+List(x1, ..., xn).foldRight(z)(op) // x1 op (... (    xn op  z) ...)
+
+xs exists p    // true if there is at least one element for which predicate p is true
+xs forall p    // true if p(x) is true for all elements
+xs zip ys      // returns a list of pairs which groups elements with same index together, ex. List(1, 2) zip List(3, 4) = List((1,3), (2,4))
+xs unzip       // opposite of zip: returns a pair of two lists, ex. List((1,3), (2,4)).unzip = (List(1, 2),List(3, 4))
+xs.flatMap f   // applies the function to all elements and concatenates the result (function f should return a List as well)
+xs.sum         // sum of elements of the numeric collection
+xs.product     // product of elements of the numeric collection
+xs.max         // maximum of collection
+xs.min         // minimum of collection
+xs.flatten     // flattens a collection of collection into a single-level collection
+xs groupBy f   // returns a map which points to a list of elements, ex. List(1, 2, 3, 4).groupBy(x => x % 2) = List(1, 2, 3, 4).groupBy(x => x % 2)
+xs distinct    // sequence of distinct entries (removes duplicates)
+
+// Operations on Streams
+val xs = Stream(1, 2, 3) // => Stream(1, ?)
+val xs = Stream.cons(1, Stream.cons(2, Stream.cons(3, Stream.empty))) // same as above
+(1 to 1000).toStream     // => Stream(1, ?)
+x #:: xs // Same as Stream.cons(x, xs)
+// In the Stream's cons operator, the second parameter (the tail) is defined as a "call by name" parameter.
+// Note that x::xs always produces a List
+
+// Operations on maps: ex. Map
+val myMap = Map("I" -> 1, "V" -> 5, "X" -> 10)  // create a map
+myMap("I")      // => 1  
+myMap("A")      // => java.util.NoSuchElementException  
+myMap get "A"   // => None 
+myMap get "I"   // => Some(1)
+myMap.updated("V", 15)  // returns a new map where "V" maps to 15 (entry is updated), if the key ("V" here) does not exist, a new entry is added
+
+// Tuples/Pairs
+val pair = ("answer", 42)   // type: (String, Int)
+val (label, value) = pair   // label = "answer", value = 42  
+pair._1 // "answer"  
+pair._2 // 42  
+
+// Ordering
+// scala.math.Ordering[T]
+//   in Scala standard library, scala.math.Ordering[T] declares comparison functions, ex. lt() and gt() for standard types
+//   types with a single natural ordering should inherit from the trait scala.math.Ordered[T].
+// it is a trait whose instances each represent a strategy for sorting instances of a type
+//   ex. implicit object String extends StringOrdering (where trait StringOrdering extends Ordering[String])
+//       implicit object Double extends DoubleOrdering (where trait DoubleOrdering extends Ordering[Double])
+// 
+import math.Ordering  
+import scala.util.Sorting
+val fruits = Array("apple", "banana", "pear", "banana")
+Sorting.quickSort(fruits)(Ordering.String) // explicitly pass the Ordering parameter: fruits - Array(apple, banana, banana, pear) 
+Sorting.quickSort(fruits)                   // as the parameter is defined as implicit, so the compiler should figure out the right ordering (it looks for Ordering instance in the scope) 
+
+// For-Comprehensions
+// it is syntactic sugar for map, flatMap and filter operations on collections
+// syntax: for (s) yield e
+//   s is a sequence of generators and filters
+//     p <- e is a generator, i.e. e.map(p => {...})
+//     if f is a filter,      i.e. e.filter(p => f)
+//   if there are several generators (equivalent of a nested loop), the last generator varies faster than the first
+//   you can use { s } instead of ( s ) if you want to use multiple lines without requiring semicolons
+//   e is an element of the resulting collection
+// ex.
+for (x <- 1 to M; y <- 1 to N)
+  yield (x,y)
+// is equivalent to
+ (1 to M) flatMap (x => (1 to N) map (y => (x, y)))
+
+// Translation Rules
+// for-expression looks like a traditional for loop but works differently internally
+for (x <- e1) yield e2 
+// is translated to
+e1.map(x => e2)
+
+for (x <- e1 if f) yield e2
+// is translated to
+for (x <- e1.filter(x => f)) yield e2
+
+for (x <- e1; y <- e2) yield e3
+// is translated to
+e1.flatMap(x => for (y <- e2) yield e3)
+
+// ex.
+for {                                                  // use for {... ...} for multiple lines
+  i <- 1 until n  
+  j <- 1 until i  
+  if isPrime(i + j)  
+} yield (i, j) 
+// is equivalent to
+for (i <- 1 until n; j <- 1 until i if isPrime(i + j)) // use for (...; ...; ...) for single line
+  yield (i, j)  
+// is equivalent to
+(1 until n).flatMap(i => (1 until i).filter(j => isPrime(i + j)).map(j => (i, j)))
