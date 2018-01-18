@@ -13,7 +13,8 @@
 // 3) why the Promise trait does not extend Future?
 //    this is decision to discourage programmers from passing Promises to clients who upcast the Promise to Future 
 //    instead, you need to explicitly call promise.future() every time
-//    if you return a Promise, you are giving the right to complete it to somebody else (by returning the Future you are giving the right to subscribe to it)
+// 4) by returning a Promise, you are giving the right to complete it to somebody else
+//    by returning the Future you are giving the right to subscribe to it
 
 // syntax:
 // def future[T](body: =>T)(implicit execctx: ExecutionContext): Future[T] = Future[T](body)
@@ -36,6 +37,7 @@ object FuturePromise {
         }
         promise.future
     }
+    // note: even the future construct for asynchronous computation has a hidden, the client never sees it to prevent him from completing it
 
     def main(args: Array[String]) {
         // 1) construct a Future
