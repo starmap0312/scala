@@ -1,11 +1,12 @@
 // Akka Actor Model Benefits
   1) Event-driven model:          (i.e. actor allows non-blocking tasks)
      actors perform work in response to messages
-     communication between actors is asynchronous, allowing actors to send messages and continue their own work without blocking to wait for a reply
+     communication between actors is asynchronous
+     i.e. it allows actors to send messages and continue their own work without blocking to wait for a reply
      i.e. the sender does not stick around waiting for their message to be processed by the recipient
           instead, the sender puts the message in the recipient mailbox and is free to do other work
      actor mailbox:
-       a message queue with ordering semantics
+       a "message queue" with ordering semantics
        the order of multiple messages sent from the same Actor is preserved, but can be interleaved with messages sent by another Actor
   2) Strong isolation principles: (i.e. no shared state between actors)
      unlike regular objects in Scala, an actor does not have a public API in terms of methods that you can invoke
@@ -13,25 +14,27 @@
      this prevents any sharing of state between actors (just like no static fields shared by class instances)
      the only way to observe another actor’s state is by sending it a message asking for it
   3) Location transparency:       (i.e. fault tolerance)
-     the system constructs actors from a factory and returns references to the instances
+     the system constructs actors from a factory (ActorSystem) and returns references (ActorRef) to the instances
      in Akka, location does not matter:
        location transparency means that the ActorRef can represent an instance of the running actor in-process or on a remote machine
        therefore, the runtime can optimize the system by changing an Actor location or the entire application topology while it is running
        moreover, actor instances can start, stop, move, and restart to scale up and down as well as recover from unexpected failures
        i.e. the system can heal itself by crashing faulty Actors and restarting healthy ones.
   4) Lightweight:
-     each instance consumes only a few hundred bytes, which realistically allows millions of concurrent Actors to exist in a single application
+     an instance consumes only a few hundred bytes, which allows millions of concurrent Actors to exist in a single application
      when an actor is not processing messages, it is in a suspended state in which it does not consume any resources apart from memory
 
 // Defining Actors and messages
-  1) Since messages are like actor public API, it is a good practice to define messages with semantic and domain specific meaning even if they are just data type wrapper
+  1) Since messages are like actor public API, it is a good practice to define messages with "domain specific meaning"
+       even if they are just data type wrapper
   2) Messages should be immutable objects, since they are shared between different threads
   3) It is a good practice to put an actor associated messages in its companion object
      This makes it easier to understand what type of messages the actor expects and handles
   4) It is also a common pattern to use a props method in the companion object that describes how to construct the Actor
 ex.
 object Greeter {
-  def props(message: String, printerActor: ActorRef): Props = Props(new Greeter(message, printerActor)) // this actor requires two fields when constructed
+  // the props() method indicates that the actor requires two fields when constructed
+  def props(message: String, printerActor: ActorRef): Props = Props(new Greeter(message, printerActor))
   final case class WhoToGreet(who: String) // this actor handles message type: WhoToGreet (a data-type wrapper with a semantic name)
   case object Greet                        // this actor handles message type: Greet      (a data-type wrapper with a semantic name)
 }
