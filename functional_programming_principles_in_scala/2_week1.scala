@@ -54,3 +54,52 @@
      def sqrtIter(guess: Double, x: Doulbe): Double = // return type must be explcit for recursive methods
        if (isGoodEnough(guess, x)) guess
        else sqrtIter(improve(guess, x), x)
+
+     def sqrt(x: Double) = sqrtIter(1.0, x)
+
+// Blocks and Lexical Scope
+1) define auxiliary methods within a method block to avoid namespace pollution
+   ex.
+    def sqrt(x: Double) = {
+       def sqrtIter(guess: Double, x: Doulbe): Double = { ... }
+       def isGoodEnough(guess: Double, x: Doulbe) = { ... }
+       def improve(guess: Double, x: Doulbe) = { ... }
+       sqrtIter(1.0, x)
+    }
+2) lexical scope:
+   defintions inside a block are only visible inside the block
+   ex.
+    def sqrt(x: Double) = { // as x never changes, so we can eliminate x parameters of the auxiliary methods
+       def sqrtIter(guess: Double): Double = { ... }
+       def isGoodEnough(guess: Double) = { ... }
+       def improve(guess: Double) = { ... }
+       sqrtIter(1.0, x)
+    }
+
+// Tail Recursion
+1) recursive function:
+   a function that calls itself
+   there is a limit for the number of stack frames, if it exceeds, then stack overflow exception is thrown
+2) tail recursion:
+   a function that calls itself as its last step (if so, the function stack can be reused, i.e. O(1) space required for recursion)
+   one funciton stack frame is sufficient, just like loop
+   ex.
+     def gcd(a: Int, b: Int): Int =
+       if (b == 0) a else gcd(b, a % b)                // tail recursion
+
+     gcd(6, 4) = gcd(4, 2) = gcd(2, 0) = 2
+
+     def factorial(n: Int): Int =
+       if (n == 0) 1 else n * factorial(n - 1)         // not tail recursion
+
+     ex. factorial(4) = 4 * (3 * (2 * (1 * factorial(0)))) = 24                  // intermediate results need to be kept
+
+     (transform the above non-tail-recursion function into a tail recursion function)
+
+     def factorial(n: Int): Int = {
+       def loop(acc: Int, n: Int): Int =
+         if (n == 0) acc else loop(acc * n, n - 1)
+       loop(1, n)
+     }
+
+     ex. factorial(4) = loop(1, 4) = loop(4, 3) = loop(12, 2) = loop(24, 1) = 24 // no intermediate results need to be kept
