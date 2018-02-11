@@ -32,7 +32,7 @@
      sumOfSquare(3, 2 + 2) =  square(3) + square(2 + 2) = (3 * 3) + square(2 + 2) = 9 + square(2 + 2)
        = 9 + (2 + 2) * (2 + 2) = 9 + 4 * (2 + 2) = 9 + 4 * 4 = 9 + 16 = 25
 4) theorem of lamda-calculus:
-   both strategies evaluate to the same final value as long as they consists of pure functions (no side effect) and both terminate
+   both strategies evaluate to the same final value as long as they consists of "pure functions" (no side effect) and both "terminate"
 
 // Evaluation Strategies and Terminations
 1) if call-by-value terminates, then call-by-name terminates too, however,
