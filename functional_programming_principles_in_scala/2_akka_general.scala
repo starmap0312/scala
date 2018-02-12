@@ -133,6 +133,26 @@
    iii) Unbounded priority mailbox: java.util.concurrent.PriorityBlockingQueue (    Blocking, non-Bounded)
     iv) Bounded priority mailbox  : java.util.concurrent.PriorityBlockingQueue (    Blocking,     Bounded)
 
+// Akka Pool
+  0) trait RouterConfig extends Serializable {
+       def createRouter(system: ActorSystem): Router // create the actual router, which belongs to some ActorSystem and is responsible for routing messages to routees
+     }
+     a router factory: it produces the actual "router actor" and creates the "routing table"
+       routing table is a function which determines the recipients for each message to be dispatched
+  1) trait Pool extends RouterConfig {
+       def props(routeeProps: Props): Props = routeeProps.withRouter(this) // the supplied Props for the routees created by the router
+     }
+     a RouterConfig (router factory) for router actor that creates routees as child actors and removes them from the router if they terminate
+     it can also decorate a routee Props (a configuration object used in creating an routee actor) with a Router
+  2) final case class RandomPool extends Pool {
+       override def createRouter(system: ActorSystem): Router = new Router(RandomRoutingLogic())
+     }
+     a router pool that creates a Router with a RandomRoutingLogic which "randomly" selects one of the target routees to send a message to
+  3) final case class BalancingPool extends Pool {
+       override def createRouter(system: ActorSystem): Router = new Router(BalancingRoutingLogic())
+     }
+     a router pool that creates a Router with a BalancingRoutingLogic which "redistribute work" from busy routees to idle routees (all routees share the same mailbox)
+
 // Why modern systems need a new programming model: Akka actor model?
   1) The challenge of encapsulation:
      objects can only guarantee encapsulation (protection of invariants) in the face of single-threaded access
