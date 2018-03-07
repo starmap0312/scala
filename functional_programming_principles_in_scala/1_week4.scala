@@ -15,6 +15,7 @@ final abstract class Int() extends scala.AnyVal     {
   def !=(x: Int): Boolean     // a != b
   def <(x: Int): Boolean      // a > b
   def >(x: Int): Boolean      // a < b
+  def +(x: Int): Int          // a + b
   def unary_- : Int           // -a
   // ...
 }
@@ -22,6 +23,7 @@ final abstract class Int() extends scala.AnyVal     {
 //       scala.Int is directly represented by the primitive integer type of the Java virtual machine (so is Boolean)
 //       because they are primitive types on the runtime (for better performance than the boxed types)
 //       there is no way to instantiate them other than by giving a literal (val i: Int = 33)
+//       (Scala has these types to create a unified object system between primitive types and objects)
 final abstract class Boolean private extends AnyVal {
   def ==(x: Boolean): Boolean // a == b
   def !=(x: Boolean): Boolean // a != b
@@ -47,3 +49,19 @@ implicit def int2Integer(x: Int)          = java.lang.Integer.valueOf(x) // conv
 // class java.lang.Integer wraps a value of the primitive type int in an object and provides some useful static methods
 implicit def boolean2Boolean(x: Boolean)  = java.lang.Boolean.valueOf(x) // convert scala.Boolean to java.lang.Boolean
 
+// 2) function objects
+//    eta-expansion:
+//      if method f is used in a place where a Function type is expected,
+//      it is automatically converted to the Function value
+
+// 3) subtyping and generics:
+// 3.1) two forms of polymorphism: subtyping and generics
+// 3.2) interaction between subtyping and generics: type bounds and variance
+// i) covariant vs. contravariant vs. invariant
+//    the compiler will have variance checking for us (roughly):
+//      covariant parameters     can appear only in method results
+//      contravariant parameters can appear only in method parameters
+//      invariant parameters     can appear anywhere
+trait Function1[-T, +U] {
+  def apply(x: T): U             // this is OK in compile time, as the convariant parameter appears in method result
+}
