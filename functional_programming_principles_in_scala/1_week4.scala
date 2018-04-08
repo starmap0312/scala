@@ -119,8 +119,8 @@ def eval(e: Expr): Int = {
 //   it is not safe as there is no type-check at compile-time, so it may throw runtime exception
 
 // 4.3) functional decomposition (use pattern matching)
-//      it is a good way for decomposition 
-//      it provides switch shorthands, together with apply() & unapply() methods, to simplify class definition and code 
+//      use extractor classes: ex. case class, a way to directly accessing the internal fields
+//      use pattern matching : a shorthand for type-check and type-casting
 trait Expr
 case class Number(n: Int)          extends Expr
 case class Sum(e1: Expr, e2: Expr) extends Expr 
