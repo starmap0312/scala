@@ -35,6 +35,8 @@ ex.
 object Greeter {
   // the props() method indicates that the actor requires two fields when constructed
   def props(message: String, printerActor: ActorRef): Props = Props(new Greeter(message, printerActor))
+
+  // Actor Greeter's messages
   final case class WhoToGreet(who: String) // this actor handles message type: WhoToGreet (a data-type wrapper with a semantic name)
   case object Greet                        // this actor handles message type: Greet      (a data-type wrapper with a semantic name)
 }

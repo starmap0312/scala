@@ -65,3 +65,86 @@ implicit def boolean2Boolean(x: Boolean)  = java.lang.Boolean.valueOf(x) // conv
 trait Function1[-T, +U] {
   def apply(x: T): U             // this is OK in compile time, as the convariant parameter appears in method result
 }
+
+// 4) Decomposition
+// 4.1) OOP decomposition
+trait Expr {
+  def isNumber: Boolean // classification method
+  def isSum:    Boolean // classification method
+  def eval:     Int     // access method
+}
+class Number(n: Int) extends Expr {
+  def isNumber: Boolean = true
+  def isSum:    Boolean = false
+  def eval:     Int     = n
+}
+class Sum(e1: Expr, e2: Expr) extends Expr {
+  def isNumber: Boolean = false
+  def isSum:    Boolean = true
+  def eval:     Int     = e1.eval + e2.eval
+}
+// why is it bad?
+// 1) the interface grows when more and more subtypes are added
+//      we need to touch all subtypes when adding a new method
+// 2) if we want to implement some kind of simplification rule
+//      ex. (a * b + a * c) -> a * (b + c)
+//    we can not encapsulate the above functionality inside the objects, as the objects will need to know about
+//      the global information to implement such a rule (i.e. access all the different subtypes)
+
+// we can move the eval() functionality outside the objects
+//  so there is no need for classification method (isNumber, isSum, etc.)
+trait Expr {
+  def value:   Int
+  def leftOp:  Expr
+  def rightOp: Expr
+}
+class Number(n: Int) extends Expr {
+  def value:   Int  = n
+  def leftOp:  Expr = throw new Exception("Number has no left Op")
+  def rightOp: Expr = throw new Exception("Number has no right Op")
+}
+class Sum(e1: Expr, e2: Expr) extends Expr {
+  def value:   Int  = throw new Exception("Sum has no value")
+  def leftOp:  Expr = e1
+  def rightOp: Expr = e2
+}
+// 4.2) use type-check and type-casting:
+def eval(e: Expr): Int = {
+  if (e.isInstanceOf[Number])
+    e.asInstanceOf[Number].value
+  else if (e.isInstanceOf[Sum])
+    eval(e.asInstanceOf[Sum].leftOp) + eval(e.asInstanceOf[Sum].rightOp)
+}
+// why is it bad?
+//   it is not safe as there is no type-check at compile-time, so it may throw runtime exception
+
+// 4.3) functional decomposition (use pattern matching)
+//      it is a good way for decomposition 
+//      it provides switch shorthands, together with apply() & unapply() methods, to simplify class definition and code 
+trait Expr
+case class Number(n: Int)          extends Expr
+case class Sum(e1: Expr, e2: Expr) extends Expr 
+// companion object are created implicitly:
+// objcet Number {
+//   def apply(n: Int) = new Number(n)
+// }
+
+def eval(e: Expr): Int = e match {
+  case Number(n)   => n                   // a constructor pattern
+  case Sum(e1, e2) => eval(e1) + eval(e2) // a constructor pattern
+}
+
+// client
+eval(Sum(Number(1), Number(2))) = eval(Number(1)) + eval(Number(2)) = 1 + 2 = 3
+
+// or we can move the eval() method inside trait 
+trait Expr {
+  def eval: Int = this match {
+    case Number(n)   => n
+    case Sum(e1, e2) => e1.eval + e2.eval
+  }
+}
+
+// oop decomposition vs. functional decomposition
+// if you often create new subtypes, then use oop decomposition is better (adding a new subclass)
+// if you often create new methods, then use pattern matching is better   (local change by adding a new case)
