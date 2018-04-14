@@ -148,3 +148,13 @@ trait Expr {
 // oop decomposition vs. functional decomposition
 // if you often create new subtypes, then use oop decomposition is better (adding a new subclass)
 // if you often create new methods, then use pattern matching is better   (local change by adding a new case)
+
+// 5) Scala List
+// 5.1) List vs. Array
+//      List is immutable, whereas Array is mutalbe
+//      List is recursive, whereas Array is flat
+//        ex. 1 :: (2 :: (3 :: Nil))  === 1 :: 2 :: 3 :: Nil    (as : is right associated)
+//                                    === Nil.::(3).::(2).::(1)
+//      both List and Array are homogeneous (the elements of a list must have the same type)
+//        ex. List[Int]
+
