@@ -35,25 +35,30 @@
   3.2) the default supervisor strategy is to "stop and restart the child", i.e. all failures result in a restart by default
 
 // Akka Dispatchers vs. Java Executor framework
-  1) in Akka, dispatchers are based on the Java Executor framework (part of java.util.concurrent):
-       class Dispatcher has a subtype of java.util.concurrent.ExecutorService (which extends java.util.concurrent.Executor, used to execute a Runnable, i.e. a task)
-  2) Java Executor provides the framework for the execution of asynchronous tasks
-     it is based on the "producer–consumer model":
-       the act of task submission (producer) is decoupled from the act of task execution (consumer)
-       the threads that submit tasks are different from the threads that execute the tasks
-  3) Akka Dispatcher usage:
-     i.e. Java's Executor contexts supported by Akka 
-     i) java.util.concurrent.ThreadPoolExecutor:
-        the idea is to create a pool of worker threads
-        * this minimizes the "overhead" of allocation/deallocation of threads
-        * tasks are assigned to the pool using a queue
-        * if the number of tasks exceeds the number of threads, then the tasks are queued up until any thread in the pool is available
-     ii) java.util.concurrent.ForkJoinPool:
+  1) Akka Dispatcher:
+     i) Akka dispatcher is based on the Java Executor framework (part of java.util.concurrent)
+        Java Executor provides the framework for the execution of asynchronous tasks
+        it is based on the "producer–consumer model":
+          the act of task submission (producer) is decoupled from the act of task execution (consumer)
+          the threads that submit tasks are different from the threads that execute the tasks
+    ii) it has a collaborator ExecutorServiceFactoryProvider, which can be used to create ExecutorServiceFactory, which
+          can be used to create a Java "ExecutorService", used to execute a Runnable (i.e. a asynchronous task)
+   iii) you may think of Akka dispatcher as an Executor used to create ExecutorService
+        depending on the nature of actors, there are two types of ExecutorService created by Akka dispatcher
+        a) ForkJoinPool (most common), or
+        b) ThreadPoolExecutor (ex. FixedThreadPool or CachedThreadPool) for I/O tasks
+  2) Thread pools (i.e. ExecutorService) created by Akka dispatcher
+     i) java.util.concurrent.ForkJoinPool:
         the idea is to divide a large task into smaller tasks whose solutions are then combined for the final answer
         * this maximizes the "throughput" of processor cores
         * tasks need to be independent to be able run in parallel
         * "work stealing": threads in the pool will execute tasks created by other active tasks (pending thread execution)
-  4) java.util.concurrent.ThreadPoolExecutor and java.util.concurrent.ForkJoinPool
+    ii) java.util.concurrent.ThreadPoolExecutor:
+        the idea is to create a shared pool of worker threads
+        * this minimizes the "overhead" of allocation/deallocation of threads
+        * tasks are assigned to the pool using a queue
+        * if the number of tasks exceeds the number of threads, then the tasks are queued up until any thread in the pool is available
+  3) java.util.concurrent.ThreadPoolExecutor and java.util.concurrent.ForkJoinPool
      "ThreadPoolExecutor" extends AbstractExecutorService extends ExecutorService extends Executor
      "ForkJoinPool"       extends AbstractExecutorService extends ExecutorService extends Executor
      i) "Executor":
@@ -62,7 +67,8 @@
           void execute(Runnable command);
         }
     ii) "ExecutorService" extends "Executor":
-        // it is an Executor that provides methods to manage termination and methods that can produce a Future for tracking progress of one or more asynchronous tasks
+        // it is an Executor that provides methods to manage termination and
+        // methods that can produce a Future for tracking progress of one or more asynchronous tasks
         // it can be shut down, which will cause it to reject new tasks
         // upon termination, it has no tasks actively executing, no tasks awaiting execution, and no new tasks can be submitted
         public interface ExecutorService extends Executor {
@@ -78,7 +84,8 @@
                 ... implementation ...
             }
         }
-        // you can construct FixedThreadPool (using Executors.newFixedThreadPool) or CachedThreadPool (using Executors.newCachedThreadPool)
+        // you can construct FixedThreadPool  (using Executors.newFixedThreadPool) or
+        //                   CachedThreadPool (using Executors.newCachedThreadPool)
 
         "ForkJoinPool" extends "AbstractExecutorService" extends "ExecutorService":
         // it is an ExecutorService for running ForkJoinTasks
@@ -89,16 +96,12 @@
             }
         }
         // suitable for recursive calculations
-  5) Akka Dispatcher:
-     i) it has a ExecutorServiceFactoryProvider, which can be used to create ExecutorServiceFactory, which can be used to create a Java "ExecutorService"
-        so you may think of Akka dispatcher as one (also an Executor) that can be used to create different types of thread pools
-    ii) depending on the nature of actors, you can create a ForkJoinPool (most common) or a CachedThreadPool (a ThreadPoolExecutor, for I/O tasks), etc.
 
 // Akka Dispatcher
   1) in Akka, the dispatcher controls and coordinates the message dispatching to the actors mapped on the underlying threads
      they make sure that the resources (threads) are optimized and messages (in mailbox) are processed (by actors) as fast as possible
-  2) Akka provides multiple dispatch policies (customized according to number of cores or memory available and type of application workload)
-     Threads are the underlying resources, which can be optimized based on the available CPU cores and the type of application workload
+  2) Akka provides multiple dispatch policies: customized based on number of cores or memory available and application workload type
+     Threads are the underlying resources, which can be optimized based on the available CPU cores and application workload type
   3) types of Akka dispatchers:
      i) Dispatcher (default):
         an event-based dispatcher that binds a set of actors to a thread pool backed up by a "BlockingQueue"
