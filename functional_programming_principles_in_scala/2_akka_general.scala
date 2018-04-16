@@ -275,3 +275,8 @@
        how to stream large datasets in and out of a system using HTTP
        how to stream live events in and out of a system using HTTP
 
+// UntypedActor vs. TypedActors
+  1) TypedActors have a static interface
+     the invocations of the methods on that interface is transformed into message sends
+     i.e. each method dispatch is turned into a message that is put on a queue to be processed by TypedActors sequentially one by one
+  2) UntypedActors can receive any message
